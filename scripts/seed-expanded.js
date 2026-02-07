@@ -59,7 +59,7 @@ const seedCourses = [
 ];
 
 const lessonsData = {
-  0: [ // JavaScript Fundamentals - 20 lessons
+  0: [ 
     {
       title: "What is JavaScript?",
       content: "Understand JavaScript's role in web development, its history, and why it's essential for building interactive websites. Learn about the JavaScript ecosystem and what makes it unique among programming languages.",
@@ -161,7 +161,7 @@ const lessonsData = {
       duration: 120
     }
   ],
-  1: [ // HTML & CSS Mastery - 18 lessons
+  1: [
     {
       title: "HTML Basics and Semantic Tags",
       content: "Learn HTML5 structure and semantic elements. Understand DOCTYPE, head, body, and important tags. Write semantic HTML for better accessibility and SEO. Create well-structured web pages.",
@@ -253,7 +253,7 @@ const lessonsData = {
       duration: 120
     }
   ],
-  2: [ // React Complete Course - 20 lessons
+  2: [ 
     {
       title: "React Fundamentals and JSX",
       content: "Understand React library and its philosophy. Learn JSX syntax and how it translates to JavaScript. Create your first React component. Understand the React ecosystem.",
@@ -355,7 +355,7 @@ const lessonsData = {
       duration: 150
     }
   ],
-  3: [ // Advanced JavaScript - 18 lessons
+  3: [ 
     {
       title: "Prototypes and Prototype Chain",
       content: "Understand JavaScript's prototypal inheritance model. Learn prototype delegation and property lookup. Master constructor functions. Create objects using prototypes.",
