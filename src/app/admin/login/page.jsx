@@ -57,7 +57,7 @@ export default function AdminLogin() {
         {/* Error Alert */}
         {error && (
           <Alert className="mb-6 bg-red-50 border-red-200 text-red-800 flex items-start gap-3">
-            <AlertCircle className="h-5 w-5 flex-shrink-0 mt-0.5" />
+            <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
             <div>
               <div className="font-semibold">Error</div>
               <div className="text-sm">{error}</div>

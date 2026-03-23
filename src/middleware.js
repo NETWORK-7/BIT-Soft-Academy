@@ -1,49 +1,35 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+
 import { NextResponse } from "next/server";
 
-const isAdminRoute = createRouteMatcher([
-  "/admin(.*)",
-]);
 
-const isAdminLoginRoute = createRouteMatcher([
-  "/admin/login",
-]);
+const matchRoute = (patterns, path) => patterns.some(pattern => {
+  if (pattern.endsWith('(.*)')) {
+    return path.startsWith(pattern.replace('(.*)', ''));
+  }
+  return path === pattern;
+});
 
-const isCoursesRoute = createRouteMatcher([
-  "/courses(.*)",
-  "/dashboard(.*)",
-]);
+const isAdminRoute = path => matchRoute(["/admin", "/admin/"], path) || path.startsWith("/admin/");
+const isAdminLoginRoute = path => path === "/admin/login";
 
-const isPublicRoute = createRouteMatcher([
-  "/",
-  "/about",
-  "/blog(.*)",
-  "/sign-in(.*)",
-  "/sign-up(.*)",
-]);
 
-export default clerkMiddleware(async (auth, req) => {
-  if (isAdminLoginRoute(req)) {
+export function middleware(req) {
+  const { pathname } = req.nextUrl;
+
+  if (isAdminLoginRoute(pathname)) {
     return NextResponse.next();
   }
 
-  if (isAdminRoute(req)) {
+  if (isAdminRoute(pathname)) {
     const adminAuth = req.cookies.get("adminAuth")?.value;
-
     if (!adminAuth) {
       return NextResponse.redirect(new URL("/admin/login", req.url));
     }
   }
 
-  // Protect courses route - require authentication
-  if (isCoursesRoute(req) && !isPublicRoute(req)) {
-    const { userId } = await auth();
-    
-    if (!userId) {
-      return NextResponse.redirect(new URL("/sign-in", req.url));
-    }
-  }
-});
+  // You can add more custom auth logic here for courses/dashboard if needed
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: [

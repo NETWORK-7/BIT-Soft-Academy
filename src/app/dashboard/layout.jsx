@@ -23,7 +23,7 @@ export default function DashboardLayout({ children }) {
         {/* Logo */}
         <div className="p-8 border-b border-gray-200">
           <Link href="/dashboard" className="flex items-center gap-3">
-            <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center text-white font-bold text-xl">
+            <div className="w-10 h-10 bg-linear-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center text-white font-bold text-xl">
               CM
             </div>
             <h1 className="text-2xl font-bold text-gray-900">Bit Soft IT Academy</h1>
@@ -43,7 +43,7 @@ export default function DashboardLayout({ children }) {
                     href={link.href}
                     className={`flex items-center gap-4 px-5 py-4 rounded-xl text-base font-medium transition-all duration-200 group
                       ${isActive
-                        ? "bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg"
+                        ? "bg-linear-to-r from-purple-600 to-pink-600 text-white shadow-lg"
                         : "text-gray-700 hover:bg-gray-100 hover:text-gray-900"
                       }
                     `}
@@ -65,7 +65,7 @@ export default function DashboardLayout({ children }) {
         {/* User Section */}
         <div className="p-6 border-t border-gray-200">
           <div className="flex items-center gap-4 mb-4">
-            <div className="h-12 w-12 bg-gradient-to-br from-purple-600 to-pink-600 rounded-full border-2 border-purple-200" />
+            <div className="h-12 w-12 bg-linear-to-br from-purple-600 to-pink-600 rounded-full border-2 border-purple-200" />
             <div className="flex-1">
               <p className="font-semibold text-gray-900">Welcome back!</p>
               <p className="text-sm text-gray-500">Level 12 • 1,240 points</p>

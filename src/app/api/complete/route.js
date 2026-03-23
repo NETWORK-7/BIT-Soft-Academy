@@ -1,17 +1,7 @@
 import { NextResponse } from "next/server";
-import { auth } from "@clerk/nextjs/server";
 
 export async function POST(req) {
   try {
-    const { userId } = await auth();
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: "Unauthorized" },
-        { status: 401 }
-      );
-    }
-
     const { lessonId, courseId } = await req.json();
 
     if (!lessonId || !courseId) {
@@ -40,19 +30,7 @@ export async function POST(req) {
 // GET user progress
 export async function GET(req) {
   try {
-    const { userId } = await auth();
-
-    // If not authenticated, return default progress
-    if (!userId) {
-      return NextResponse.json({
-        totalPoints: 0,
-        completedLessons: [],
-        lessonsCount: 0,
-        message: "Not authenticated"
-      });
-    }
-
-    // Return default user progress (no database storage)
+    // Return default user progress (no authentication)
     return NextResponse.json({
       totalPoints: 0,
       completedLessons: [],

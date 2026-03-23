@@ -1,4 +1,3 @@
-import ClerkWrapper from '@/_components/ClerkWrapper';
 import Header from '@/_components/Header';
 import { LanguageProvider } from '@/context/LanguageContext';
 import './globals.css';
@@ -11,17 +10,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <ClerkWrapper>
-      <LanguageProvider>
-        <html lang="en">
-          <body className="bg-black text-white min-h-screen">
-            <Header />
-            {children}
-            <Toaster />
-          </body>
-        </html>
-      </LanguageProvider>
-    </ClerkWrapper>
+    <LanguageProvider>
+      <html lang="en">
+        <body className="bg-black text-white min-h-screen">
+          <Header />
+          {children}
+          <Toaster />
+        </body>
+      </html>
+    </LanguageProvider>
   );
 }
 

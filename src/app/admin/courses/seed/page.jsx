@@ -54,7 +54,7 @@ export default function AdminCoursesSeed() {
 
           {error && (
             <div className="mb-8 bg-red-50 border-l-4 border-red-600 p-4 flex items-start gap-3">
-              <AlertCircle className="h-6 w-6 text-red-600 flex-shrink-0 mt-0.5" />
+              <AlertCircle className="h-6 w-6 text-red-600 shrink-0 mt-0.5" />
               <div className="text-left">
                 <h3 className="font-semibold text-red-800">Error</h3>
                 <p className="text-red-700">{error}</p>
@@ -64,7 +64,7 @@ export default function AdminCoursesSeed() {
 
           {success && (
             <div className="mb-8 bg-green-50 border-l-4 border-green-600 p-4 flex items-start gap-3">
-              <CheckCircle className="h-6 w-6 text-green-600 flex-shrink-0 mt-0.5" />
+              <CheckCircle className="h-6 w-6 text-green-600 shrink-0 mt-0.5" />
               <div className="text-left">
                 <h3 className="font-semibold text-green-800">Success!</h3>
                 <p className="text-green-700">Courses have been seeded successfully. Redirecting...</p>

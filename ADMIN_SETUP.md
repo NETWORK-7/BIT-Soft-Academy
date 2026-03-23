@@ -63,8 +63,8 @@ Your admin portal at `localhost:3000/admin` is now password protected. Only auth
 To change the admin credentials, edit `/src/app/api/admin/login/route.js`:
 
 ```javascript
-const ADMIN_PASSWORD = "your-new-password"; // Change this
-const ADMIN_NAME = "Your Name";             // Change this
+const ADMIN_PASSWORD = "n1m2d3b4b5"; // Change this
+const ADMIN_NAME = "admin";             // Change this
 ```
 
 ## Testing

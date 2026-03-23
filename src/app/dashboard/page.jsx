@@ -5,6 +5,7 @@ import { Trophy, Flame, Clock, BookOpen, Target, TrendingUp, Calendar, Award, Ar
 import Link from "next/link";
 import { useLanguageContext } from "@/context/LanguageContext";
 import { t } from "@/lib/translations";
+import { supabase } from "@/lib/supabase";
 
 import LanguageSettings from "@/components/LanguageSettings";
 
@@ -15,14 +16,11 @@ export default function Dashboard() {
 
   useEffect(() => {
     setIsLoaded(true);
-    // Get user data from window or set default
-    if (typeof window !== 'undefined' && window.__clerk) {
-      try {
-        setUser(window.__clerk?.user);
-      } catch (e) {
-        setUser(null);
-      }
-    }
+    const fetchUser = async () => {
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user || null);
+    };
+    fetchUser();
   }, []);
 
   if (!isLoaded) {
@@ -127,7 +125,7 @@ export default function Dashboard() {
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
                       <div
-                        className="h-full bg-gradient-to-r from-purple-600 to-pink-600 rounded-full transition-all duration-700 ease-out"
+                        className="h-full bg-linear-to-r from-purple-600 to-pink-600 rounded-full transition-all duration-700 ease-out"
                         style={{ width: `${course.progress}%` }}
                       />
                     </div>
@@ -160,7 +158,7 @@ export default function Dashboard() {
         </div>
 
         {/* Call to Action */}
-        <div className="mt-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl shadow-lg p-8 text-white flex items-center justify-between">
+        <div className="mt-12 bg-linear-to-r from-purple-600 to-pink-600 rounded-2xl shadow-lg p-8 text-white flex items-center justify-between">
           <div>
             <h3 className="text-2xl font-bold mb-2">{t(language, "dashboard.continueLearnin")}</h3>
             <p className="text-purple-100">{t(language, "dashboard.exploreCourses")}</p>

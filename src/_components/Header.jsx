@@ -44,12 +44,7 @@ export default function Header() {
           >
             {t(language, "nav.about")}
           </Link>
-          <Link
-            href="/pricing"
-            className="text-lg font-medium text-gray-700 hover:text-purple-600 transition-colors"
-          >
-            {t(language, "nav.pricing")}
-          </Link>
+          // ...existing code...
           <Link
             href="/blog"
             className="text-lg font-medium text-gray-700 hover:text-purple-600 transition-colors"
@@ -130,13 +125,7 @@ export default function Header() {
             >
               {t(language, "nav.about")}
             </Link>
-            <Link
-              href="/pricing"
-              className="text-lg font-medium text-gray-700 hover:text-purple-600 transition"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {t(language, "nav.pricing")}
-            </Link>
+            // ...existing code...
             <Link
               href="/blog"
               className="text-lg font-medium text-gray-700 hover:text-purple-600 transition"

@@ -13,7 +13,6 @@ const adminLinks = [
 const AdminDashboard = () => {
   return (
     <div className="min-h-screen flex bg-gray-50">
-      {/* Sidebar */}
       <aside className="w-64 bg-white shadow-xl border-r border-gray-200 flex flex-col">
         <div className="p-6 border-b border-gray-200">
           <a href="/admin" className="flex items-center gap-3">
@@ -132,14 +131,14 @@ const AdminDashboard = () => {
 
         {/* Statistics Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
-          <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg p-8 text-white">
+          <div className="bg-linear-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg p-8 text-white">
             <h3 className="text-xl font-bold mb-2">Platform Growth</h3>
             <p className="text-blue-100 mb-4">This month</p>
             <div className="text-4xl font-black mb-2">+42%</div>
             <p className="text-blue-100">User engagement increased</p>
           </div>
 
-          <div className="bg-gradient-to-br from-purple-500 to-purple-600 rounded-2xl shadow-lg p-8 text-white">
+          <div className="bg-linear-to-br from-purple-500 to-purple-600 rounded-2xl shadow-lg p-8 text-white">
             <h3 className="text-xl font-bold mb-2">Completion Rate</h3>
             <p className="text-purple-100 mb-4">Average across all courses</p>
             <div className="text-4xl font-black mb-2">78%</div>

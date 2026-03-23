@@ -6,6 +6,7 @@ import React, { useState, useEffect } from "react";
 import { useLanguageContext } from "@/context/LanguageContext";
 import { t } from "@/lib/translations";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 export default function CoursesPage() {
   const router = useRouter();
@@ -19,29 +20,16 @@ export default function CoursesPage() {
   const [isSignedIn, setIsSignedIn] = React.useState(false);
   const [isLoaded, setIsLoaded] = React.useState(false);
 
-  // Check auth status on mount
   useEffect(() => {
     setIsLoaded(true);
-    // Check if Clerk session exists
-    if (typeof window !== 'undefined' && window.__clerk) {
-      try {
-        setIsSignedIn(!!window.__clerk?.session);
-      } catch (e) {
-        setIsSignedIn(false);
-      }
-    }
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setIsSignedIn(!!data.session);
+    };
+    checkSession();
   }, []);
 
-  // Redirect if not signed in
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push("/sign-in");
-    }
-  }, [isLoaded, isSignedIn, router]);
-
   React.useEffect(() => {
-    if (!isSignedIn) return; // Don't fetch if not signed in
-
     const fetchCourses = async () => {
       try {
         setLoading(true);
@@ -62,7 +50,7 @@ export default function CoursesPage() {
     };
 
     fetchCourses();
-  }, [isSignedIn]);
+  }, []);
 
   const categories = ["All", "Frontend", "Backend", "Data Science", "Cloud", "Full-Stack"];
   

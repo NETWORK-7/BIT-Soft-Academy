@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Star, Clock, BookOpen, User, Search, Filter } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 export default function DashboardCoursesPage() {
   const router = useRouter();
@@ -16,20 +17,15 @@ export default function DashboardCoursesPage() {
   const [isSignedIn, setIsSignedIn] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  // Check auth status on mount
   useEffect(() => {
     setIsLoaded(true);
-    // Check if Clerk session exists
-    if (typeof window !== 'undefined' && window.__clerk) {
-      try {
-        setIsSignedIn(!!window.__clerk?.session);
-      } catch (e) {
-        setIsSignedIn(false);
-      }
-    }
+    const checkSession = async () => {
+      const { data } = await supabase.auth.getSession();
+      setIsSignedIn(!!data.session);
+    };
+    checkSession();
   }, []);
 
-  // Redirect if not signed in
   useEffect(() => {
     if (isLoaded && !isSignedIn) {
       router.push("/sign-in");
@@ -131,7 +127,7 @@ export default function DashboardCoursesPage() {
             </div>
           </div>
 
-          {/* Categories */}
+       
           <div className="flex flex-wrap gap-3">
             {categories.map((category) => (
               <button

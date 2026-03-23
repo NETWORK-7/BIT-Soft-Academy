@@ -274,7 +274,7 @@ export default function LessonPage({ params }) {
         <div className="max-w-7xl mx-auto px-4 pb-3">
           <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
             <div
-              className="bg-gradient-to-r from-purple-600 to-pink-600 h-full transition-all duration-300"
+              className="bg-linear-to-r from-purple-600 to-pink-600 h-full transition-all duration-300"
               style={{ width: `${((currentLessonIndex + 1) / allLessons.length) * 100}%` }}
             />
           </div>
