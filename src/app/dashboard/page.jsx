@@ -5,7 +5,6 @@ import { Trophy, Flame, Clock, BookOpen, Target, TrendingUp, Calendar, Award, Ar
 import Link from "next/link";
 import { useLanguageContext } from "@/context/LanguageContext";
 import { t } from "@/lib/translations";
-import { supabase } from "@/lib/supabase";
 
 import LanguageSettings from "@/components/LanguageSettings";
 
@@ -16,11 +15,10 @@ export default function Dashboard() {
 
   useEffect(() => {
     setIsLoaded(true);
-    const fetchUser = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUser(data.user || null);
-    };
-    fetchUser();
+    fetch("/api/auth/me")
+      .then((r) => r.json())
+      .then((data) => setUser(data.user || null))
+      .catch(() => setUser(null));
   }, []);
 
   if (!isLoaded) {
@@ -59,7 +57,8 @@ export default function Dashboard() {
         {/* Greeting */}
         <div className="mb-10">
           <h1 className="text-4xl md:text-5xl font-black text-gray-900">
-            {t(language, "dashboard.welcomeBack")}, {user?.firstName || "Coder"}! 👋
+            {t(language, "dashboard.welcomeBack")},{" "}
+            {(user?.name && user.name.split(" ")[0]) || "Coder"}! 👋
           </h1>
           <p className="text-xl text-gray-600 mt-3">
             You're on a <span className="font-bold text-orange-600">{userStats.currentStreak}-{t(language, "dashboard.streakText")}</span>. {t(language, "dashboard.keepWorking")}
@@ -125,7 +124,7 @@ export default function Dashboard() {
                     </div>
                     <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
                       <div
-                        className="h-full bg-linear-to-r from-purple-600 to-pink-600 rounded-full transition-all duration-700 ease-out"
+                        className="h-full bg-linear-to-r from-brand-from to-brand-to rounded-full transition-all duration-700 ease-out"
                         style={{ width: `${course.progress}%` }}
                       />
                     </div>
@@ -158,27 +157,27 @@ export default function Dashboard() {
         </div>
 
         {/* Call to Action */}
-        <div className="mt-12 bg-linear-to-r from-purple-600 to-pink-600 rounded-2xl shadow-lg p-8 text-white flex items-center justify-between">
+        <div className="mt-12 bg-linear-to-r from-brand-from to-brand-to rounded-2xl shadow-lg p-8 text-primary-foreground flex items-center justify-between">
           <div>
             <h3 className="text-2xl font-bold mb-2">{t(language, "dashboard.continueLearnin")}</h3>
-            <p className="text-purple-100">{t(language, "dashboard.exploreCourses")}</p>
+            <p className="text-primary-foreground/85">{t(language, "dashboard.exploreCourses")}</p>
           </div>
           <Link href="/dashboard/courses">
-            <button className="flex items-center gap-2 bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+            <button className="flex items-center gap-2 bg-primary-foreground text-primary px-6 py-3 rounded-xl font-semibold hover:bg-primary-foreground/90 transition-colors shadow-md">
               {t(language, "dashboard.browseCourses")} <ArrowRight className="h-5 w-5" />
             </button>
           </Link>
         </div>
 
-        {/* Language Settings */}
+
         <div className="mt-12">
           <LanguageSettings />
         </div>
 
-        {/* Stats Footer */}
-        <div className="mt-12 text-center bg-white rounded-2xl shadow-md py-6 px-8 border border-gray-200">
-          <p className="text-lg text-gray-700">
-            {t(language, "dashboard.level")} <span className="text-3xl font-bold text-purple-600">{userStats.level}</span> •{" "}
+     
+        <div className="mt-12 text-center bg-card rounded-2xl shadow-md py-6 px-8 border border-border">
+          <p className="text-lg text-muted-foreground">
+            {t(language, "dashboard.level")} <span className="text-3xl font-bold text-primary">{userStats.level}</span> •{" "}
             <span className="text-amber-600 font-semibold">{userStats.totalHours} {t(language, "dashboard.hoursLearned")}</span>
           </p>
         </div>

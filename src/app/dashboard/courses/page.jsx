@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Star, Clock, BookOpen, User, Search, Filter } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
 
 export default function DashboardCoursesPage() {
   const router = useRouter();
@@ -18,19 +17,17 @@ export default function DashboardCoursesPage() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    setIsLoaded(true);
-    const checkSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      setIsSignedIn(!!data.session);
-    };
-    checkSession();
+    fetch("/api/auth/me")
+      .then((r) => r.json())
+      .then((data) => {
+        setIsSignedIn(!!data.user);
+        setIsLoaded(true);
+      })
+      .catch(() => {
+        setIsSignedIn(false);
+        setIsLoaded(true);
+      });
   }, []);
-
-  useEffect(() => {
-    if (isLoaded && !isSignedIn) {
-      router.push("/sign-in");
-    }
-  }, [isLoaded, isSignedIn, router]);
 
   useEffect(() => {
     if (!isSignedIn) return;
@@ -57,7 +54,14 @@ export default function DashboardCoursesPage() {
     fetchCourses();
   }, [isSignedIn]);
 
-  const categories = ["All", "Frontend", "Backend", "Data Science", "Cloud", "Full-Stack"];
+  const categories = [
+    "All",
+    "Frontend",
+    "Backend",
+    "Data Science",
+    "Cloud",
+    "Full-Stack",
+  ];
 
   const filteredCourses = courses.filter((course) => {
     const matchesSearch =
@@ -66,7 +70,7 @@ export default function DashboardCoursesPage() {
     const matchesCategory =
       selectedCategory === "All" ||
       course.tags?.some(
-        (tag) => tag === selectedCategory || tag.includes(selectedCategory)
+        (tag) => tag === selectedCategory || tag.includes(selectedCategory),
       );
     return matchesSearch && matchesCategory;
   });
@@ -97,7 +101,6 @@ export default function DashboardCoursesPage() {
           </p>
         </div>
 
-        {/* Search, Filter, and Categories */}
         <div className="bg-white rounded-2xl shadow-md p-6 mb-12">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
             {/* Search */}
@@ -112,7 +115,6 @@ export default function DashboardCoursesPage() {
               />
             </div>
 
-            {/* Sort */}
             <div className="relative">
               <select
                 value={sortBy}
@@ -127,7 +129,6 @@ export default function DashboardCoursesPage() {
             </div>
           </div>
 
-       
           <div className="flex flex-wrap gap-3">
             {categories.map((category) => (
               <button
@@ -145,17 +146,21 @@ export default function DashboardCoursesPage() {
           </div>
         </div>
 
-        {/* Results count */}
         <div className="mb-6">
           <p className="text-gray-600">
-            Showing <span className="font-semibold text-gray-900">{sortedCourses.length}</span> of{" "}
-            <span className="font-semibold text-gray-900">{courses.length}</span>{" "}
+            Showing{" "}
+            <span className="font-semibold text-gray-900">
+              {sortedCourses.length}
+            </span>{" "}
+            of{" "}
+            <span className="font-semibold text-gray-900">
+              {courses.length}
+            </span>{" "}
             courses
             {searchTerm && ` matching "${searchTerm}"`}
           </p>
         </div>
 
-        {/* Loading */}
         {loading && (
           <div className="text-center py-20">
             <div className="text-4xl animate-spin">⏳</div>
@@ -163,7 +168,6 @@ export default function DashboardCoursesPage() {
           </div>
         )}
 
-        {/* Error */}
         {error && !loading && (
           <div className="text-center py-20 bg-red-50 rounded-2xl border-2 border-red-200">
             <div className="text-6xl mb-4">⚠️</div>
@@ -180,7 +184,6 @@ export default function DashboardCoursesPage() {
           </div>
         )}
 
-        {/* Courses Grid */}
         {!loading && !error && sortedCourses.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {sortedCourses.map((course) => (
@@ -189,8 +192,7 @@ export default function DashboardCoursesPage() {
                 href={`/courses/${course._id}`}
                 className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-400 hover:-translate-y-2 block"
               >
-                {/* Course Image */}
-                <div className="h-48 bg-linear-to-br from-purple-400 to-pink-400 relative overflow-hidden">
+                <div className="h-48 bg-linear-to-br from-brand-from/80 to-brand-to/80 relative overflow-hidden">
                   <img
                     src={course.image}
                     alt={course.title}
@@ -214,7 +216,6 @@ export default function DashboardCoursesPage() {
                     {course.description}
                   </p>
 
-                  {/* Course Stats */}
                   <div className="grid grid-cols-3 gap-4 mt-6 text-sm text-gray-600 border-t border-gray-100 pt-5">
                     <div className="flex items-center justify-center flex-col">
                       <Clock className="h-5 w-5 text-purple-600 mb-1" />
@@ -254,7 +255,7 @@ export default function DashboardCoursesPage() {
                   </div>
 
                   <div className="mt-8">
-                    <button className="w-full bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md">
+                    <button className="w-full bg-linear-to-r from-brand-from to-brand-to hover:brightness-110 text-primary-foreground font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md">
                       View Course
                     </button>
                     <p className="text-center text-xs text-gray-500 mt-3">

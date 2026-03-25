@@ -10,8 +10,6 @@ export async function POST(req) {
         { status: 400 }
       );
     }
-
-    // Return success response (no database storage)
     return NextResponse.json({
       message: "Lesson completed successfully!",
       pointsEarned: 10,
@@ -26,11 +24,8 @@ export async function POST(req) {
     );
   }
 }
-
-// GET user progress
 export async function GET(req) {
   try {
-    // Return default user progress (no authentication)
     return NextResponse.json({
       totalPoints: 0,
       completedLessons: [],

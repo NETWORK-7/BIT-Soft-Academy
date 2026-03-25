@@ -6,7 +6,6 @@ import React, { useState, useEffect } from "react";
 import { useLanguageContext } from "@/context/LanguageContext";
 import { t } from "@/lib/translations";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
 
 export default function CoursesPage() {
   const router = useRouter();
@@ -22,11 +21,10 @@ export default function CoursesPage() {
 
   useEffect(() => {
     setIsLoaded(true);
-    const checkSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      setIsSignedIn(!!data.session);
-    };
-    checkSession();
+    fetch("/api/auth/me")
+      .then((r) => r.json())
+      .then((data) => setIsSignedIn(!!data.user))
+      .catch(() => setIsSignedIn(false));
   }, []);
 
   React.useEffect(() => {
@@ -75,174 +73,153 @@ export default function CoursesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-gray-900">{t(language, "courses.exploreCourses")}</h1>
-          <p className="text-xl text-gray-600 mt-4 max-w-3xl mx-auto">
+    <div className="min-h-screen bg-gray-50">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-brand-from to-brand-to text-primary-foreground py-12 px-4">
+        <div className="max-w-7xl mx-auto">
+          <h1 className="text-4xl font-bold text-center mb-4">
+            {t(language, "courses.exploreCourses")}
+          </h1>
+          <p className="text-xl text-center text-white/90 max-w-3xl mx-auto">
             {t(language, "courses.browseFullCatalog")}
           </p>
         </div>
+      </div>
 
-        <div className="bg-white rounded-2xl shadow-md p-6 mb-12">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          
-            <div className="md:col-span-2 relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder={t(language, "courses.searchCourses")}
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-600 transition"
-              />
-            </div>
-
-            <div className="relative">
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-600 transition appearance-none bg-white cursor-pointer"
-              >
-                <option value="popular">{t(language, "courses.popular")}</option>
-                <option value="rating">{t(language, "courses.rating")}</option>
-                <option value="newest">{t(language, "courses.newest")}</option>
-              </select>
-              <Filter className="absolute right-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400 pointer-events-none" />
-            </div>
+      {/* Search and Filter Section */}
+      <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row gap-4 mb-8">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+            <input
+              type="text"
+              placeholder={t(language, "courses.searchCourses")}
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+            />
           </div>
-
-      
-          <div className="flex flex-wrap gap-3">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
-                className={`px-4 py-2 rounded-full font-semibold transition ${
-                  selectedCategory === category
-                    ? "bg-purple-600 text-white shadow-md"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {category}
-              </button>
+          <select
+            value={selectedCategory}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+          >
+            {categories.map((cat) => (
+              <option key={cat} value={cat}>
+                {cat === "All" ? t(language, "courses.allCourses") : cat}
+              </option>
             ))}
-          </div>
+          </select>
+          <select
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value)}
+            className="px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
+          >
+            <option value="popular">{t(language, "courses.popular")}</option>
+            <option value="rating">{t(language, "courses.rating")}</option>
+            <option value="newest">{t(language, "courses.newest")}</option>
+          </select>
         </div>
 
-     
-        <div className="mb-6">
-          <p className="text-gray-600">
-            Showing <span className="font-semibold text-gray-900">{sortedCourses.length}</span> of{" "}
-            <span className="font-semibold text-gray-900">{courses.length}</span> courses
-            {searchTerm && ` matching "${searchTerm}"`}
-          </p>
-        </div>
-
-       
+        {/* Loading State */}
         {loading && (
-          <div className="text-center py-20">
-            <div className="text-4xl animate-spin">⏳</div>
-            <p className="text-gray-600 mt-4">Loading courses...</p>
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[1, 2, 3, 4, 5, 6].map((i) => (
+                <div key={i} className="bg-white rounded-2xl shadow-lg p-8">
+                  <div className="animate-pulse">
+                    <div className="h-48 bg-gray-200 rounded-xl mb-4"></div>
+                    <div className="h-6 bg-gray-200 rounded-lg mb-2"></div>
+                    <div className="h-4 bg-gray-200 rounded-md w-3/4"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         )}
 
-      
-        {error && !loading && (
-          <div className="text-center py-20 bg-red-50 rounded-2xl border-2 border-red-200">
-            <div className="text-6xl mb-4">⚠️</div>
-            <h3 className="text-2xl font-semibold text-red-700">Error Loading Courses</h3>
-            <p className="text-red-600 mt-2">{error}</p>
-            <button
-              onClick={() => window.location.reload()}
-              className="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition"
-            >
-              Try Again
-            </button>
+        {/* Error State */}
+        {error && (
+          <div className="max-w-7xl mx-auto px-4 text-center py-20">
+            <div className="bg-red-50 border border-red-200 rounded-2xl p-8">
+              <h2 className="text-2xl font-bold text-red-800 mb-4">
+                Error loading courses
+              </h2>
+              <p className="text-red-600">{error}</p>
+            </div>
           </div>
         )}
 
         {/* Courses Grid */}
-        {!loading && !error && sortedCourses.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {sortedCourses.map((course) => (
-              <Link
-                key={course._id || course.id}
-                href={`/courses/${course._id}`}
-                className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-400 hover:-translate-y-2 block"
-              >
-             
-                <div className="h-48 bg-linear-to-br from-purple-400 to-pink-400 relative overflow-hidden">
-                  <img
-                    src={course.image}
-                    alt={course.title}
-                    className="h-32 w-32 absolute bottom-0 right-0 translate-x-8 translate-y-8 object-contain drop-shadow-lg"
-                  />
+        {!loading && !error && (
+          <div className="max-w-7xl mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {filteredCourses.map((course) => (
+                <div key={course._id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
+                  <Link href={`/courses/${course._id}`} className="block">
+                    {/* Course Image */}
+                    <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200">
+                      <img
+                        src={course.image}
+                        alt={course.title}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+
+                    {/* Course Content */}
+                    <div className="p-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold text-gray-900 mb-2">
+                            {course.title}
+                          </h3>
+                          <p className="text-gray-600 text-sm line-clamp-2">
+                            {course.description}
+                          </p>
+                        </div>
+                        <div className="ml-4">
+                          {course.enrolled ? (
+                            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                              ✓ {t(language, "courses.enrolled")}
+                            </span>
+                          ) : (
+                            <button className="bg-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-purple-700 transition-colors">
+                              {t(language, "courses.enroll")}
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Course Meta */}
+                      <div className="flex items-center justify-between text-sm text-gray-500">
+                        <div className="flex items-center gap-4">
+                          <span className="flex items-center gap-1">
+                            <Clock className="w-4 h-4" />
+                            {course.duration}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <BookOpen className="w-4 h-4" />
+                            {getLessonCount(course.lessons)} {t(language, "courses.lessons")}
+                          </span>
+                          <span className="flex items-center gap-1">
+                            <Star className="w-4 h-4" />
+                            {course.rating}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
                 </div>
-
-                <div className="p-8">
-                  <h3 className="text-2xl font-bold text-gray-900">{course.title}</h3>
-
-                  <div className="flex items-center mt-3 text-gray-600">
-                    <User className="h-4 w-4 mr-2" />
-                    <span className="text-sm">by {course.instructor || "Expert Instructor"}</span>
-                  </div>
-
-                  <p className="text-gray-600 mt-4 line-clamp-3 leading-relaxed">
-                    {course.description}
-                  </p>
-
-                  <div className="grid grid-cols-3 gap-4 mt-6 text-sm text-gray-600 border-t border-gray-100 pt-5">
-                    <div className="flex items-center justify-center flex-col">
-                      <Clock className="h-5 w-5 text-purple-600 mb-1" />
-                      <span className="font-medium">{course.duration || "8 hours"}</span>
-                      <span className="text-xs text-gray-500">Duration</span>
-                    </div>
-
-                    <div className="flex items-center justify-center flex-col">
-                      <BookOpen className="h-5 w-5 text-purple-600 mb-1" />
-                      <span className="font-medium">
-                        {getLessonCount(course.lessons)} lessons
-                      </span>
-                      <span className="text-xs text-gray-500">Content</span>
-                    </div>
-
-                    <div className="flex items-center justify-center flex-col">
-                      <Star className="h-5 w-5 text-yellow-500 mb-1" />
-                      <span className="font-medium">{course.rating || "4.8"}</span>
-                      <span className="text-xs text-gray-500">Rating</span>
-                    </div>
-                  </div>
-
-                
-                  <div className="flex flex-wrap gap-2 mt-6">
-                    {course.tags?.map((tag) => (
-                      <span
-                        key={tag}
-                        className="bg-purple-100 text-purple-800 text-xs font-semibold px-3 py-1.5 rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="mt-8">
-                    <button className="w-full bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-md">
-                      View Course
-                    </button>
-                    <p className="text-center text-xs text-gray-500 mt-3">
-                      Click card to view • Instant access
-                    </p>
-                  </div>
-                </div>
-                </Link>
-            ))}
+              ))}
+            </div>
           </div>
-        ) : (
+        )}
+
+        {/* Empty State */}
+        {!loading && !error && filteredCourses.length === 0 && (
           <div className="text-center py-20 bg-white rounded-2xl">
             <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-2xl font-semibold text-gray-700">No courses found</h3>
+            <h3 className="text-2xl font-semibold text-gray-700 mb-4">No courses found</h3>
             <p className="text-gray-500 mt-2">Try adjusting your search or filter criteria</p>
             <button
               onClick={() => {

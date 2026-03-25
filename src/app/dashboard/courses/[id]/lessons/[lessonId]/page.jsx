@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, CheckCircle, Download, MessageSquare, Clock } from "lucide-react";
+import { ArrowLeft, CheckCircle, Download, MessageSquare, Clock, Lock } from "lucide-react";
+import YouTubePlayer from "@/components/YouTubePlayer";
 
 function getKeyTopics(title) {
   const topics = {
@@ -285,7 +286,7 @@ export default function LessonPage({ params }) {
                   className="w-full h-full"
                 ></iframe>
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-purple-600 to-pink-600">
+                <div className="w-full h-full flex items-center justify-center bg-linear-to-br from-brand-from to-brand-to">
                   <div className="text-center text-white">
                     <div className="text-6xl mb-4">🎬</div>
                     <p className="text-2xl font-semibold">Video Coming Soon</p>

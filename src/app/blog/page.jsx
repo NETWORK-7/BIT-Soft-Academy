@@ -109,8 +109,8 @@ export default function BlogPage() {
   });
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-16 px-4">
+    <div className="min-h-screen bg-background">
+      <div className="bg-linear-to-r from-brand-from to-brand-to text-primary-foreground py-16 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-5xl font-bold mb-4">Tech Blog & Insights</h1>
           <p className="text-xl opacity-90">Learn from industry experts and stay updated with the latest in web development</p>
@@ -127,7 +127,7 @@ export default function BlogPage() {
               placeholder="Search blog posts..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600"
+              className="w-full pl-12 pr-4 py-3 rounded-lg border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary"
             />
           </div>
 
@@ -139,8 +139,8 @@ export default function BlogPage() {
                 onClick={() => setSelectedCategory(category)}
                 className={`px-6 py-2 rounded-full font-semibold transition ${
                   selectedCategory === category
-                    ? "bg-purple-600 text-white"
-                    : "bg-white text-gray-700 border border-gray-300 hover:border-purple-600"
+                    ? "bg-primary text-primary-foreground"
+                    : "bg-card text-foreground border border-border hover:border-primary"
                 }`}
               >
                 {category}
@@ -155,7 +155,7 @@ export default function BlogPage() {
             {filteredPosts.map((post) => (
               <Link key={post.id} href={`/blog/${post.id}`}>
                 <div className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition cursor-pointer h-full flex flex-col">
-                  <div className="bg-gradient-to-br from-purple-100 to-pink-100 h-40 flex items-center justify-center text-6xl">
+                  <div className="bg-linear-to-br from-brand-from/15 to-brand-to/25 h-40 flex items-center justify-center text-6xl">
                     {post.image}
                   </div>
 
@@ -163,7 +163,7 @@ export default function BlogPage() {
                   <div className="p-6 flex flex-col flex-grow">
                    
                     <div className="mb-3">
-                      <span className="inline-block bg-purple-100 text-purple-800 text-xs font-semibold px-3 py-1 rounded-full">
+                      <span className="inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full">
                         {post.category}
                       </span>
                     </div>
@@ -183,7 +183,7 @@ export default function BlogPage() {
                       </div>
                     </div>
                     <p className="text-xs text-gray-500 mt-2">{post.readTime}</p>
-                    <div className="mt-4 flex items-center gap-2 text-purple-600 font-semibold group">
+                    <div className="mt-4 flex items-center gap-2 text-primary font-semibold group">
                       <span>Read More</span>
                       <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition" />
                     </div>
@@ -200,7 +200,7 @@ export default function BlogPage() {
       </div>
 
      
-      <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-16 px-4 mt-20">
+      <div className="bg-linear-to-r from-brand-from to-brand-to text-primary-foreground py-16 px-4 mt-20">
         <div className="max-w-2xl mx-auto text-center">
           <h2 className="text-3xl font-bold mb-4">Subscribe to Our Newsletter</h2>
           <p className="text-lg opacity-90 mb-8">Get the latest articles and tips delivered to your inbox</p>
@@ -210,7 +210,7 @@ export default function BlogPage() {
               placeholder="Enter your email"
               className="flex-1 px-6 py-3 rounded-lg text-gray-900 focus:outline-none"
             />
-            <button className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition">
+            <button className="bg-primary-foreground text-primary px-8 py-3 rounded-lg font-semibold hover:bg-primary-foreground/90 transition">
               Subscribe
             </button>
           </form>

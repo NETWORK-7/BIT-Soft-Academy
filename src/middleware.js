@@ -1,19 +1,21 @@
-
 import { NextResponse } from "next/server";
+import { verifyUserTokenSafe } from "@/lib/auth/token";
 
+const matchRoute = (patterns, path) =>
+  patterns.some((pattern) => {
+    if (pattern.endsWith("(.*)")) {
+      return path.startsWith(pattern.replace("(.*)", ""));
+    }
+    return path === pattern;
+  });
 
-const matchRoute = (patterns, path) => patterns.some(pattern => {
-  if (pattern.endsWith('(.*)')) {
-    return path.startsWith(pattern.replace('(.*)', ''));
-  }
-  return path === pattern;
-});
+const isAdminRoute = (path) => matchRoute(["/admin", "/admin/"], path) || path.startsWith("/admin/");
+const isAdminLoginRoute = (path) => path === "/admin/login";
 
-const isAdminRoute = path => matchRoute(["/admin", "/admin/"], path) || path.startsWith("/admin/");
-const isAdminLoginRoute = path => path === "/admin/login";
+const isDashboardRoute = (path) => path.startsWith("/dashboard");
+const isAuthPage = (path) => path.startsWith("/sign-in") || path.startsWith("/sign-up");
 
-
-export function middleware(req) {
+export async function middleware(req) {
   const { pathname } = req.nextUrl;
 
   if (isAdminLoginRoute(pathname)) {
@@ -27,15 +29,30 @@ export function middleware(req) {
     }
   }
 
-  // You can add more custom auth logic here for courses/dashboard if needed
+  let user = null;
+  if (isDashboardRoute(pathname) || isAuthPage(pathname)) {
+    const sessionToken = req.cookies.get("session")?.value;
+    user = sessionToken ? await verifyUserTokenSafe(sessionToken) : null;
+  }
+
+  if (isDashboardRoute(pathname) && !user) {
+    return NextResponse.redirect(new URL("/sign-in", req.url));
+  }
+
+  if (isAuthPage(pathname) && user) {
+    return NextResponse.redirect(new URL("/dashboard", req.url));
+  }
+
   return NextResponse.next();
 }
 
 export const config = {
   matcher: [
-   
-    "/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)",
-  
-    "/(api|trpc)(.*)",
+    "/dashboard/:path*",
+    "/sign-in",
+    "/sign-in/:path*",
+    "/sign-up",
+    "/sign-up/:path*",
+    "/admin/:path*",
   ],
 };

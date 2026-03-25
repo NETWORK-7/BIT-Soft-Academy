@@ -15,7 +15,7 @@ export default function AboutPage() {
     {
       id: 2,
       name: "Najmiddin Abdurahmonov",
-      role: "Backend Developer & Mobile Developer",
+      role: "Backend Developer & DevOps Engineer",
       bio: "Specializes in Node.js, Express.js, GO(Golang), Flutter",
       avatar: "👨‍💻",
       social: { github: "#", linkedin: "#", email: "najmiddinme@gmail.com" }
@@ -64,7 +64,7 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50">
      
-      <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white py-20 px-4">
+      <div className="bg-linear-to-r from-brand-from to-brand-to text-primary-foreground py-20 px-4">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">About Bit-Soft IT Academy</h1>
           <p className="text-xl md:text-2xl opacity-90 max-w-3xl mx-auto">
@@ -143,12 +143,12 @@ export default function AboutPage() {
         </div>
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-r from-purple-600 to-pink-600 rounded-2xl p-12 text-white text-center mt-20">
+        <div className="bg-linear-to-r from-brand-from to-brand-to rounded-2xl p-12 text-primary-foreground text-center mt-20">
           <h2 className="text-3xl font-bold mb-4">Ready to Start Learning?</h2>
           <p className="text-lg mb-8 opacity-90">Join thousands of students who have already transformed their careers</p>
           <a
             href="/courses"
-            className="inline-block bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition"
+            className="inline-block bg-primary-foreground text-primary px-8 py-3 rounded-xl font-semibold hover:bg-primary-foreground/90 transition"
           >
             Explore Courses
           </a>

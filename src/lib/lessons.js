@@ -5,10 +5,10 @@ const LessonSchema = new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String },
   content: { type: String, required: true },
-  videoId: { type: String }, // YouTube video ID
-  duration: { type: Number }, // Duration in minutes
-  order: { type: Number }, // Lesson order in course
-  resources: [{ name: String, url: String }], // Additional resources
+  videoId: { type: String }, 
+  duration: { type: Number },
+  order: { type: Number }, 
+  resources: [{ name: String, url: String }], 
   quiz: [{
     question: String,
     options: [String],

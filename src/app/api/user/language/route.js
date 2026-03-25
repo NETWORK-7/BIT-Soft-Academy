@@ -3,14 +3,10 @@ import { NextResponse } from "next/server";
 export async function POST(req) {
   try {
     const { language } = await req.json();
-
-    // Validate language
     const validLanguages = ["en", "ru", "uz"];
     if (!validLanguages.includes(language)) {
       return NextResponse.json({ error: "Invalid language" }, { status: 400 });
     }
-
-    // Store language in cookie
     const response = NextResponse.json({ success: true, language });
     response.cookies.set("language", language, { maxAge: 60 * 60 * 24 * 365 });
     return response;
@@ -22,13 +18,14 @@ export async function POST(req) {
 
 export async function GET(req) {
   try {
-    // Check cookie for language preference
+    
+
     const cookieLanguage = req.cookies.get("language")?.value;
     if (cookieLanguage && ["en", "ru", "uz"].includes(cookieLanguage)) {
       return NextResponse.json({ language: cookieLanguage });
     }
 
-    // Default to English
+
     const response = NextResponse.json({ language: "en" });
     response.cookies.set("language", "en", { maxAge: 60 * 60 * 24 * 365 });
     return response;

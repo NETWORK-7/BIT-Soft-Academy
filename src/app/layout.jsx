@@ -12,7 +12,7 @@ export default function RootLayout({ children }) {
   return (
     <LanguageProvider>
       <html lang="en">
-        <body className="bg-black text-white min-h-screen">
+        <body className="min-h-screen bg-background text-foreground antialiased">
           <Header />
           {children}
           <Toaster />

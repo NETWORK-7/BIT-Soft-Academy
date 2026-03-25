@@ -2,7 +2,8 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { ArrowLeft, Clock, CheckCircle, BookOpen } from "lucide-react";
+import { ArrowLeft, Clock, CheckCircle, BookOpen, Lock } from "lucide-react";
+import YouTubePlayer from "@/components/YouTubePlayer";
 
 // Get lesson-specific topics
 function getKeyTopics(title) {
@@ -137,11 +138,12 @@ export default function LessonPage({ params }) {
   const [completed, setCompleted] = useState(false);
   const [totalPoints, setTotalPoints] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [authChecked, setAuthChecked] = useState(false);
 
-  useEffect(() => {
-    const unwrapParams = async () => {
-      const { courseId, lessonId } = await params;
-      fetch("/api/courses")
+  const fetchLessonData = async () => {
+    const { courseId, lessonId } = await params;
+    fetch("/api/courses")
         .then((res) => res.json())
         .then((data) => {
           const found = (data.courses || []).find((c) => c._id === courseId);
@@ -184,7 +186,7 @@ export default function LessonPage({ params }) {
           setLoading(false);
         });
 
-     
+      // Fetch user progress
       fetch("/api/complete")
         .then((res) => res.json())
         .then((data) => {
@@ -200,16 +202,66 @@ export default function LessonPage({ params }) {
           }
         })
         .catch((err) => console.log("Progress fetch not available"));
-    };
+  };
     
-    unwrapParams();
+  useEffect(() => {
+    // Check authentication first
+    fetch("/api/auth/me")
+      .then((res) => res.json())
+      .then((data) => {
+        setIsAuthenticated(!!data.user);
+        setAuthChecked(true);
+        
+        if (!data.user) {
+          setLoading(false);
+          return;
+        }
+        
+        // Only fetch lesson data if authenticated
+        fetchLessonData();
+      })
+      .catch(() => {
+        setIsAuthenticated(false);
+        setAuthChecked(true);
+        setLoading(false);
+      });
   }, [params]);
 
-  if (loading || !course || !lesson) {
+  if (!authChecked || loading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <p className="text-2xl font-bold text-gray-900">Loading lesson...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center bg-white rounded-xl shadow-lg p-8 max-w-md">
+          <Lock className="h-16 w-16 text-purple-600 mx-auto mb-4" />
+          <h1 className="text-2xl font-bold text-gray-900 mb-4">Authentication Required</h1>
+          <p className="text-gray-600 mb-6">
+            Please sign in to access this lesson and start learning.
+          </p>
+          <Link
+            href="/sign-in"
+            className="inline-block bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition"
+          >
+            Sign In to Continue
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (!course || !lesson) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-2xl font-bold text-gray-900">Lesson not found</p>
         </div>
       </div>
     );
@@ -274,7 +326,7 @@ export default function LessonPage({ params }) {
         <div className="max-w-7xl mx-auto px-4 pb-3">
           <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
             <div
-              className="bg-linear-to-r from-purple-600 to-pink-600 h-full transition-all duration-300"
+              className="bg-linear-to-r from-brand-from to-brand-to h-full transition-all duration-300"
               style={{ width: `${((currentLessonIndex + 1) / allLessons.length) * 100}%` }}
             />
           </div>
@@ -287,16 +339,11 @@ export default function LessonPage({ params }) {
           <div className="lg:col-span-3">
            
             <div className="bg-white rounded-xl shadow-lg overflow-hidden mb-8">
-              <div className="aspect-video bg-black flex items-center justify-center relative">
-                <iframe
-                  className="w-full h-full"
-                  src={`https://www.youtube.com/embed/${getVideoId(currentLessonIndex)}?rel=0&modestbranding=1&autoplay=0`}
-                  title="Course Video"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                ></iframe>
-              </div>
+              <YouTubePlayer 
+                videoId={lesson.videoId} 
+                title={lesson.title}
+                className="aspect-video"
+              />
 
           
               <div className="p-8">

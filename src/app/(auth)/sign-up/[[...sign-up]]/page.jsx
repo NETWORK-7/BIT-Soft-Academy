@@ -1,8 +1,7 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabase";
-import { Globe, CheckCircle } from "lucide-react";
+import { Globe } from "lucide-react";
 import { useLanguageContext } from "@/context/LanguageContext";
 import { t } from "@/lib/translations";
 
@@ -22,17 +21,14 @@ function SignUpPage() {
   const [error, setError] = useState("");
 
   const [isLoading, setIsLoading] = useState(false);
-  const [showConfirmation, setShowConfirmation] = useState(false);
 
-  // Check if user is already authenticated on mount
   useEffect(() => {
-    const checkAuth = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (session) {
-        router.push("/dashboard");
+    fetch("/api/auth/me")
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.user) router.push("/dashboard");
       }
-    };
-    checkAuth();
+    );
   }, [router]);
 
   const handleLanguageSelect = (lang) => {
@@ -46,45 +42,23 @@ function SignUpPage() {
     setIsLoading(true);
     
     try {
-      // Sign up user
-      const { data, error: signUpError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: { name, language: selectedLanguage },
-        },
+      const res = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          password,
+          name,
+          language: selectedLanguage,
+        }),
       });
-
-      if (signUpError) {
-        setError(signUpError.message);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setError(data.error || "Sign up failed");
         setIsLoading(false);
         return;
       }
-
-      // If user was created with session, save to DB and redirect
-      if (data.user && data.session) {
-        // Save user info to database
-        const { error: dbError } = await supabase
-          .from("users")
-          .insert([
-            {
-              id: data.user.id,
-              name,
-              email,
-              language: selectedLanguage,
-            },
-          ]);
-        
-        if (dbError) {
-          console.error("Error saving user to database:", dbError);
-        }
-        
-        // Redirect to dashboard
-        router.push("/dashboard");
-      } else {
-        // Email confirmation required
-        setShowConfirmation(true);
-      }
+      router.push("/dashboard");
     } catch (err) {
       setError(err.message || "An error occurred during sign up");
     } finally {
@@ -101,17 +75,6 @@ function SignUpPage() {
       <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-cyan-500 rounded-full mix-blend-multiply blur-3xl opacity-30 animate-blob animation-delay-2000" />
 
       <div className="relative z-10 w-full max-w-md">
-        {/* Confirmation Message */}
-        {showConfirmation && (
-          <div className="mb-6 p-6 bg-green-50/10 backdrop-blur-md border border-green-400/30 rounded-2xl text-center">
-            <CheckCircle className="w-12 h-12 text-green-400 mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-green-400 mb-2">Check Your Email!</h3>
-            <p className="text-gray-300 text-sm">
-              We've sent a confirmation link to <strong>{email}</strong>. Please click it to activate your account.
-            </p>
-          </div>
-        )}
-
         <div className="text-center mb-10">
           <h1 className="text-5xl md:text-6xl font-black bg-linear-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
             {t(language, "auth.joinCodeMaster")}
@@ -130,12 +93,12 @@ function SignUpPage() {
               <button
                 key={lang.code}
                 onClick={() => handleLanguageSelect(lang.code)}
-                disabled={showConfirmation || isLoading}
+                disabled={isLoading}
                 className={`p-3 rounded-lg font-medium transition-all ${
                   selectedLanguage === lang.code
-                    ? "bg-linear-to-r from-purple-600 to-pink-600 text-white border-2 border-cyan-400 shadow-lg shadow-cyan-400/50"
+                    ? "bg-linear-to-r from-brand-from to-brand-to text-primary-foreground border-2 border-cyan-400 shadow-lg shadow-cyan-400/50"
                     : "bg-white/10 text-gray-300 border border-white/20 hover:bg-white/20"
-                } ${showConfirmation || isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
+                } ${isLoading ? "opacity-50 cursor-not-allowed" : ""}`}
               >
                 <div className="text-xl mb-1">{lang.flag}</div>
                 <div className="text-sm">{lang.name}</div>
@@ -146,8 +109,7 @@ function SignUpPage() {
         </div>
 
         <div className="glass p-8 rounded-3xl shadow-2xl">
-          {!showConfirmation ? (
-            <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={handleSubmit}>
               <input
                 type="text"
                 placeholder="Name"
@@ -184,16 +146,6 @@ function SignUpPage() {
                 {isLoading ? "Creating account..." : "Sign Up"}
               </button>
             </form>
-          ) : (
-            <div className="text-center py-8">
-              <p className="text-gray-300 mb-6">
-                Once you confirm your email, you can sign in with your credentials.
-              </p>
-              <a href="/sign-in" className="text-purple-400 hover:text-purple-300 font-medium">
-                Back to Sign In
-              </a>
-            </div>
-          )}
         </div>
 
         <p className="text-center mt-6 text-gray-500">

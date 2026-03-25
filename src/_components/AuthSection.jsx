@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { useLanguageContext } from '@/context/LanguageContext';
 import { t } from '@/lib/translations';
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
 
 export default function AuthSection() {
   const { language } = useLanguageContext();
@@ -15,11 +14,10 @@ export default function AuthSection() {
 
   useEffect(() => {
     setIsMounted(true);
-    const checkSession = async () => {
-      const { data } = await supabase.auth.getSession();
-      setIsSignedIn(!!data.session);
-    };
-    checkSession();
+    fetch('/api/auth/me')
+      .then((r) => r.json())
+      .then((data) => setIsSignedIn(!!data.user))
+      .catch(() => setIsSignedIn(false));
   }, []);
 
   if (!isMounted) {
@@ -32,13 +30,13 @@ export default function AuthSection() {
 
   return (
     <>
-      <Button asChild variant="ghost" size="lg" className="text-gray-700 hover:text-purple-600 hover:bg-purple-50">
+      <Button asChild variant="ghost" size="lg" className="text-muted-foreground hover:text-primary hover:bg-accent rounded-xl">
         <Link href="/sign-in">{t(language, 'nav.signIn')}</Link>
       </Button>
       <Button
         asChild
         size="lg"
-        className="bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white font-semibold shadow-lg hover:shadow-xl transition-all duration-300"
+        className="rounded-xl bg-linear-to-r from-brand-from to-brand-to text-primary-foreground font-semibold shadow-lg shadow-brand-glow/35 hover:brightness-110 hover:shadow-xl transition-all duration-300"
       >
         <Link href="/sign-up">{t(language, 'nav.startFreeTrial')}</Link>
       </Button>

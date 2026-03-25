@@ -4,8 +4,6 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLanguageContext } from "@/context/LanguageContext";
 import { t } from "@/lib/translations";
-import { supabase } from "@/lib/supabase";
-
 export default function Page() {
   const { language } = useLanguageContext();
   const router = useRouter();
@@ -16,9 +14,14 @@ export default function Page() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      setError(error.message);
+    const res = await fetch("/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      setError(data.error || "Sign in failed");
     } else {
       router.push("/dashboard");
     }
