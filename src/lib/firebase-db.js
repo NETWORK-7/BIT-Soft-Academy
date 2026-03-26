@@ -263,7 +263,30 @@ export async function getUserById(userId) {
     if (!user) return null;
     return { _id: userId, ...user };
   } catch (error) {
-    console.error("Error getting user:", error);
+    console.error("Error getting user by ID:", error);
+    throw error;
+  }
+}
+
+export async function getUserByEmail(email) {
+  try {
+    const usersRef = ref(db, 'users');
+    const snapshot = await get(usersRef);
+    const users = snapshotToObject(snapshot);
+    
+    if (!users) return null;
+    
+    // Find user by email
+    const userEntries = Object.entries(users);
+    for (const [userId, userData] of userEntries) {
+      if (userData.email === email.toLowerCase()) {
+        return { _id: userId, ...userData };
+      }
+    }
+    
+    return null;
+  } catch (error) {
+    console.error("Error getting user by email:", error);
     throw error;
   }
 }
@@ -294,7 +317,6 @@ export async function deleteUser(userId) {
   }
 }
 
-// Progress operations
 export async function createProgress(progressData) {
   try {
     const progressRef = ref(db, 'progress');

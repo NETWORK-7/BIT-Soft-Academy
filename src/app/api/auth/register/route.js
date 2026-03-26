@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireDb } from "@/lib/db";
+import { createUser, getUserByEmail } from "@/lib/firebase-db";
 import { hashPassword } from "@/lib/auth/password";
 import { signUserToken, SESSION_COOKIE } from "@/lib/auth/token";
 
@@ -20,27 +20,34 @@ export async function POST(req) {
       return NextResponse.json({ error: "Password must be at least 6 characters" }, { status: 400 });
     }
 
-    const db = await requireDb();
+    // Check if user already exists in Firebase
+    const existingUser = await getUserByEmail(email);
+    if (existingUser) {
+      return NextResponse.json({ error: "User already exists with this email" }, { status: 409 });
+    }
+
     const password_hash = await hashPassword(password);
 
-    let insertedId;
+    let newUser;
     try {
-      const result = await db.collection("users").insertOne({
+      // Create user in Firebase
+      newUser = await createUser({
         email,
         password_hash,
         name,
         language,
-        createdAt: new Date(),
+        role: "user",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
       });
-      insertedId = result.insertedId;
     } catch (e) {
-      if (e.code === 11000) {
+      if (e.message.includes("already exists")) {
         return NextResponse.json({ error: "An account with this email already exists" }, { status: 409 });
       }
       throw e;
     }
 
-    const id = insertedId.toString();
+    const id = newUser._id;
     const token = await signUserToken({
       id,
       email,

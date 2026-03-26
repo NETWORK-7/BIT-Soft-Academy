@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { requireDb } from "@/lib/db";
+import { getUserByEmail } from "@/lib/firebase-db";
 import { verifyPassword } from "@/lib/auth/password";
 import { signUserToken, SESSION_COOKIE } from "@/lib/auth/token";
 
@@ -15,13 +15,12 @@ export async function POST(req) {
       return NextResponse.json({ error: "Email and password are required" }, { status: 400 });
     }
 
-    const db = await requireDb();
-    const user = await db.collection("users").findOne({ email });
+    const user = await getUserByEmail(email);
     if (!user || !(await verifyPassword(password, user.password_hash))) {
       return NextResponse.json({ error: "Invalid email or password" }, { status: 401 });
     }
 
-    const id = user._id.toString();
+    const id = user._id;
     const token = await signUserToken({
       id,
       email: user.email,
