@@ -34,6 +34,10 @@ export async function getLessonsByCourseId(courseId) {
   return localLessons.filter(lesson => lesson.courseId === courseId);
 }
 
+export async function getLessonById(lessonId) {
+  return localLessons.find(lesson => lesson._id === lessonId);
+}
+
 export async function updateCourse(courseId, updateData) {
   const index = localCourses.findIndex(c => c._id === courseId);
   if (index !== -1) {

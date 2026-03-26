@@ -74,26 +74,23 @@ export default function CoursesPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Header */}
       <div className="bg-gradient-to-r from-brand-from to-brand-to text-primary-foreground py-12 px-4">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-4xl font-bold text-center mb-4">
-            {t(language, "courses.exploreCourses")}
+            Explore Courses
           </h1>
           <p className="text-xl text-center text-white/90 max-w-3xl mx-auto">
-            {t(language, "courses.browseFullCatalog")}
+            Browse our full catalog of programming courses
           </p>
         </div>
       </div>
-
-      {/* Search and Filter Section */}
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex flex-col md:flex-row gap-4 mb-8">
           <div className="flex-1 relative">
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
-              placeholder={t(language, "courses.searchCourses")}
+              placeholder="Search courses..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-primary focus:border-transparent"
@@ -120,8 +117,6 @@ export default function CoursesPage() {
             <option value="newest">{t(language, "courses.newest")}</option>
           </select>
         </div>
-
-        {/* Loading State */}
         {loading && (
           <div className="max-w-7xl mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -137,8 +132,6 @@ export default function CoursesPage() {
             </div>
           </div>
         )}
-
-        {/* Error State */}
         {error && (
           <div className="max-w-7xl mx-auto px-4 text-center py-20">
             <div className="bg-red-50 border border-red-200 rounded-2xl p-8">
@@ -149,15 +142,12 @@ export default function CoursesPage() {
             </div>
           </div>
         )}
-
-        {/* Courses Grid */}
         {!loading && !error && (
           <div className="max-w-7xl mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredCourses.map((course) => (
                 <div key={course._id} className="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300">
                   <Link href={`/courses/${course._id}`} className="block">
-                    {/* Course Image */}
                     <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200">
                       {course.image ? (
                         <img
@@ -176,8 +166,6 @@ export default function CoursesPage() {
                         </div>
                       )}
                     </div>
-
-                    {/* Course Content */}
                     <div className="p-6">
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
@@ -200,8 +188,6 @@ export default function CoursesPage() {
                           )}
                         </div>
                       </div>
-
-                      {/* Course Meta */}
                       <div className="flex items-center justify-between text-sm text-gray-500">
                         <div className="flex items-center gap-4">
                           <span className="flex items-center gap-1">
@@ -226,7 +212,6 @@ export default function CoursesPage() {
           </div>
         )}
 
-        {/* Empty State */}
         {!loading && !error && filteredCourses.length === 0 && (
           <div className="text-center py-20 bg-white rounded-2xl">
             <div className="text-6xl mb-4">🔍</div>

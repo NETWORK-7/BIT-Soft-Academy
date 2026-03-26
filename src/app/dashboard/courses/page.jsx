@@ -253,7 +253,6 @@ export default function DashboardCoursesPage() {
                     </div>
                   </div>
 
-                  {/* Tags */}
                   <div className="flex flex-wrap gap-2 mt-6">
                     {course.tags?.map((tag) => (
                       <span

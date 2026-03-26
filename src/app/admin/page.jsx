@@ -113,7 +113,7 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Database Section */}
+ 
         <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8 mb-8">
           <h2 className="text-2xl font-bold text-blue-900 mb-6 flex items-center gap-2">
             <Database className="h-6 w-6" />
@@ -128,8 +128,6 @@ const AdminDashboard = () => {
             Seed Database
           </Link>
         </div>
-
-        {/* Statistics Section */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-8">
           <div className="bg-linear-to-br from-blue-500 to-blue-600 rounded-2xl shadow-lg p-8 text-white">
             <h3 className="text-xl font-bold mb-2">Platform Growth</h3>

@@ -54,6 +54,16 @@ export default function CourseDetailsPage({ params }) {
               .then((data) => {
                 let lessonsList = Array.isArray(data.lessons) ? data.lessons : [];
                 
+                // Process lessons to ensure they have proper videoId
+                lessonsList = lessonsList.map(lesson => {
+                  // If lesson has videoUrl but no videoId, extract videoId from URL
+                  if (lesson.videoUrl && !lesson.videoId) {
+                    const match = lesson.videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
+                    lesson.videoId = match ? match[1] : null;
+                  }
+                  return lesson;
+                });
+                
                 // If no lessons from API, add practical lessons based on course title
                 if (lessonsList.length === 0 && course && course.title) {
                   if (course.title.includes("React")) {

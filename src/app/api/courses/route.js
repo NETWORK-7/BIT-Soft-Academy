@@ -6,7 +6,6 @@ import {
 } from "@/lib/firebase-db";
 import { isAdminRequest } from "@/lib/api/admin";
 
-// Fallback to local database when Firebase is having issues
 import {
   getAllCourses as getLocalCourses,
   getLessonsByCourseId as getLocalLessonsByCourseId,
@@ -18,32 +17,13 @@ export async function GET() {
   try {
     console.log("🔗 Attempting to connect to Firebase...");
     
-    // Try Firebase first
+
     try {
       const courses = await getAllCourses();
       console.log(`✅ Firebase connected, fetching ${courses.length} courses...`);
-      
-      // If Firebase returns empty data OR has permission issues, use local fallback
-      if (courses.length === 0) {
-        console.log("🔄 Firebase returned empty data, using local database fallback...");
-        const localCourses = await getLocalCourses();
-        console.log(`✅ Local database: fetching ${localCourses.length} courses...`);
-        
-        const coursesWithLessons = await Promise.all(
-          localCourses.map(async (course) => {
-            const lessons = await getLocalLessonsByCourseId(course._id);
-            return { ...course, lessons };
-          })
-        );
-        
-        console.log(`✅ Local database: processed ${coursesWithLessons.length} courses with lessons`);
-        return NextResponse.json({ courses: coursesWithLessons });
-      }
-      
-      // Check if Firebase courses have proper structure (might be corrupted)
-      const hasValidCourses = courses.some(course => course.title && course._id);
+      const hasValidCourses = courses.some(course => course.title && course._id && course.title !== "hi");
       if (!hasValidCourses || courses.length < 3) {
-        console.log("🔄 Firebase data incomplete, using local database fallback...");
+        console.log("🔄 Firebase data incomplete or invalid, using local database fallback...");
         const localCourses = await getLocalCourses();
         console.log(`✅ Local database: fetching ${localCourses.length} courses...`);
         
@@ -58,7 +38,7 @@ export async function GET() {
         return NextResponse.json({ courses: coursesWithLessons });
       }
       
-      // Add lessons to each course
+
       const coursesWithLessons = await Promise.all(
         courses.map(async (course) => {
           try {
@@ -71,12 +51,10 @@ export async function GET() {
         })
       );
       
-      console.log(`✅ Successfully processed ${coursesWithLessons.length} courses with lessons`);
+      console.log(`✅ Successfully processed ${coursesWithLessons.length} courses with lessons from Firebase`);
       return NextResponse.json({ courses: coursesWithLessons });
     } catch (firebaseError) {
       console.log("🔄 Firebase failed, using local database:", firebaseError.message);
-      
-      // Fallback to local database
       const courses = await getLocalCourses();
       console.log(`✅ Local database: fetching ${courses.length} courses...`);
       
@@ -133,8 +111,6 @@ export async function POST(req) {
       rating,
       instructor
     };
-
-    // Try Firebase first, fallback to local
     try {
       console.log("🔗 Creating course with Firebase...");
       const course = await createFirebaseCourse(courseData);

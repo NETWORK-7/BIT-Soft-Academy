@@ -156,20 +156,27 @@ export default function LessonPage({ params }) {
                 const lessons = Array.isArray(data.lessons) ? data.lessons : [];
                 setAllLessons(lessons);
                 
-            
-                let currentLesson = lessons.find((l) => l._id === lessonId);
+                // Process lessons to ensure they have proper videoId
+                const processedLessons = lessons.map(lesson => {
+                  // If lesson has videoUrl but no videoId, extract videoId from URL
+                  if (lesson.videoUrl && !lesson.videoId) {
+                    const match = lesson.videoUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/|youtube\.com\/embed\/)([^&\n?#]+)/);
+                    lesson.videoId = match ? match[1] : null;
+                  }
+                  return lesson;
+                });
                 
-      
+                let currentLesson = processedLessons.find((l) => l._id === lessonId);
+                
                 if (!currentLesson) {
                   const index = parseInt(lessonId);
-                  if (!isNaN(index) && index >= 0 && index < lessons.length) {
-                    currentLesson = lessons[index];
+                  if (!isNaN(index) && index >= 0 && index < processedLessons.length) {
+                    currentLesson = processedLessons[index];
                   }
                 }
                 
-              
-                if (!currentLesson && lessons.length > 0) {
-                  currentLesson = lessons[0];
+                if (!currentLesson && processedLessons.length > 0) {
+                  currentLesson = processedLessons[0];
                 }
                 
                 setLesson(currentLesson || null);

@@ -120,17 +120,18 @@ export async function deleteCourse(courseId) {
     const courseRef = ref(db, `courses/${courseId}`);
     await remove(courseRef);
     
-    // Also delete all lessons for this course
+    // Also delete all lessons for this course (simple approach)
     const lessonsRef = ref(db, 'lessons');
-    const lessonsQuery = query(lessonsRef, orderByChild('courseId'), equalTo(courseId));
-    const lessonsSnapshot = await get(lessonsQuery);
-    const lessons = lessonsSnapshot.val();
+    const snapshot = await get(lessonsRef);
+    const lessons = snapshotToObject(snapshot);
     
     if (lessons) {
-      Object.keys(lessons).forEach(async (lessonId) => {
-        const lessonRef = ref(db, `lessons/${lessonId}`);
+      // Filter and delete lessons for this course
+      const lessonsToDelete = lessons.filter(lesson => lesson.courseId === courseId);
+      for (const lesson of lessonsToDelete) {
+        const lessonRef = ref(db, `lessons/${lesson._id}`);
         await remove(lessonRef);
-      });
+      }
     }
     
     return true;
@@ -161,15 +162,15 @@ export async function createLesson(lessonData) {
 export async function getLessonsByCourseId(courseId) {
   try {
     const lessonsRef = ref(db, 'lessons');
-    const lessonsQuery = query(lessonsRef, orderByChild('courseId'), equalTo(courseId));
-    const snapshot = await get(lessonsQuery);
+    // Simple approach: get all lessons and filter in JavaScript
+    const snapshot = await get(lessonsRef);
     const lessons = snapshotToObject(snapshot);
     
+    // Filter by courseId in JavaScript instead of Firebase query
+    const filteredLessons = lessons ? lessons.filter(lesson => lesson.courseId === courseId) : [];
+    
     // Sort by sortOrder
-    if (lessons) {
-      return lessons.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
-    }
-    return [];
+    return filteredLessons.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
   } catch (error) {
     console.error("Error getting lessons:", error);
     throw error;
@@ -215,6 +216,15 @@ export async function deleteLesson(lessonId) {
   }
 }
 
+// Aliases for backward compatibility
+export async function updateFirebaseLesson(lessonId, updateData) {
+  return await updateLesson(lessonId, updateData);
+}
+
+export async function deleteFirebaseLesson(lessonId) {
+  return await deleteLesson(lessonId);
+}
+
 // User operations
 export async function createUser(userData) {
   try {
@@ -229,6 +239,18 @@ export async function createUser(userData) {
     return { _id: newUserRef.key, ...userWithId };
   } catch (error) {
     console.error("Error creating user:", error);
+    throw error;
+  }
+}
+
+export async function getAllUsers() {
+  try {
+    const usersRef = ref(db, 'users');
+    const snapshot = await get(usersRef);
+    const users = snapshotToObject(snapshot);
+    return users || [];
+  } catch (error) {
+    console.error("Error getting users:", error);
     throw error;
   }
 }
@@ -257,6 +279,17 @@ export async function updateUser(userId, updateData) {
     return true;
   } catch (error) {
     console.error("Error updating user:", error);
+    throw error;
+  }
+}
+
+export async function deleteUser(userId) {
+  try {
+    const userRef = ref(db, `users/${userId}`);
+    await remove(userRef);
+    return true;
+  } catch (error) {
+    console.error("Error deleting user:", error);
     throw error;
   }
 }
