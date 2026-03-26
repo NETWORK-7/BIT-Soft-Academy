@@ -193,11 +193,22 @@ export default function DashboardCoursesPage() {
                 className="bg-white rounded-2xl shadow-lg border border-gray-200 overflow-hidden hover:shadow-2xl transition-all duration-400 hover:-translate-y-2 block"
               >
                 <div className="h-48 bg-linear-to-br from-brand-from/80 to-brand-to/80 relative overflow-hidden">
-                  <img
-                    src={course.image}
-                    alt={course.title}
-                    className="h-32 w-32 absolute bottom-0 right-0 translate-x-8 translate-y-8 object-contain drop-shadow-lg"
-                  />
+                  {course.image ? (
+                    <img
+                      src={course.image}
+                      alt={course.title}
+                      className="h-32 w-32 absolute bottom-0 right-0 translate-x-8 translate-y-8 object-contain drop-shadow-lg"
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  ) : (
+                    <div className="h-32 w-32 absolute bottom-0 right-0 translate-x-8 translate-y-8 flex items-center justify-center">
+                      <div className="text-4xl text-white/50">
+                        📚
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="p-8">

@@ -159,11 +159,22 @@ export default function CoursesPage() {
                   <Link href={`/courses/${course._id}`} className="block">
                     {/* Course Image */}
                     <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200">
-                      <img
-                        src={course.image}
-                        alt={course.title}
-                        className="w-full h-full object-cover"
-                      />
+                      {course.image ? (
+                        <img
+                          src={course.image}
+                          alt={course.title}
+                          className="w-full h-full object-cover"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <div className="text-4xl text-gray-400">
+                            📚
+                          </div>
+                        </div>
+                      )}
                     </div>
 
                     {/* Course Content */}

@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint",
+    "lint": "next lint",
     "seed": "NODE_OPTIONS='--openssl-legacy-provider' node scripts/seed.js",
     "db:seed": "node scripts/seed-mongo.mjs"
   },
@@ -48,6 +48,7 @@
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.3",
     "embla-carousel-react": "^8.6.0",
+    "firebase": "^12.11.0",
     "framer-motion": "^12.23.26",
     "input-otp": "^1.4.2",
     "jose": "^6.2.2",

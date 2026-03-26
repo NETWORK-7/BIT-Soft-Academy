@@ -5,6 +5,12 @@ import {
   getLessonsByCourseId 
 } from "@/lib/firebase-db";
 
+// Fallback to local database when Firebase is having issues
+import {
+  getAllCourses as getLocalCourses,
+  getLessonsByCourseId as getLocalLessonsByCourseId
+} from "@/lib/local-db";
+
 export async function GET() {
   try {
     console.log("🔗 Checking Firebase connection...");
@@ -12,7 +18,7 @@ export async function GET() {
     
     const diagnostic = {
       database: healthCheck.status === "healthy",
-      databaseType: "Firebase Firestore",
+      databaseType: healthCheck.type || "Firebase Realtime Database",
       courses: [],
       lessons: [],
       issues: [],
@@ -21,8 +27,52 @@ export async function GET() {
 
     if (healthCheck.status !== "healthy") {
       diagnostic.issues.push("Firebase connection failed");
-      diagnostic.fixes.push("Check Firebase configuration and ensure project is set up correctly");
-      return NextResponse.json(diagnostic);
+      diagnostic.fixes.push("Update Firebase Realtime Database security rules to allow read/write access");
+      diagnostic.fixes.push("Or continue using local database for development");
+      
+      // Use local database as fallback
+      try {
+        console.log("🔄 Using local database fallback...");
+        const localCourses = await getLocalCourses();
+        let totalLessons = 0;
+        
+        for (const course of localCourses) {
+          const lessons = await getLocalLessonsByCourseId(course._id);
+          totalLessons += lessons.length;
+        }
+        
+        diagnostic.database = true; // Local database is working
+        diagnostic.databaseType = "Local Database (Fallback)";
+        diagnostic.courses = localCourses.map(c => ({
+          id: c._id,
+          title: c.title,
+          instructor: c.instructor,
+          duration: c.duration,
+          points: c.points
+        }));
+        
+        // Collect all lessons as an array
+        const allLessons = [];
+        for (const course of localCourses) {
+          const lessons = await getLocalLessonsByCourseId(course._id);
+          allLessons.push(...lessons.map(l => ({
+            id: l._id,
+            title: l.title,
+            courseId: course._id,
+            courseTitle: course.title
+          })));
+        }
+        
+        diagnostic.lessons = allLessons;
+        diagnostic.issues.push("Using local database as fallback");
+        diagnostic.fixes.push("Firebase permissions need to be updated for cloud storage");
+        
+        return NextResponse.json(diagnostic);
+      } catch (localError) {
+        diagnostic.issues.push("Local database also failed");
+        diagnostic.fixes.push("Check local database implementation");
+        return NextResponse.json(diagnostic);
+      }
     }
 
     console.log("✅ Firebase connected, checking collections...");
@@ -44,11 +94,17 @@ export async function GET() {
 
     // Check lessons for each course
     try {
+      diagnostic.lessons = []; // Initialize as array
       let totalLessons = 0;
       for (const course of diagnostic.courses) {
         const lessons = await getLessonsByCourseId(course._id);
         totalLessons += lessons.length;
-        diagnostic.lessons.push(...lessons);
+        diagnostic.lessons.push(...lessons.map(l => ({
+          id: l._id,
+          title: l.title,
+          courseId: course._id,
+          courseTitle: course.title
+        })));
       }
       
       if (totalLessons === 0 && diagnostic.courses.length > 0) {

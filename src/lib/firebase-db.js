@@ -1,251 +1,308 @@
-import { db } from "./firebase";
+import { db } from "./firebase.js";
 import { 
-  collection, 
-  doc, 
-  getDocs, 
-  getDoc, 
-  addDoc, 
-  updateDoc, 
-  deleteDoc, 
+  ref, 
+  push, 
+  get, 
+  set, 
+  update, 
+  remove, 
   query, 
-  where, 
-  orderBy, 
-  limit,
-  Timestamp 
-} from "firebase/firestore";
+  orderByChild, 
+  equalTo 
+} from "firebase/database";
 
-export const usersCollection = collection(db, "users");
-export const coursesCollection = collection(db, "courses");
-export const lessonsCollection = collection(db, "lessons");
-export const progressCollection = collection(db, "progress");
+// Helper function to convert Firebase snapshot to object
+const snapshotToObject = (snapshot) => {
+  const data = snapshot.val();
+  if (!data) return null;
+  
+  // Convert Firebase object to array
+  return Object.keys(data).map(key => ({
+    _id: key,
+    ...data[key]
+  }));
+};
 
-export function docToPlain(docSnapshot) {
-  const data = docSnapshot.data();
-  return {
-    _id: docSnapshot.id,
-    ...data,
-    createdAt: data.createdAt?.toDate() || new Date(),
-    updatedAt: data.updatedAt?.toDate() || new Date()
-  };
+// Database health check
+export async function checkDatabaseHealth() {
+  try {
+    const testRef = ref(db, '.info/connected');
+    const snapshot = await get(testRef);
+    const isConnected = snapshot.val();
+    
+    if (isConnected) {
+      // Try to read from courses to verify database access
+      const coursesRef = ref(db, 'courses');
+      await get(coursesRef);
+      
+      return {
+        status: "healthy",
+        message: "Firebase Realtime Database is connected and accessible",
+        type: "Firebase Realtime Database"
+      };
+    } else {
+      return {
+        status: "unhealthy",
+        message: "Firebase Realtime Database is not connected",
+        type: "Firebase Realtime Database"
+      };
+    }
+  } catch (error) {
+    return {
+      status: "unhealthy",
+      message: `Database connection failed: ${error.message}`,
+      type: "Firebase Realtime Database",
+      error: error.message
+    };
+  }
+}
+
+// Course operations
+export async function createCourse(courseData) {
+  try {
+    const coursesRef = ref(db, 'courses');
+    const newCourseRef = push(coursesRef);
+    const courseWithId = {
+      ...courseData,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    await set(newCourseRef, courseWithId);
+    return { _id: newCourseRef.key, ...courseWithId };
+  } catch (error) {
+    console.error("Error creating course:", error);
+    throw error;
+  }
 }
 
 export async function getAllCourses() {
   try {
-    console.log("🔗 Fetching courses from Firebase...");
-    const q = query(coursesCollection, orderBy("createdAt", "desc"));
-    const querySnapshot = await getDocs(q);
-    const courses = querySnapshot.docs.map(docToPlain);
-    console.log(`✅ Found ${courses.length} courses`);
-    return courses;
+    const coursesRef = ref(db, 'courses');
+    const snapshot = await get(coursesRef);
+    const courses = snapshotToObject(snapshot);
+    return courses || [];
   } catch (error) {
-    console.error("❌ Error fetching courses:", error);
-    return [];
+    console.error("Error getting courses:", error);
+    throw error;
   }
 }
 
 export async function getCourseById(courseId) {
   try {
-    const courseRef = doc(db, "courses", courseId);
-    const courseSnap = await getDoc(courseRef);
-    if (courseSnap.exists()) {
-      return docToPlain(courseSnap);
-    }
-    return null;
+    const courseRef = ref(db, `courses/${courseId}`);
+    const snapshot = await get(courseRef);
+    const course = snapshot.val();
+    if (!course) return null;
+    return { _id: courseId, ...course };
   } catch (error) {
-    console.error("❌ Error fetching course:", error);
-    return null;
-  }
-}
-
-export async function getLessonsByCourseId(courseId) {
-  try {
-    const q = query(
-      lessonsCollection, 
-      where("courseId", "==", courseId),
-      orderBy("sortOrder", "asc"),
-      orderBy("createdAt", "asc")
-    );
-    const querySnapshot = await getDocs(q);
-    const lessons = querySnapshot.docs.map(docToPlain);
-    return lessons;
-  } catch (error) {
-    console.error("❌ Error fetching lessons:", error);
-    return [];
-  }
-}
-
-export async function createCourse(courseData) {
-  try {
-    const courseWithTimestamp = {
-      ...courseData,
-      createdAt: Timestamp.now(),
-      updatedAt: Timestamp.now()
-    };
-    const docRef = await addDoc(coursesCollection, courseWithTimestamp);
-    return { _id: docRef.id, ...courseWithTimestamp };
-  } catch (error) {
-    console.error("❌ Error creating course:", error);
-    throw error;
-  }
-}
-
-export async function createLesson(lessonData) {
-  try {
-    const lessonWithTimestamp = {
-      ...lessonData,
-      createdAt: Timestamp.now(),
-      updatedAt: Timestamp.now()
-    };
-    const docRef = await addDoc(lessonsCollection, lessonWithTimestamp);
-    return { _id: docRef.id, ...lessonWithTimestamp };
-  } catch (error) {
-    console.error("❌ Error creating lesson:", error);
+    console.error("Error getting course:", error);
     throw error;
   }
 }
 
 export async function updateCourse(courseId, updateData) {
   try {
-    const courseRef = doc(db, "courses", courseId);
-    await updateDoc(courseRef, {
+    const courseRef = ref(db, `courses/${courseId}`);
+    const updatedData = {
       ...updateData,
-      updatedAt: Timestamp.now()
-    });
+      updatedAt: new Date().toISOString()
+    };
+    await update(courseRef, updatedData);
     return true;
   } catch (error) {
-    console.error("❌ Error updating course:", error);
-    return false;
-  }
-}
-
-export async function updateLesson(lessonId, updateData) {
-  try {
-    const lessonRef = doc(db, "lessons", lessonId);
-    await updateDoc(lessonRef, {
-      ...updateData,
-      updatedAt: Timestamp.now()
-    });
-    return true;
-  } catch (error) {
-    console.error("❌ Error updating lesson:", error);
-    return false;
+    console.error("Error updating course:", error);
+    throw error;
   }
 }
 
 export async function deleteCourse(courseId) {
   try {
-    const courseRef = doc(db, "courses", courseId);
-    await deleteDoc(courseRef);
+    const courseRef = ref(db, `courses/${courseId}`);
+    await remove(courseRef);
+    
+    // Also delete all lessons for this course
+    const lessonsRef = ref(db, 'lessons');
+    const lessonsQuery = query(lessonsRef, orderByChild('courseId'), equalTo(courseId));
+    const lessonsSnapshot = await get(lessonsQuery);
+    const lessons = lessonsSnapshot.val();
+    
+    if (lessons) {
+      Object.keys(lessons).forEach(async (lessonId) => {
+        const lessonRef = ref(db, `lessons/${lessonId}`);
+        await remove(lessonRef);
+      });
+    }
+    
     return true;
   } catch (error) {
-    console.error("❌ Error deleting course:", error);
-    return false;
+    console.error("Error deleting course:", error);
+    throw error;
+  }
+}
+
+// Lesson operations
+export async function createLesson(lessonData) {
+  try {
+    const lessonsRef = ref(db, 'lessons');
+    const newLessonRef = push(lessonsRef);
+    const lessonWithId = {
+      ...lessonData,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    await set(newLessonRef, lessonWithId);
+    return { _id: newLessonRef.key, ...lessonWithId };
+  } catch (error) {
+    console.error("Error creating lesson:", error);
+    throw error;
+  }
+}
+
+export async function getLessonsByCourseId(courseId) {
+  try {
+    const lessonsRef = ref(db, 'lessons');
+    const lessonsQuery = query(lessonsRef, orderByChild('courseId'), equalTo(courseId));
+    const snapshot = await get(lessonsQuery);
+    const lessons = snapshotToObject(snapshot);
+    
+    // Sort by sortOrder
+    if (lessons) {
+      return lessons.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    }
+    return [];
+  } catch (error) {
+    console.error("Error getting lessons:", error);
+    throw error;
+  }
+}
+
+export async function getLessonById(lessonId) {
+  try {
+    const lessonRef = ref(db, `lessons/${lessonId}`);
+    const snapshot = await get(lessonRef);
+    const lesson = snapshot.val();
+    if (!lesson) return null;
+    return { _id: lessonId, ...lesson };
+  } catch (error) {
+    console.error("Error getting lesson:", error);
+    throw error;
+  }
+}
+
+export async function updateLesson(lessonId, updateData) {
+  try {
+    const lessonRef = ref(db, `lessons/${lessonId}`);
+    const updatedData = {
+      ...updateData,
+      updatedAt: new Date().toISOString()
+    };
+    await update(lessonRef, updatedData);
+    return true;
+  } catch (error) {
+    console.error("Error updating lesson:", error);
+    throw error;
   }
 }
 
 export async function deleteLesson(lessonId) {
   try {
-    const lessonRef = doc(db, "lessons", lessonId);
-    await deleteDoc(lessonRef);
+    const lessonRef = ref(db, `lessons/${lessonId}`);
+    await remove(lessonRef);
     return true;
   } catch (error) {
-    console.error("❌ Error deleting lesson:", error);
-    return false;
+    console.error("Error deleting lesson:", error);
+    throw error;
   }
 }
 
-export async function getUserByEmail(email) {
-  try {
-    const q = query(usersCollection, where("email", "==", email), limit(1));
-    const querySnapshot = await getDocs(q);
-    if (!querySnapshot.empty) {
-      return docToPlain(querySnapshot.docs[0]);
-    }
-    return null;
-  } catch (error) {
-    console.error("❌ Error fetching user:", error);
-    return null;
-  }
-}
-
+// User operations
 export async function createUser(userData) {
   try {
-    const userWithTimestamp = {
+    const usersRef = ref(db, 'users');
+    const newUserRef = push(usersRef);
+    const userWithId = {
       ...userData,
-      createdAt: Timestamp.now(),
-      updatedAt: Timestamp.now()
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     };
-    const docRef = await addDoc(usersCollection, userWithTimestamp);
-    return { _id: docRef.id, ...userWithTimestamp };
+    await set(newUserRef, userWithId);
+    return { _id: newUserRef.key, ...userWithId };
   } catch (error) {
-    console.error("❌ Error creating user:", error);
+    console.error("Error creating user:", error);
+    throw error;
+  }
+}
+
+export async function getUserById(userId) {
+  try {
+    const userRef = ref(db, `users/${userId}`);
+    const snapshot = await get(userRef);
+    const user = snapshot.val();
+    if (!user) return null;
+    return { _id: userId, ...user };
+  } catch (error) {
+    console.error("Error getting user:", error);
     throw error;
   }
 }
 
 export async function updateUser(userId, updateData) {
   try {
-    const userRef = doc(db, "users", userId);
-    await updateDoc(userRef, {
+    const userRef = ref(db, `users/${userId}`);
+    const updatedData = {
       ...updateData,
-      updatedAt: Timestamp.now()
-    });
+      updatedAt: new Date().toISOString()
+    };
+    await update(userRef, updatedData);
     return true;
   } catch (error) {
-    console.error("❌ Error updating user:", error);
-    return false;
+    console.error("Error updating user:", error);
+    throw error;
+  }
+}
+
+// Progress operations
+export async function createProgress(progressData) {
+  try {
+    const progressRef = ref(db, 'progress');
+    const newProgressRef = push(progressRef);
+    const progressWithId = {
+      ...progressData,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    await set(newProgressRef, progressWithId);
+    return { _id: newProgressRef.key, ...progressWithId };
+  } catch (error) {
+    console.error("Error creating progress:", error);
+    throw error;
   }
 }
 
 export async function getUserProgress(userId) {
   try {
-    const q = query(progressCollection, where("userId", "==", userId));
-    const querySnapshot = await getDocs(q);
-    return querySnapshot.docs.map(docToPlain);
+    const progressRef = ref(db, 'progress');
+    const progressQuery = query(progressRef, orderByChild('userId'), equalTo(userId));
+    const snapshot = await get(progressQuery);
+    const progress = snapshotToObject(snapshot);
+    return progress || [];
   } catch (error) {
-    console.error("❌ Error fetching user progress:", error);
-    return [];
+    console.error("Error getting user progress:", error);
+    throw error;
   }
 }
 
-export async function updateLessonProgress(userId, lessonId, completed) {
+export async function updateProgress(progressId, updateData) {
   try {
-    const q = query(
-      progressCollection, 
-      where("userId", "==", userId), 
-      where("lessonId", "==", lessonId)
-    );
-    const querySnapshot = await getDocs(q);
-    
-    const progressData = {
-      userId,
-      lessonId,
-      completed,
-      completedAt: completed ? Timestamp.now() : null,
-      updatedAt: Timestamp.now()
+    const progressRef = ref(db, `progress/${progressId}`);
+    const updatedData = {
+      ...updateData,
+      updatedAt: new Date().toISOString()
     };
-    
-    if (querySnapshot.empty) {
-      await addDoc(progressCollection, progressData);
-    } else {
-      await updateDoc(querySnapshot.docs[0].ref, progressData);
-    }
+    await update(progressRef, updatedData);
     return true;
   } catch (error) {
-    console.error("❌ Error updating lesson progress:", error);
-    return false;
-  }
-}
-
-export async function checkDatabaseHealth() {
-  try {
-    const q = query(coursesCollection, limit(1));
-    await getDocs(q);
-    return { status: "healthy", message: "Firebase connection successful" };
-  } catch (error) {
-    return { 
-      status: "error", 
-      message: `Firebase connection failed: ${error.message}` 
-    };
+    console.error("Error updating progress:", error);
+    throw error;
   }
 }
