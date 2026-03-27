@@ -57,9 +57,17 @@ export async function checkDatabaseHealth() {
   }
 }
 
-// Course operations
+// Course operations with admin auth
 export async function createCourse(courseData) {
   try {
+    // Get admin auth for write operations
+    const { getAdminAuth } = await import("@/lib/api/admin");
+    const adminUser = await getAdminAuth();
+    
+    if (!adminUser) {
+      throw new Error("Admin authentication required");
+    }
+    
     const coursesRef = ref(db, 'courses');
     const newCourseRef = push(coursesRef);
     const courseWithId = {
@@ -102,10 +110,19 @@ export async function getCourseById(courseId) {
 
 export async function updateCourse(courseId, updateData) {
   try {
+    // Get Firebase authentication for admin operations
+    const { getFirebaseAuth } = await import("@/lib/api/admin");
+    const adminUser = await getFirebaseAuth();
+    
+    if (!adminUser) {
+      throw new Error("Admin authentication required. Please create admin@bitsoft.com user in Firebase Console.");
+    }
+    
     const courseRef = ref(db, `courses/${courseId}`);
     const updatedData = {
       ...updateData,
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
+      updatedBy: adminUser.uid
     };
     await update(courseRef, updatedData);
     return true;
@@ -117,20 +134,32 @@ export async function updateCourse(courseId, updateData) {
 
 export async function deleteCourse(courseId) {
   try {
+    // Get Firebase authentication for admin operations
+    const { getFirebaseAuth } = await import("@/lib/api/admin");
+    const adminUser = await getFirebaseAuth();
+    
+    if (!adminUser) {
+      throw new Error("Admin authentication required. Please create admin@bitsoft.com user in Firebase Console.");
+    }
+    
     const courseRef = ref(db, `courses/${courseId}`);
     await remove(courseRef);
     
-    // Also delete all lessons for this course (simple approach)
+    // Also delete all lessons for this course
     const lessonsRef = ref(db, 'lessons');
     const snapshot = await get(lessonsRef);
-    const lessons = snapshotToObject(snapshot);
+    const lessons = snapshot.val();
     
     if (lessons) {
-      // Filter and delete lessons for this course
-      const lessonsToDelete = lessons.filter(lesson => lesson.courseId === courseId);
-      for (const lesson of lessonsToDelete) {
-        const lessonRef = ref(db, `lessons/${lesson._id}`);
-        await remove(lessonRef);
+      const lessonUpdates = {};
+      Object.entries(lessons).forEach(([lessonId, lesson]) => {
+        if (lesson.courseId === courseId) {
+          lessonUpdates[`lessons/${lessonId}`] = null;
+        }
+      });
+      
+      if (Object.keys(lessonUpdates).length > 0) {
+        await update(ref(db), lessonUpdates);
       }
     }
     
@@ -141,15 +170,24 @@ export async function deleteCourse(courseId) {
   }
 }
 
-// Lesson operations
+// Lesson operations with authentication
 export async function createLesson(lessonData) {
   try {
+    // Get Firebase authentication for admin operations
+    const { getFirebaseAuth } = await import("@/lib/api/admin");
+    const adminUser = await getFirebaseAuth();
+    
+    if (!adminUser) {
+      throw new Error("Admin authentication required. Please create admin@bitsoft.com user in Firebase Console.");
+    }
+    
     const lessonsRef = ref(db, 'lessons');
     const newLessonRef = push(lessonsRef);
     const lessonWithId = {
       ...lessonData,
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
+      createdBy: adminUser.uid
     };
     await set(newLessonRef, lessonWithId);
     return { _id: newLessonRef.key, ...lessonWithId };
