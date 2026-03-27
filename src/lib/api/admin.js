@@ -28,6 +28,9 @@ export async function getFirebaseAuth() {
     // If admin user doesn't exist, we'll need to create it
     if (error.code === 'auth/user-not-found') {
       console.log("Admin user not found in Firebase. Please create admin@bitsoft.com user in Firebase Console.");
+      console.log("For now, admin operations will work but may have limited functionality.");
+    } else if (error.code === 'auth/too-many-requests') {
+      console.log("Too many Firebase auth attempts. Please try again later.");
     }
     return null;
   }

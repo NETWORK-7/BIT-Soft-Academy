@@ -33,8 +33,6 @@ export default function AdminLogin() {
         setLoading(false);
         return;
       }
-
-      // Redirect to admin page on successful login
       router.push("/admin");
     } catch (err) {
       setError("An error occurred. Please try again.");
@@ -45,7 +43,6 @@ export default function AdminLogin() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-indigo-100 p-4">
       <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md">
-        {/* Header */}
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-linear-to-br from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <Lock className="h-8 w-8 text-white" />
@@ -53,8 +50,6 @@ export default function AdminLogin() {
           <h1 className="text-3xl font-bold text-gray-900">Admin Portal</h1>
           <p className="text-gray-500 mt-2">Enter your credentials to continue</p>
         </div>
-
-        {/* Error Alert */}
         {error && (
           <Alert className="mb-6 bg-red-50 border-red-200 text-red-800 flex items-start gap-3">
             <AlertCircle className="h-5 w-5 shrink-0 mt-0.5" />
@@ -64,10 +59,7 @@ export default function AdminLogin() {
             </div>
           </Alert>
         )}
-
-        {/* Login Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Name Field */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               <div className="flex items-center gap-2">
@@ -85,8 +77,6 @@ export default function AdminLogin() {
               disabled={loading}
             />
           </div>
-
-          {/* Password Field */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
               <div className="flex items-center gap-2">
@@ -105,7 +95,6 @@ export default function AdminLogin() {
             />
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
@@ -115,7 +104,6 @@ export default function AdminLogin() {
           </button>
         </form>
 
-        {/* Footer */}
         <div className="text-center mt-6 text-sm text-gray-500">
           <p>Only authorized administrators can access this area</p>
         </div>
