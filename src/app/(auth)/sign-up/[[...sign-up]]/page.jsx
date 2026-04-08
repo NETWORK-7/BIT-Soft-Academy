@@ -130,12 +130,13 @@ function SignUpPage() {
               />
               <input
                 type="password"
-                placeholder="Password"
+                placeholder="Password (min 6 characters)"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
                 disabled={isLoading}
                 className="w-full px-4 py-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none disabled:opacity-50"
                 required
+                minLength={6}
               />
               {error && <div className="text-red-500 text-sm">{error}</div>}
               <button 

@@ -50,7 +50,6 @@ const AdminDashboard = () => {
         </div>
       </aside>
 
-      {/* Main Content */}
       <main className="flex-1 p-8">
         <h1 className="text-4xl font-black text-blue-900 mb-2">Admin Dashboard</h1>
         <p className="text-blue-600 font-medium mb-8">Welcome back! Manage your platform content and users.</p>

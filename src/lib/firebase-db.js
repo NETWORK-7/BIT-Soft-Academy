@@ -60,38 +60,12 @@ export async function checkDatabaseHealth() {
 // Course operations with admin auth
 export async function createCourse(courseData) {
   try {
-    // Get Firebase authentication for admin operations
-    const { getFirebaseAuth } = await import("@/lib/api/admin.js");
-    const adminUser = await getFirebaseAuth();
-    
-    if (!adminUser) {
-      console.log("⚠️ Firebase auth not available, falling back to local database");
-      // Fallback to local database
-      const { createCourse: createLocalCourse } = await import("@/lib/local-db.js");
-      return await createLocalCourse(courseData);
-    }
-    
-    const coursesRef = ref(db, 'courses');
-    const newCourseRef = push(coursesRef);
-    const courseWithId = {
-      ...courseData,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      createdBy: adminUser.uid
-    };
-    await set(newCourseRef, courseWithId);
-    return { _id: newCourseRef.key, ...courseWithId };
+    // Use local database for admin operations
+    const { createCourse: createLocalCourse } = await import("@/lib/local-db.js");
+    return await createLocalCourse(courseData);
   } catch (error) {
     console.error("Error creating course:", error);
-    // Fallback to local database on Firebase errors
-    try {
-      console.log("🔄 Firebase failed, falling back to local database");
-      const { createCourse: createLocalCourse } = await import("@/lib/local-db.js");
-      return await createLocalCourse(courseData);
-    } catch (localError) {
-      console.error("Both Firebase and local database failed:", localError);
-      throw error;
-    }
+    throw error;
   }
 }
 
@@ -122,123 +96,35 @@ export async function getCourseById(courseId) {
 
 export async function updateCourse(courseId, updateData) {
   try {
-    // Get Firebase authentication for admin operations
-    const { getFirebaseAuth } = await import("@/lib/api/admin.js");
-    const adminUser = await getFirebaseAuth();
-    
-    if (!adminUser) {
-      console.log("⚠️ Firebase auth not available, falling back to local database");
-      // Fallback to local database
-      const { updateCourse: updateLocalCourse } = await import("@/lib/local-db.js");
-      return await updateLocalCourse(courseId, updateData);
-    }
-    
-    const courseRef = ref(db, `courses/${courseId}`);
-    const updatedData = {
-      ...updateData,
-      updatedAt: new Date().toISOString(),
-      updatedBy: adminUser.uid
-    };
-    await update(courseRef, updatedData);
-    return true;
+    // Use local database for admin operations
+    const { updateCourse: updateLocalCourse } = await import("@/lib/local-db.js");
+    return await updateLocalCourse(courseId, updateData);
   } catch (error) {
     console.error("Error updating course:", error);
-    // Fallback to local database on Firebase errors
-    try {
-      console.log("🔄 Firebase failed, falling back to local database");
-      const { updateCourse: updateLocalCourse } = await import("@/lib/local-db.js");
-      return await updateLocalCourse(courseId, updateData);
-    } catch (localError) {
-      console.error("Both Firebase and local database failed:", localError);
-      throw error;
-    }
+    throw error;
   }
 }
 
 export async function deleteCourse(courseId) {
   try {
-    // Get Firebase authentication for admin operations
-    const { getFirebaseAuth } = await import("@/lib/api/admin.js");
-    const adminUser = await getFirebaseAuth();
-    
-    if (!adminUser) {
-      console.log("⚠️ Firebase auth not available, falling back to local database");
-      // Fallback to local database
-      const { deleteCourse: deleteLocalCourse } = await import("@/lib/local-db.js");
-      return await deleteLocalCourse(courseId);
-    }
-    
-    const courseRef = ref(db, `courses/${courseId}`);
-    await remove(courseRef);
-    
-    // Also delete all lessons for this course
-    const lessonsRef = ref(db, 'lessons');
-    const snapshot = await get(lessonsRef);
-    const lessons = snapshot.val();
-    
-    if (lessons) {
-      const lessonUpdates = {};
-      Object.entries(lessons).forEach(([lessonId, lesson]) => {
-        if (lesson.courseId === courseId) {
-          lessonUpdates[`lessons/${lessonId}`] = null;
-        }
-      });
-      
-      if (Object.keys(lessonUpdates).length > 0) {
-        await update(ref(db), lessonUpdates);
-      }
-    }
-    
-    return true;
+    // Use local database for admin operations
+    const { deleteCourse: deleteLocalCourse } = await import("@/lib/local-db.js");
+    return await deleteLocalCourse(courseId);
   } catch (error) {
     console.error("Error deleting course:", error);
-    // Fallback to local database on Firebase errors
-    try {
-      console.log("🔄 Firebase failed, falling back to local database");
-      const { deleteCourse: deleteLocalCourse } = await import("@/lib/local-db.js");
-      return await deleteLocalCourse(courseId);
-    } catch (localError) {
-      console.error("Both Firebase and local database failed:", localError);
-      throw error;
-    }
+    throw error;
   }
 }
 
 // Lesson operations with authentication
 export async function createLesson(lessonData) {
   try {
-    // Get Firebase authentication for admin operations
-    const { getFirebaseAuth } = await import("@/lib/api/admin.js");
-    const adminUser = await getFirebaseAuth();
-    
-    if (!adminUser) {
-      console.log("⚠️ Firebase auth not available, falling back to local database");
-      // Fallback to local database
-      const { createLesson: createLocalLesson } = await import("@/lib/local-db.js");
-      return await createLocalLesson(lessonData);
-    }
-    
-    const lessonsRef = ref(db, 'lessons');
-    const newLessonRef = push(lessonsRef);
-    const lessonWithId = {
-      ...lessonData,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      createdBy: adminUser.uid
-    };
-    await set(newLessonRef, lessonWithId);
-    return { _id: newLessonRef.key, ...lessonWithId };
+    // Use local database for admin operations
+    const { createLesson: createLocalLesson } = await import("@/lib/local-db.js");
+    return await createLocalLesson(lessonData);
   } catch (error) {
     console.error("Error creating lesson:", error);
-    // Fallback to local database on Firebase errors
-    try {
-      console.log("🔄 Firebase failed, falling back to local database");
-      const { createLesson: createLocalLesson } = await import("@/lib/local-db.js");
-      return await createLocalLesson(lessonData);
-    } catch (localError) {
-      console.error("Both Firebase and local database failed:", localError);
-      throw error;
-    }
+    throw error;
   }
 }
 
