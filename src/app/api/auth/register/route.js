@@ -19,8 +19,6 @@ export async function POST(req) {
     if (password.length < 6) {
       return NextResponse.json({ error: "Password must be at least 6 characters" }, { status: 400 });
     }
-
-    // Check if user already exists in Firebase
     const existingUser = await getUserByEmail(email);
     if (existingUser) {
       return NextResponse.json({ error: "User already exists with this email" }, { status: 409 });
@@ -30,7 +28,6 @@ export async function POST(req) {
 
     let newUser;
     try {
-      // Create user in Firebase
       newUser = await createUser({
         email,
         password_hash,
@@ -44,7 +41,8 @@ export async function POST(req) {
       if (e.message.includes("already exists")) {
         return NextResponse.json({ error: "An account with this email already exists" }, { status: 409 });
       }
-      throw e;
+      console.error("User creation failed:", e);
+      return NextResponse.json({ error: "Registration failed. Please try again." }, { status: 500 });
     }
 
     const id = newUser._id;

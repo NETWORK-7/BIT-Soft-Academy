@@ -8,9 +8,7 @@ function getSecretKey() {
   }
   return new TextEncoder().encode(s);
 }
-
 export const SESSION_COOKIE = "session";
-
 export async function signUserToken(user) {
   return new SignJWT({
     email: user.email,
@@ -22,22 +20,17 @@ export async function signUserToken(user) {
     .setExpirationTime("7d")
     .sign(getSecretKey());
 }
-
 export async function verifyUserToken(token) {
   const { payload } = await jwtVerify(token, getSecretKey());
-  
-  // Get full user data from Firebase
   const fullUser = await getUserById(payload.sub);
   
   return {
     id: payload.sub,
     email: payload.email,
     name: payload.name,
-    ...fullUser // Include all user data from Firebase
+    ...fullUser
   };
 }
-
-/** For Edge middleware: verify without throwing helper pattern */
 export async function verifyUserTokenSafe(token) {
   try {
     const secret = process.env.NEXTAUTH_SECRET || process.env.AUTH_SECRET;
