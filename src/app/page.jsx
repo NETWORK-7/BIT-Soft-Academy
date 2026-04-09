@@ -30,19 +30,19 @@ export default function LandingPage() {
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-md border border-cyan-200 rounded-full px-4 py-2 mb-8">
             <Zap className="h-5 w-5 text-cyan-600" />
-            <span className="text-gray-700 text-sm">New courses added weekly</span>
+            <span className="text-gray-700 text-sm">Har hafta yangi kurslar qo'shiladi</span>
           </div>
           
           <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-            Learn
-            <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent"> Programming</span>
+            Mutaxassislar bilan
+            <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent"> Dasturlashni</span>
             <br />
-            with Experts
+            O'rganing
           </h1>
           
           <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">
-            Transform your career with cutting-edge courses in React, Node.js, TypeScript, and more. 
-            Join thousands of developers advancing their skills.
+            React, Node.js, TypeScript va boshqa zamonaviy texnologiyalarda bo'lgan kurslar bilan karyerangizni o'zgartiring. 
+            Minglab dasturchilarning mahoratini oshirishiga qo'shiling.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
@@ -51,29 +51,29 @@ export default function LandingPage() {
               className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-xl hover:shadow-cyan-500/25 transition flex items-center justify-center space-x-2"
             >
               <Play className="h-5 w-5" />
-              <span>Start Learning Free</span>
+              <span>Bepul O'rganishni Boshlang</span>
             </Link>
             <Link 
               href="/courses" 
               className="bg-white border border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-gray-50 transition flex items-center justify-center space-x-2"
             >
               <BookOpenText className="h-5 w-5" />
-              <span>Browse Courses</span>
+              <span>Kurslarni Ko'rish</span>
             </Link>
           </div>
           
           <div className="flex items-center justify-center space-x-8 text-gray-600">
             <div className="flex items-center space-x-2">
               <Star className="h-5 w-5 text-yellow-500" />
-              <span>4.9/5 Rating</span>
+              <span>4.9/5 Reyting</span>
             </div>
             <div className="flex items-center space-x-2">
               <Users className="h-5 w-5 text-cyan-600" />
-              <span>{stats.users}+ Students</span>
+              <span>{stats.users}+ O'quvchi</span>
             </div>
             <div className="flex items-center space-x-2">
               <Award className="h-5 w-5 text-blue-600" />
-              <span>Certified Courses</span>
+              <span>Sertifikatlangan Kurslar</span>
             </div>
           </div>
         </div>
@@ -88,7 +88,7 @@ export default function LandingPage() {
                 <BookOpenText className="h-8 w-8 text-white" />
               </div>
               <div className="text-4xl font-bold text-gray-900 mb-2">{stats.courses}+</div>
-              <div className="text-gray-700">Expert Courses</div>
+              <div className="text-gray-700">Mutaxassis Kurslari</div>
             </div>
             
             <div className="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-2xl p-8 text-center">
@@ -96,7 +96,7 @@ export default function LandingPage() {
                 <Users className="h-8 w-8 text-white" />
               </div>
               <div className="text-4xl font-bold text-gray-900 mb-2">{stats.users}+</div>
-              <div className="text-gray-700">Active Students</div>
+              <div className="text-gray-700">Faol O'quvchilar</div>
             </div>
             
             <div className="bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-200 rounded-2xl p-8 text-center">
@@ -104,7 +104,7 @@ export default function LandingPage() {
                 <TrendingUp className="h-8 w-8 text-white" />
               </div>
               <div className="text-4xl font-bold text-gray-900 mb-2">85%</div>
-              <div className="text-gray-700">Success Rate</div>
+              <div className="text-gray-700">Muvaffaqiyat Foizi</div>
             </div>
           </div>
         </div>
@@ -115,10 +115,10 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Why Choose <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Bit Soft Academy</span>
+              Nima uchun <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Bit Soft Academy</span>
             </h2>
             <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-              Learn from industry experts with hands-on projects, real-world applications, and personalized feedback.
+              Sanoat mutaxassislariidan amaliy loyihalar, real dasturlar va shaxsiy fikr-mulohazalar bilan o'rganing.
             </p>
           </div>
           
@@ -126,38 +126,38 @@ export default function LandingPage() {
             {[
               {
                 icon: Code,
-                title: "Modern Technologies",
-                description: "Stay current with React, Next.js, TypeScript, and cutting-edge web development tools.",
+                title: "Zamonaviy Texnologiyalar",
+                description: "React, Next.js, TypeScript va zamonaviy veb-dasturlash vositalarida o'zingizni yangilab boring.",
                 color: "from-cyan-400 to-cyan-600"
               },
               {
                 icon: Zap,
-                title: "Hands-on Projects",
-                description: "Build real applications from scratch. Learn by doing with practical, project-based courses.",
+                title: "Amaliy Loyihalar",
+                description: "Noldan real dasturlarni yarating. Amaliy kurslar bilan ishlab o'rganing.",
                 color: "from-blue-400 to-blue-600"
               },
               {
                 icon: Award,
-                title: "Expert Instructors",
-                description: "Learn from experienced developers who work at top tech companies and startups.",
+                title: "Mutaxassis Ustozlar",
+                description: "Yirik texnologiya kompaniyalari va startaplarda ishlaydigan tajribali dasturchilardan o'rganing.",
                 color: "from-purple-400 to-purple-600"
               },
               {
                 icon: CheckCircle,
-                title: "Lifetime Access",
-                description: "Once enrolled, get lifetime access to course materials, updates, and community support.",
+                title: "Umrbod Kirish",
+                description: "Bir marta ro'yxatdan o'ting va kurs materiallari, yangilanishlar va jamoaviy yordamga abadiy kirish oling.",
                 color: "from-green-400 to-green-600"
               },
               {
                 icon: Users,
-                title: "Active Community",
-                description: "Join thousands of learners. Get help, share projects, and network with fellow developers.",
+                title: "Faol Jamiyat",
+                description: "Minglab o'quvchilarga qo'shiling. Yordam oling, loyihalarni baham ko'ring va boshqa dasturchilar bilan aloqa o'rnating.",
                 color: "from-pink-400 to-pink-600"
               },
               {
                 icon: TrendingUp,
-                title: "Career Growth",
-                description: "Land your dream job with interview prep, portfolio projects, and career guidance.",
+                title: "Karyera O'sishi",
+                description: "Interview tayyorgarligi, portfel loyihalari va karyera yo'nalishi bilan orzuyingdagi ishni toping.",
                 color: "from-orange-400 to-orange-600"
               }
             ].map((feature, index) => (
@@ -182,16 +182,16 @@ export default function LandingPage() {
             
             <div className="relative z-10">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                Ready to Start Your Learning Journey?
+                O'rganish Safariynga Tayyormisiz?
               </h2>
               <p className="text-xl text-white/90 mb-8">
-                Join thousands of developers who are already building amazing things with Bit Soft Academy.
+                Bit Soft Academy bilan ajoyib narsalarni yaratayotgan minglab dasturchilarga qo'shiling.
               </p>
               <Link 
                 href="/sign-up" 
                 className="bg-white text-blue-900 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-gray-100 transition inline-flex items-center space-x-2"
               >
-                <span>Get Started Now</span>
+                <span>Hozir Boshlang</span>
                 <ArrowRight className="h-5 w-5" />
               </Link>
             </div>
@@ -210,7 +210,7 @@ export default function LandingPage() {
               <span className="text-gray-900 font-semibold">Bit Soft Academy</span>
             </div>
             <div className="text-gray-600 text-sm">
-              © 2024 Bit Soft Academy. Empowering developers worldwide.
+              © 2026 Bit Soft Academy. Butun dunyo dasturchilarini qo'llab-quvvatlaymiz.
             </div>
           </div>
         </div>
