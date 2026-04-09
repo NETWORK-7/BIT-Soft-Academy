@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "seed": "NODE_OPTIONS='--openssl-legacy-provider' node scripts/seed.js",
-    "db:seed": "node scripts/seed-mongo.mjs"
+    "db:seed": "node scripts/seed-mongo.mjs",
+    "postinstall": "npm rebuild bcryptjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
