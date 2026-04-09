@@ -21,26 +21,6 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-white">
-      {/* Navigation */}
-      <nav className="absolute top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md border-b border-cyan-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-2">
-              <div className="w-10 h-10 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-xl flex items-center justify-center">
-                <Code className="h-6 w-6 text-white" />
-              </div>
-              <span className="text-gray-900 font-bold text-xl">Bit Soft Academy</span>
-            </div>
-            <div className="flex items-center space-x-6">
-              <Link href="/sign-in" className="text-gray-600 hover:text-gray-900 transition">Sign In</Link>
-              <Link href="/sign-up" className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-2 rounded-xl hover:shadow-lg hover:shadow-cyan-500/25 transition">
-                Get Started
-              </Link>
-            </div>
-          </div>
-        </div>
-      </nav>
-
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-100/50 via-transparent to-blue-100/50"></div>
