@@ -33,6 +33,14 @@ export default function LandingPage() {
             <span className="text-gray-700 text-sm">Har hafta yangi kurslar qo'shiladi</span>
           </div>
           
+          <div className="mb-8">
+            <img 
+              src="/photo.jpg" 
+              alt="Bit Soft Academy" 
+              className="mx-auto rounded-2xl shadow-2xl max-w-md md:max-w-lg lg:max-w-xl"
+            />
+          </div>
+          
           <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
             Mutaxassislar bilan
             <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent"> Dasturlashni</span>
