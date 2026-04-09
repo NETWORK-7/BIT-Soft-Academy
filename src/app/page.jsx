@@ -35,7 +35,7 @@ export default function LandingPage() {
           
           <div className="mb-8">
             <img 
-              src="/photo.jpg" 
+              src="https://share.google/pWDqxQvGacNzfjAfI" 
               alt="Bit Soft Academy" 
               className="mx-auto rounded-2xl shadow-2xl max-w-md md:max-w-lg lg:max-w-xl"
             />
