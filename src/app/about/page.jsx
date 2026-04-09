@@ -16,7 +16,7 @@ export default function AboutPage() {
       id: 2,
       name: "Najmiddin Abdurahmonov",
       role: "Backend Developer & DevOps Engineer",
-      bio: "Specializes in Node.js, Express.js, GO(Golang), Flutter",
+      bio: "Specializes in Node.js, Express.js, GO(Golang), ",
       avatar: "👨‍💻",
       social: { github: "#", linkedin: "#", email: "najmiddinme@gmail.com" }
     },
@@ -33,8 +33,8 @@ export default function AboutPage() {
       name: "Daler Sodiqov",
       role: "Backend Developer",
       bio: "Creates engaging learning materials and curriculum design",
-      avatar: "👩‍🏫",
-      social: { github: "#", linkedin: "#", email: "layla@bitsoft.com" }
+      avatar: "👨‍💻",
+      social: { github: "#", linkedin: "#", email: "dalerjonsodikov27@gmail.com" }
     }
   ];
 
