@@ -110,21 +110,36 @@ const AdminCourses = () => {
       points: parseInt(points) || 0,
     };
 
-    const res = await fetch(`/api/courses/${editingCourse._id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(courseData),
-    });
-    const data = await res.json();
-    if (data.success) {
-      setCourses(courses.map(c => c._id === editingCourse._id ? { ...c, ...courseData } : c));
-      setEditingCourse(null);
-      setTitle("");
-      setDescription("");
-      setVideoUrl("");
-      setInstructor("");
-      setDuration("");
-      setPoints("");
+    try {
+      const res = await fetch(`/api/courses/${editingCourse._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(courseData),
+      });
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
+      const data = await res.json();
+      console.log("Course update response:", data);
+      
+      if (data.success) {
+        setCourses(courses.map(c => c._id === editingCourse._id ? { ...c, ...courseData } : c));
+        setEditingCourse(null);
+        setTitle("");
+        setDescription("");
+        setVideoUrl("");
+        setInstructor("");
+        setDuration("");
+        setPoints("");
+        alert("Course updated successfully!");
+      } else {
+        alert(`Failed to update course: ${data.error || "Unknown error"}`);
+      }
+    } catch (error) {
+      console.error("Error updating course:", error);
+      alert(`Error updating course: ${error.message}`);
     }
     setLoading(false);
   };

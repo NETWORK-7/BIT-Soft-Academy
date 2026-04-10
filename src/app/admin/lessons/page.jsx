@@ -91,20 +91,35 @@ const AdminLessons = () => {
       sortOrder: parseInt(sortOrder) || 0
     };
 
-    const res = await fetch(`/api/lessons?lessonId=${editingLesson._id}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(lessonData),
-    });
-    const data = await res.json();
-    if (data.success) {
-      setLessons(lessons.map(l => l._id === editingLesson._id ? { ...l, ...lessonData } : l));
-      setEditingLesson(null);
-      setTitle("");
-      setContent("");
-      setVideoUrl("");
-      setDuration("");
-      setSortOrder("");
+    try {
+      const res = await fetch(`/api/lessons?lessonId=${editingLesson._id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(lessonData),
+      });
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
+      const data = await res.json();
+      console.log("Lesson update response:", data);
+      
+      if (data.success) {
+        setLessons(lessons.map(l => l._id === editingLesson._id ? { ...l, ...lessonData } : l));
+        setEditingLesson(null);
+        setTitle("");
+        setContent("");
+        setVideoUrl("");
+        setDuration("");
+        setSortOrder("");
+        alert("Lesson updated successfully!");
+      } else {
+        alert(`Failed to update lesson: ${data.error || "Unknown error"}`);
+      }
+    } catch (error) {
+      console.error("Error updating lesson:", error);
+      alert(`Error updating lesson: ${error.message}`);
     }
     setLoading(false);
   };
