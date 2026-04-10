@@ -149,11 +149,26 @@ export async function deleteCourse(courseId) {
 // Lesson operations with authentication
 export async function createLesson(lessonData) {
   try {
-    // Use local database for admin operations
-    const { createLesson: createLocalLesson } = await import("@/lib/local-db.js");
-    return await createLocalLesson(lessonData);
+    console.log("Creating lesson in Firebase:", lessonData);
+    const lessonsRef = ref(db, 'lessons');
+    const newLessonRef = push(lessonsRef);
+    await set(newLessonRef, {
+      ...lessonData,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+    
+    const createdLesson = {
+      _id: newLessonRef.key,
+      ...lessonData,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    
+    console.log("Lesson created successfully in Firebase:", createdLesson);
+    return createdLesson;
   } catch (error) {
-    console.error("Error creating lesson:", error);
+    console.error("Error creating lesson in Firebase:", error);
     throw error;
   }
 }
