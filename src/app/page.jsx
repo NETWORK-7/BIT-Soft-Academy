@@ -260,37 +260,7 @@ export default function LandingPage() {
         </div>
       </section>
       
-      {/* Newsletter Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-cyan-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="bg-white rounded-3xl shadow-2xl p-12 border border-cyan-100 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl"></div>
-            <div className="relative z-10">
-              <div className="w-20 h-20 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-lg shadow-cyan-500/25">
-                <Star className="h-10 w-10 text-white" />
-              </div>
-              <h2 className="text-4xl font-bold text-slate-900 mb-6">
-                Yangiliklardan <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">xabardor</span> bo'ling
-              </h2>
-              <p className="text-slate-600 text-lg mb-8 max-w-3xl mx-auto">
-                Yangi kurslar, bepul loyihalar va IT sohasidagi so'nggi yangiliklarni pochtangizga qabul qiling.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
-                <input 
-                  type="email" 
-                  placeholder="Email manzilingiz" 
-                  className="flex-1 px-6 py-4 border border-slate-300 rounded-xl focus:outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20 text-lg"
-                />
-                <button className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl font-bold hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg shadow-cyan-500/25 flex items-center gap-3">
-                  <Zap className="h-5 w-5" />
-                  <span>Obuna bo'lish</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
+      
       {/* Footer */}
       <footer className="border-t border-slate-800 py-16 px-4 sm:px-6 lg:px-8 bg-slate-900">
         <div className="max-w-6xl mx-auto">
