@@ -42,8 +42,7 @@ export async function getFirebaseAuth() {
 
 export async function createAdminFirebaseUser() {
   try {
-    // This would need to be done manually in Firebase Console
-    // or using Firebase Admin SDK (server-side only)
+  
     console.log("To create admin user:");
     console.log("1. Go to Firebase Console → Authentication");
     console.log("2. Add user: admin@bitsoft.com / admin123");

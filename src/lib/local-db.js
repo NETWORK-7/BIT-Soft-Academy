@@ -1,4 +1,3 @@
-// Temporary local storage fallback for Firebase issues
 let localCourses = [];
 let localLessons = [];
 
