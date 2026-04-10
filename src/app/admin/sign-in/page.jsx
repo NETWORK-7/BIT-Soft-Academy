@@ -147,7 +147,7 @@ export default function AdminSignIn() {
           <div className="mt-6 pt-6 border-t border-gray-200">
             <div className="text-center">
               <p className="text-sm text-gray-600">
-                Default credentials: <span className="font-mono bg-gray-100 px-2 py-1 rounded">Admin / admin123</span>
+                Enter your admin credentials to access the panel
               </p>
             </div>
           </div>
