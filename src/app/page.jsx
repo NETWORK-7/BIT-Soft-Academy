@@ -7,6 +7,15 @@ import Link from "next/link";
 export default function LandingPage() {
   const [stats, setStats] = useState({ courses: 0, users: 0 });
 
+  const projects = [
+    { title: "MERN Stack - Telegram clone", tech: "MongoDB, Express, React, Node.js", status: "Production Ready", image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
+    { title: "Next.js - X Clone", tech: "Next.js, Tailwind, TypeScript", status: "Production Ready", image: "https://images.unsplash.com/photo-1522252234503-e356532cafd5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
+    { title: "Next.js - Drive Clone", tech: "Next.js, Prisma, TypeScript", status: "Production Ready", image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
+    { title: "Nuxt.js - Jira Clone", tech: "Nuxt.js, Vue.js, Tailwind", status: "Production Ready", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
+    { title: "Node.js - Telegram Bot", tech: "Node.js, Express, Telegram API", status: "Production Ready", image: "https://images.unsplash.com/photo-1515879218367-8466d946aaa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
+    { title: "React Native - Netflix", tech: "React Native, Firebase, Redux", status: "Production Ready", image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" }
+  ];
+
   useEffect(() => {
     Promise.all([
       fetch("/api/courses").then((res) => res.json()),
@@ -155,7 +164,7 @@ export default function LandingPage() {
               <span className="text-cyan-100 font-semibold text-lg">Real loyihalar</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Professional</span> <br />Loyihalar
+              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Professional</span> Loyihalar
             </h2>
             <p className="text-cyan-100 text-xl max-w-3xl mx-auto mb-12">
               Noldan real dunyo loyihalarini yarating va o'zing portfelingizni shakllantiring
@@ -166,14 +175,7 @@ export default function LandingPage() {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            [
-              { title: "MERN Stack - Telegram clone", tech: "MongoDB, Express, React, Node.js", status: "Production Ready", image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { title: "Next.js - X Clone", tech: "Next.js, Tailwind, TypeScript", status: "Production Ready", image: "https://images.unsplash.com/photo-1522252234503-e356532cafd5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { title: "Next.js - Drive Clone", tech: "Next.js, Prisma, TypeScript", status: "Production Ready", image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { title: "Nuxt.js - Jira Clone", tech: "Nuxt.js, Vue.js, Tailwind", status: "Production Ready", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { title: "Node.js - Telegram Bot", tech: "Node.js, Express, Telegram API", status: "Production Ready", image: "https://images.unsplash.com/photo-1515879218367-8466d946aaa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { title: "React Native - Netflix", tech: "React Native, Firebase, Redux", status: "Production Ready", image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" }
-            ].map((project, index) => (
+            {projects.map((project, index) => (
               <div key={index} className="group bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-3xl overflow-hidden hover:bg-slate-800/70 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500">
                 <div className="relative h-48 overflow-hidden">
                   <img 
