@@ -24,6 +24,20 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-100/50 via-transparent to-blue-100/50"></div>
+        <div className="absolute inset-0 opacity-20">
+          <img 
+            src="/hero-bg-1.jpg" 
+            alt="Background 1" 
+            className="w-full h-full object-cover"
+          />
+        </div>
+        <div className="absolute inset-0 opacity-15">
+          <img 
+            src="/hero-bg-2.jpg" 
+            alt="Background 2" 
+            className="w-full h-full object-cover mix-blend-overlay"
+          />
+        </div>
         <div className="absolute top-20 left-10 w-72 h-72 bg-cyan-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse animation-delay-2000"></div>
         
@@ -35,7 +49,7 @@ export default function LandingPage() {
           
           <div className="mb-8">
             <img 
-              src="https://share.google/pWDqxQvGacNzfjAfI" 
+              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" 
               alt="Bit Soft Academy" 
               className="mx-auto rounded-2xl shadow-2xl max-w-md md:max-w-lg lg:max-w-xl"
             />
