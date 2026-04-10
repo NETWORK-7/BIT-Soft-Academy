@@ -65,15 +65,30 @@ const AdminLessons = () => {
       const data = await res.json();
       console.log("Lessons response:", data);
       
-      if (data.lessons) {
+      if (data.success === false) {
+        // API returned an error
+        console.error("API error:", data.error);
+        if (data.firebaseError) {
+          console.error("Firebase error:", data.firebaseError);
+        }
+        if (data.localError) {
+          console.error("Local error:", data.localError);
+        }
+        setLessons([]);
+        alert(`Failed to load lessons: ${data.error || 'Unknown error'}. Check console for details.`);
+      } else if (data.lessons) {
         setLessons(data.lessons);
         console.log(`Loaded ${data.lessons.length} lessons`);
+        if (data.source) {
+          console.log(`Data source: ${data.source}`);
+        }
       } else {
         setLessons([]);
+        console.log("No lessons found for this course");
       }
     } catch (error) {
       console.error("Error fetching lessons:", error);
-      alert("Failed to fetch lessons. Please check console for details.");
+      alert(`Network error: ${error.message}. Please check your connection and try again.`);
       setLessons([]);
     }
     setLoading(false);

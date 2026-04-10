@@ -58,7 +58,11 @@ function SignUpPage() {
         setIsLoading(false);
         return;
       }
-      router.push("/dashboard");
+      
+      // Use server-provided redirect or default to dashboard
+      const redirectTo = data.redirectTo || "/dashboard";
+      console.log("Registration successful, redirecting to:", redirectTo);
+      router.push(redirectTo);
     } catch (err) {
       setError(err.message || "An error occurred during sign up");
     } finally {

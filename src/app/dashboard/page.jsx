@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Trophy, Flame, Clock, BookOpen, Target, TrendingUp, Calendar, Award, ArrowRight } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useLanguageContext } from "@/context/LanguageContext";
 import { t } from "@/lib/translations";
 
@@ -10,21 +11,63 @@ import LanguageSettings from "@/components/LanguageSettings";
 
 export default function Dashboard() {
   const { language } = useLanguageContext();
+  const router = useRouter();
   const [user, setUser] = useState(null);
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     setIsLoaded(true);
+    // Add timeout to prevent infinite loading
+    const timeoutId = setTimeout(() => {
+      console.log("Auth check timeout, redirecting to sign-in");
+      router.push("/sign-in");
+    }, 5000);
+
     fetch("/api/auth/me")
-      .then((r) => r.json())
-      .then((data) => setUser(data.user || null))
-      .catch(() => setUser(null));
+      .then((r) => {
+        if (!r.ok) {
+          throw new Error(`HTTP error! status: ${r.status}`);
+        }
+        return r.json();
+      })
+      .then((data) => {
+        clearTimeout(timeoutId);
+        if (data.user) {
+          setUser(data.user);
+          console.log("User authenticated:", data.user.email);
+        } else {
+          console.log("User not authenticated, redirecting to sign-in");
+          router.push("/sign-in");
+        }
+      })
+      .catch((error) => {
+        clearTimeout(timeoutId);
+        console.error("Auth check failed:", error);
+        router.push("/sign-in");
+      });
+
+    return () => clearTimeout(timeoutId);
   }, []);
 
   if (!isLoaded) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <div className="text-3xl text-purple-600 animate-pulse font-semibold">Loading your dashboard...</div>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <div className="text-xl text-gray-600 font-medium">Loading your dashboard...</div>
+          <div className="text-sm text-gray-500 mt-2">Please wait a moment</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="text-center">
+          <div className="text-xl text-gray-600 font-medium">Authentication required</div>
+          <div className="text-sm text-gray-500 mt-2">Redirecting to sign-in...</div>
+        </div>
       </div>
     );
   }

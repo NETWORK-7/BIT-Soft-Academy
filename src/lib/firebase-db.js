@@ -1,4 +1,4 @@
-import { db } from "./firebase.js";
+import { db } from "@/lib/firebase.js";
 import { 
   ref, 
   push, 
@@ -10,6 +10,7 @@ import {
   orderByChild, 
   equalTo 
 } from "firebase/database";
+import { getCachedData, setCachedData, clearCache } from "./cache.js";
 
 // Helper function to convert Firebase snapshot to object
 const snapshotToObject = (snapshot) => {
@@ -60,22 +61,20 @@ export async function checkDatabaseHealth() {
 // Course operations with admin auth
 export async function createCourse(courseData) {
   try {
-    console.log("Creating course in Firebase:", courseData);
+    console.log("Creating course with Firebase...");
     const coursesRef = ref(db, 'courses');
     const newCourseRef = push(coursesRef);
-    await set(newCourseRef, {
+    const courseWithId = {
       ...courseData,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    });
-    
-    const createdCourse = {
       _id: newCourseRef.key,
-      ...courseData,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
+    await set(newCourseRef, courseWithId);
+    const createdCourse = { _id: newCourseRef.key, ...courseWithId };
     
+    // Clear cache to ensure fresh data
+    clearCache('courses');
     console.log("Course created successfully in Firebase:", createdCourse);
     return createdCourse;
   } catch (error) {
@@ -86,10 +85,24 @@ export async function createCourse(courseData) {
 
 export async function getAllCourses() {
   try {
+    // Check cache first
+    const cacheKey = 'courses:all';
+    const cached = getCachedData(cacheKey);
+    if (cached) {
+      console.log("Using cached courses data");
+      return cached;
+    }
+
     const coursesRef = ref(db, 'courses');
     const snapshot = await get(coursesRef);
     const courses = snapshotToObject(snapshot);
-    return courses || [];
+    
+    // Cache the result
+    const result = courses || [];
+    setCachedData(cacheKey, result);
+    console.log("Fetched and cached courses data");
+    
+    return result;
   } catch (error) {
     console.error("Error getting courses:", error);
     throw error;
@@ -175,6 +188,14 @@ export async function createLesson(lessonData) {
 
 export async function getLessonsByCourseId(courseId) {
   try {
+    // Check cache first
+    const cacheKey = `lessons:course:${courseId}`;
+    const cached = getCachedData(cacheKey);
+    if (cached) {
+      console.log("Using cached lessons data for course:", courseId);
+      return cached;
+    }
+
     const lessonsRef = ref(db, 'lessons');
     // Simple approach: get all lessons and filter in JavaScript
     const snapshot = await get(lessonsRef);
@@ -184,7 +205,13 @@ export async function getLessonsByCourseId(courseId) {
     const filteredLessons = lessons ? lessons.filter(lesson => lesson.courseId === courseId) : [];
     
     // Sort by sortOrder
-    return filteredLessons.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    const result = filteredLessons.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+    
+    // Cache the result
+    setCachedData(cacheKey, result);
+    console.log("Fetched and cached lessons data for course:", courseId);
+    
+    return result;
   } catch (error) {
     console.error("Error getting lessons:", error);
     throw error;

@@ -23,39 +23,70 @@ export async function GET(req) {
     const courseId = searchParams.get("courseId");
     const lessonId = searchParams.get("lessonId");
     
+    console.log("Lessons API called:", { courseId, lessonId });
+    
     if (!courseId && !lessonId) {
+      console.log("No courseId or lessonId provided, returning empty lessons");
       return NextResponse.json({ lessons: [] });
     }
 
     // Try Firebase first, fallback to local
     try {
-      console.log("🔗 Fetching lessons from Firebase...");
+      console.log("Firebase: Attempting to fetch lessons...");
       
       if (lessonId) {
         // Get single lesson
+        console.log(`Fetching single lesson: ${lessonId}`);
         const lesson = await getLessonById(lessonId);
+        console.log(`Lesson found: ${!!lesson}`);
         return NextResponse.json({ lesson });
       } else {
         // Get lessons by course
+        console.log(`Fetching lessons for course: ${courseId}`);
         const lessons = await getLessonsByCourseId(courseId);
-        console.log(`✅ Firebase: Found ${lessons.length} lessons for course ${courseId}`);
-        return NextResponse.json({ lessons });
+        console.log(`Firebase: Found ${lessons.length} lessons for course ${courseId}`);
+        return NextResponse.json({ 
+          success: true,
+          lessons: lessons,
+          count: lessons.length 
+        });
       }
     } catch (firebaseError) {
-      console.log("🔄 Firebase failed, using local database:", firebaseError.message);
+      console.log("Firebase failed, using local database:", firebaseError.message);
+      console.log("Firebase error details:", firebaseError);
       
-      if (lessonId) {
-        const lesson = await getLocalLessonById(lessonId);
-        return NextResponse.json({ lesson });
-      } else {
-        const lessons = await getLocalLessonsByCourseId(courseId);
-        console.log(`✅ Local database: Found ${lessons.length} lessons for course ${courseId}`);
-        return NextResponse.json({ lessons });
+      try {
+        if (lessonId) {
+          const lesson = await getLocalLessonById(lessonId);
+          return NextResponse.json({ lesson });
+        } else {
+          const lessons = await getLocalLessonsByCourseId(courseId);
+          return NextResponse.json({ 
+            success: true,
+            lessons: lessons,
+            count: lessons.length,
+            source: "local"
+          });
+        }
+      } catch (localError) {
+        console.error("Local database also failed:", localError);
+        return NextResponse.json({ 
+          success: false,
+          lessons: [], 
+          error: "Both Firebase and local database failed",
+          firebaseError: firebaseError.message,
+          localError: localError.message
+        }, { status: 500 });
       }
     }
   } catch (e) {
-    console.error("❌ GET /api/lessons error:", e);
-    return NextResponse.json({ lessons: [], error: e.message }, { status: 500 });
+    console.error("GET /api/lessons - General error:", e);
+    return NextResponse.json({ 
+      success: false,
+      lessons: [], 
+      error: e.message,
+      stack: e.stack
+    }, { status: 500 });
   }
 }
 

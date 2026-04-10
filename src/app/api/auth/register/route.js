@@ -55,6 +55,7 @@ export async function POST(req) {
     const res = NextResponse.json({
       success: true,
       user: { id, email, name, language },
+      redirectTo: "/dashboard"
     });
     res.cookies.set(SESSION_COOKIE, token, {
       httpOnly: true,
