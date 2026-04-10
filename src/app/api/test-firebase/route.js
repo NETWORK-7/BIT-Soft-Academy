@@ -5,15 +5,12 @@ import { ref, get } from "firebase/database";
 export async function GET() {
   try {
     console.log("Testing Firebase connection...");
-    
-    // Test basic connection
     const testRef = ref(db, '.info/connected');
     const snapshot = await get(testRef);
     const isConnected = snapshot.val();
     
     console.log("Firebase connection status:", isConnected);
     
-    // Test database access
     const coursesRef = ref(db, 'courses');
     const coursesSnapshot = await get(coursesRef);
     const coursesData = coursesSnapshot.val();

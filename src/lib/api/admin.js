@@ -3,29 +3,33 @@ import { signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 
 export async function isAdminRequest() {
-  const cookieStore = await cookies();
-  const adminAuth = cookieStore.get("adminAuth")?.value;
-  
-  if (!adminAuth) {
+  try {
+    const cookieStore = await cookies();
+    const adminAuth = cookieStore.get("adminAuth")?.value;
+    
+    console.log("Checking admin auth, cookie value:", adminAuth);
+    
+    if (adminAuth === "true") {
+      console.log("✅ Admin authentication successful");
+      return true;
+    }
+    
+    console.log("❌ Admin authentication failed - no valid cookie");
+    return false;
+  } catch (error) {
+    console.error("Error checking admin auth:", error);
     return false;
   }
-  
-  // Keep cookie check for admin UI access
-  return true;
 }
 
 export async function getFirebaseAuth() {
   try {
-    // Create a dedicated admin user in Firebase
     const adminEmail = "admin@bitsoft.com";
     const adminPassword = "admin123";
-    
-    // Sign in with Firebase to get proper auth token
     const userCredential = await signInWithEmailAndPassword(auth, adminEmail, adminPassword);
     return userCredential.user;
   } catch (error) {
     console.error("Firebase auth error:", error);
-    // If admin user doesn't exist, we'll need to create it
     if (error.code === 'auth/user-not-found') {
       console.log("Admin user not found in Firebase. Please create admin@bitsoft.com user in Firebase Console.");
       console.log("For now, admin operations will work but may have limited functionality.");

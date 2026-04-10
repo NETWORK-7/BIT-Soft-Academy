@@ -16,13 +16,30 @@ export default function AdminSignIn() {
     setLoading(true);
     setError("");
 
-    // Simple authentication check
-    if (username === "Admin" && password === "admin123") {
-      // Set admin authentication cookie
-      document.cookie = "adminAuth=true; path=/; max-age=3600; SameSite=Strict";
-      router.push("/admin");
-    } else {
-      setError("Invalid username or password");
+    try {
+      // Call server-side API for authentication
+      const response = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: username,
+          password: password,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        console.log("Admin login successful");
+        router.push("/admin");
+      } else {
+        setError(data.message || "Invalid username or password");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      setError("Network error. Please try again.");
     }
     setLoading(false);
   };
