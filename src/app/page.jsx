@@ -24,22 +24,38 @@ export default function LandingPage() {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-100/50 via-transparent to-blue-100/50"></div>
-        <div className="absolute inset-0 opacity-20">
+        <div className="absolute inset-0 opacity-25">
           <img 
             src="/hero-bg-1.jpg" 
             alt="Background 1" 
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover animate-pulse"
+          />
+        </div>
+        <div className="absolute inset-0 opacity-20">
+          <img 
+            src="/hero-bg-2.jpg" 
+            alt="Background 2" 
+            className="w-full h-full object-cover mix-blend-multiply"
           />
         </div>
         <div className="absolute inset-0 opacity-15">
           <img 
-            src="/hero-bg-2.jpg" 
-            alt="Background 2" 
-            className="w-full h-full object-cover mix-blend-overlay"
+            src="/hero-bg-3.jpg" 
+            alt="Background 3" 
+            className="w-full h-full object-cover mix-blend-screen"
+          />
+        </div>
+        <div className="absolute inset-0 opacity-30">
+          <img 
+            src="/hero-pattern.svg" 
+            alt="Pattern" 
+            className="w-full h-full object-cover"
           />
         </div>
         <div className="absolute top-20 left-10 w-72 h-72 bg-cyan-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse animation-delay-2000"></div>
+        <div className="absolute top-40 right-20 w-64 h-64 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse animation-delay-4000"></div>
+        <div className="absolute bottom-40 left-20 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse animation-delay-6000"></div>
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-md border border-cyan-200 rounded-full px-4 py-2 mb-8">
