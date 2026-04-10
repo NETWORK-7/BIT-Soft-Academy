@@ -108,45 +108,12 @@ export default function LandingPage() {
             </Link>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { title: "Angular", duration: "12 soat", lessons: "24 dars", level: "Yangi", image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { title: "TypeScript", duration: "12 soat", lessons: "24 dars", level: "Yangi", image: "https://images.unsplash.com/photo-1516116216624-53e697fedbea?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { title: "JavaScript", duration: "12 soat", lessons: "24 dars", level: "Yangi", image: "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { title: "React JS & Redux", duration: "12 soat", lessons: "24 dars", level: "Yangi", image: "https://images.unsplash.com/photo-1555949967-2e3cd62f2726?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { title: "Vue JS & Vue X", duration: "12 soat", lessons: "24 dars", level: "Yangi", image: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { title: "NodeJS & ExpressJS", duration: "12 soat", lessons: "24 dars", level: "Yangi", image: "https://images.unsplash.com/photo-1558494949-ef010cbdcc31a?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" }
-            ].map((course, index) => (
-              <div key={index} className="group bg-white border border-slate-200 rounded-2xl overflow-hidden hover:shadow-xl hover:border-cyan-500/50 transition-all duration-300">
-                <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={course.image} 
-                    alt={course.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    onError={(e) => {
-                      e.target.src = 'https://images.unsplash.com/photo-1461749280684-dcc714de5c24?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
-                  <div className="absolute top-4 right-4">
-                    <span className="bg-cyan-500 text-white text-xs px-3 py-1 rounded-full font-semibold">{course.level}</span>
-                  </div>
-                  <div className="absolute bottom-4 left-4">
-                    <Clock className="h-5 w-5 text-white mb-1" />
-                    <p className="text-white text-sm font-medium">{course.duration}</p>
-                  </div>
-                </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-cyan-600 transition-colors">{course.title}</h3>
-                  <div className="flex items-center justify-between">
-                    <span className="text-slate-600 text-sm">{course.lessons}</span>
-                    <button className="text-cyan-600 hover:text-cyan-700 font-semibold text-sm flex items-center gap-1">
-                      Batafsil ko'rish <ArrowRight className="h-4 w-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="text-center mt-16">
+            <Link href="/courses" className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg shadow-cyan-500/25">
+              <BookOpenText className="h-5 w-5" />
+              <span>Barcha kurslarni ko'rish</span>
+              <ArrowRight className="h-5 w-5" />
+            </Link>
           </div>
         </div>
       </section>
