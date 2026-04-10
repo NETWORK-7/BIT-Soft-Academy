@@ -20,235 +20,197 @@ export default function LandingPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-50 via-blue-50 to-white">
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-100/50 via-transparent to-blue-100/50"></div>
-        <div className="absolute inset-0 opacity-25">
-          <img 
-            src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" 
-            alt="Background 1" 
-            className="w-full h-full object-cover animate-pulse"
-          />
-        </div>
-        <div className="absolute inset-0 opacity-20">
-          <img 
-            src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80" 
-            alt="Background 2" 
-            className="w-full h-full object-cover mix-blend-multiply"
-          />
-        </div>
-        <div className="absolute inset-0 opacity-15">
-          <img 
-            src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
-            alt="Background 3" 
-            className="w-full h-full object-cover mix-blend-screen"
-          />
-        </div>
-        <div className="absolute inset-0 opacity-30">
-          <img 
-            src="/hero-pattern.svg" 
-            alt="Pattern" 
-            className="w-full h-full object-cover"
-          />
-        </div>
-        <div className="absolute top-20 left-10 w-72 h-72 bg-cyan-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse"></div>
-        <div className="absolute bottom-20 right-10 w-96 h-96 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-pulse animation-delay-2000"></div>
-        <div className="absolute top-40 right-20 w-64 h-64 bg-purple-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse animation-delay-4000"></div>
-        <div className="absolute bottom-40 left-20 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-pulse animation-delay-6000"></div>
+      <section className="relative min-h-screen flex items-center justify-center">
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-50 to-white"></div>
         
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center space-x-2 bg-white/80 backdrop-blur-md border border-cyan-200 rounded-full px-4 py-2 mb-8">
-            <Zap className="h-5 w-5 text-cyan-600" />
+        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="inline-flex items-center space-x-2 bg-gray-100 rounded-full px-4 py-2 mb-8">
+            <Zap className="h-5 w-5 text-gray-600" />
             <span className="text-gray-700 text-sm">Har hafta yangi kurslar qo'shiladi</span>
           </div>
           
-          <div className="mb-8">
-            <img 
-              src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80" 
-              alt="Bit Soft Academy" 
-              className="mx-auto rounded-2xl shadow-2xl max-w-md md:max-w-lg lg:max-w-xl"
-            />
-          </div>
-          
-          <h1 className="text-5xl md:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-            Mutaxassislar bilan
-            <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent"> Dasturlashni</span>
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
+            Kelajak kasbini
+            <span className="text-gray-900"> zamonaviy usulda</span>
             <br />
-            O'rganing
+            o'rganing
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-700 mb-8 max-w-3xl mx-auto">
-            React, Node.js, TypeScript va boshqa zamonaviy texnologiyalarda bo'lgan kurslar bilan karyerangizni o'zgartiring. 
-            Minglab dasturchilarning mahoratini oshirishiga qo'shiling.
+          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
+            Dasturlashni quruq nazariya bilan emas, real amaliyot va real loyihalar orqali o'rganing. 
+            Premium kurslar, ochiq kodlar va komyuniti bir joyda.
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <Link 
-              href="/sign-up" 
-              className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl font-semibold text-lg hover:shadow-xl hover:shadow-cyan-500/25 transition flex items-center justify-center space-x-2"
+              href="/courses" 
+              className="bg-gray-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition flex items-center justify-center space-x-2"
             >
-              <Play className="h-5 w-5" />
-              <span>Bepul O'rganishni Boshlang</span>
+              <BookOpenText className="h-5 w-5" />
+              <span>Kurslarni boshlash</span>
             </Link>
             <Link 
               href="/courses" 
-              className="bg-white border border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-gray-50 transition flex items-center justify-center space-x-2"
+              className="bg-white border border-gray-300 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-50 transition flex items-center justify-center space-x-2"
             >
-              <BookOpenText className="h-5 w-5" />
-              <span>Kurslarni Ko'rish</span>
+              <Code className="h-5 w-5" />
+              <span>Loyihalar</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Courses Preview Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-900">Yangi Kurslar</h2>
+            <Link href="/courses" className="text-gray-600 hover:text-gray-900 font-medium">
+              Barchasi →
             </Link>
           </div>
           
-          <div className="flex items-center justify-center space-x-8 text-gray-600">
-            <div className="flex items-center space-x-2">
-              <Star className="h-5 w-5 text-yellow-500" />
-              <span>4.9/5 Reyting</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Users className="h-5 w-5 text-cyan-600" />
-              <span>{stats.users}+ O'quvchi</span>
-            </div>
-            <div className="flex items-center space-x-2">
-              <Award className="h-5 w-5 text-blue-600" />
-              <span>Sertifikatlangan Kurslar</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Stats Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-200 rounded-2xl p-8 text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-cyan-400 to-cyan-600 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <BookOpenText className="h-8 w-8 text-white" />
-              </div>
-              <div className="text-4xl font-bold text-gray-900 mb-2">{stats.courses}+</div>
-              <div className="text-gray-700">Mutaxassis Kurslari</div>
-            </div>
-            
-            <div className="bg-gradient-to-br from-blue-50 to-cyan-50 border border-blue-200 rounded-2xl p-8 text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-blue-400 to-blue-600 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <Users className="h-8 w-8 text-white" />
-              </div>
-              <div className="text-4xl font-bold text-gray-900 mb-2">{stats.users}+</div>
-              <div className="text-gray-700">Faol O'quvchilar</div>
-            </div>
-            
-            <div className="bg-gradient-to-br from-purple-50 to-blue-50 border border-purple-200 rounded-2xl p-8 text-center">
-              <div className="w-16 h-16 bg-gradient-to-r from-purple-400 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-4">
-                <TrendingUp className="h-8 w-8 text-white" />
-              </div>
-              <div className="text-4xl font-bold text-gray-900 mb-2">85%</div>
-              <div className="text-gray-700">Muvaffaqiyat Foizi</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Features Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-cyan-50/50 to-blue-50/50">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
-              Nima uchun <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Bit Soft Academy</span>
-            </h2>
-            <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-              Sanoat mutaxassislariidan amaliy loyihalar, real dasturlar va shaxsiy fikr-mulohazalar bilan o'rganing.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              {
-                icon: Code,
-                title: "Zamonaviy Texnologiyalar",
-                description: "React, Next.js, TypeScript va zamonaviy veb-dasturlash vositalarida o'zingizni yangilab boring.",
-                color: "from-cyan-400 to-cyan-600"
-              },
-              {
-                icon: Zap,
-                title: "Amaliy Loyihalar",
-                description: "Noldan real dasturlarni yarating. Amaliy kurslar bilan ishlab o'rganing.",
-                color: "from-blue-400 to-blue-600"
-              },
-              {
-                icon: Award,
-                title: "Mutaxassis Ustozlar",
-                description: "Yirik texnologiya kompaniyalari va startaplarda ishlaydigan tajribali dasturchilardan o'rganing.",
-                color: "from-purple-400 to-purple-600"
-              },
-              {
-                icon: CheckCircle,
-                title: "Umrbod Kirish",
-                description: "Bir marta ro'yxatdan o'ting va kurs materiallari, yangilanishlar va jamoaviy yordamga abadiy kirish oling.",
-                color: "from-green-400 to-green-600"
-              },
-              {
-                icon: Users,
-                title: "Faol Jamiyat",
-                description: "Minglab o'quvchilarga qo'shiling. Yordam oling, loyihalarni baham ko'ring va boshqa dasturchilar bilan aloqa o'rnating.",
-                color: "from-pink-400 to-pink-600"
-              },
-              {
-                icon: TrendingUp,
-                title: "Karyera O'sishi",
-                description: "Interview tayyorgarligi, portfel loyihalari va karyera yo'nalishi bilan orzuyingdagi ishni toping.",
-                color: "from-orange-400 to-orange-600"
-              }
-            ].map((feature, index) => (
-              <div key={index} className="bg-white border border-gray-200 rounded-2xl p-8 hover:shadow-lg hover:shadow-cyan-500/10 transition">
-                <div className={`w-14 h-14 bg-gradient-to-r ${feature.color} rounded-xl flex items-center justify-center mb-6`}>
-                  <feature.icon className="h-7 w-7 text-white" />
+              { title: "Angular", duration: "12 soat", lessons: "24 dars", level: "Yangi" },
+              { title: "TypeScript", duration: "12 soat", lessons: "24 dars", level: "Yangi" },
+              { title: "JavaScript", duration: "12 soat", lessons: "24 dars", level: "Yangi" },
+              { title: "React JS & Redux", duration: "12 soat", lessons: "24 dars", level: "Yangi" },
+              { title: "Vue JS & Vue X", duration: "12 soat", lessons: "24 dars", level: "Yangi" },
+              { title: "NodeJS & ExpressJS", duration: "12 soat", lessons: "24 dars", level: "Yangi" }
+            ].map((course, index) => (
+              <div key={index} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-1">{course.title}</h3>
+                    <span className="text-xs text-gray-500 bg-gray-100 px-2 py-1 rounded">{course.level}</span>
+                  </div>
+                  <Clock className="h-4 w-4 text-gray-400" />
                 </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-3">{feature.title}</h3>
-                <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+                <div className="flex items-center gap-4 text-sm text-gray-600">
+                  <span>{course.duration}</span>
+                  <span>{course.lessons}</span>
+                </div>
+                <button className="mt-4 text-sm text-gray-700 hover:text-gray-900 font-medium">
+                  Batafsil ko'rish →
+                </button>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+      {/* Projects Preview Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="flex justify-between items-center mb-8">
+            <h2 className="text-2xl font-bold text-gray-900">Yangi Loyihalar</h2>
+            <Link href="/courses" className="text-gray-600 hover:text-gray-900 font-medium">
+              Barchasi →
+            </Link>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {[
+              { title: "MERN Stack - Telegram clone", tech: "Next.js, Tailwind, Prisma", status: "production build" },
+              { title: "Next.js - X clone", tech: "Next.js, Tailwind, Prisma", status: "production build" },
+              { title: "Next.js - Drive clone", tech: "Next.js, Tailwind, Prisma", status: "production build" },
+              { title: "Nuxt.js - Jira clone", tech: "Next.js, Tailwind, Prisma", status: "production build" },
+              { title: "Node.js - Telegram bot", tech: "Next.js, Tailwind, Prisma", status: "production build" },
+              { title: "React Native - Netflix clone", tech: "Next.js, Tailwind, Prisma", status: "production build" }
+            ].map((project, index) => (
+              <div key={index} className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition">
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h3 className="font-semibold text-gray-900 mb-2">{project.title}</h3>
+                    <span className="text-xs text-green-600 bg-green-50 px-2 py-1 rounded">{project.status}</span>
+                  </div>
+                  <Code className="h-4 w-4 text-gray-400" />
+                </div>
+                <div className="text-sm text-gray-600 mb-4">
+                  {project.tech}
+                </div>
+                <button className="text-sm text-gray-700 hover:text-gray-900 font-medium">
+                  Batafsil ko'rish →
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Newsletter Section */}
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="bg-gradient-to-r from-cyan-500 to-blue-600 rounded-3xl p-12 relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full filter blur-3xl"></div>
-            <div className="absolute bottom-0 left-0 w-48 h-48 bg-white/10 rounded-full filter blur-3xl"></div>
-            
-            <div className="relative z-10">
-              <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-                O'rganish Safariynga Tayyormisiz?
-              </h2>
-              <p className="text-xl text-white/90 mb-8">
-                Bit Soft Academy bilan ajoyib narsalarni yaratayotgan minglab dasturchilarga qo'shiling.
-              </p>
-              <Link 
-                href="/sign-up" 
-                className="bg-white text-blue-900 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-gray-100 transition inline-flex items-center space-x-2"
-              >
-                <span>Hozir Boshlang</span>
-                <ArrowRight className="h-5 w-5" />
-              </Link>
-            </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Yangiliklardan xabardor bo'ling
+          </h2>
+          <p className="text-gray-600 mb-8">
+            Yangi kurslar, bepul loyihalar va IT sohasidagi so'nggi yangiliklarni pochtangizga qabul qiling.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+            <input 
+              type="email" 
+              placeholder="Email manzilingiz" 
+              className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"
+            />
+            <button className="bg-gray-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition">
+              Obuna bo'lish
+            </button>
           </div>
         </div>
       </section>
 
       {/* Footer */}
       <footer className="border-t border-gray-200 py-12 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center space-x-2 mb-4 md:mb-0">
-              <div className="w-8 h-8 bg-gradient-to-r from-cyan-400 to-blue-500 rounded-lg flex items-center justify-center">
-                <Code className="h-5 w-5 text-white" />
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center space-x-2 mb-4">
+                <div className="w-8 h-8 bg-gray-900 rounded-lg flex items-center justify-center">
+                  <Code className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-gray-900 font-bold">Bit Soft Academy</span>
               </div>
-              <span className="text-gray-900 font-semibold">Bit Soft Academy</span>
+              <p className="text-gray-600 text-sm">
+                Zamonaviy usulda dasturlashni o'rganing. Real loyihalar, ochiq kodlar va sifatli ta'lim bir joyda.
+              </p>
             </div>
-            <div className="text-gray-600 text-sm">
-              © 2026 Bit Soft Academy. Butun dunyo dasturchilarini qo'llab-quvvatlaymiz.
+            
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-4">Platforma</h3>
+              <ul className="space-y-2">
+                <li><Link href="/courses" className="text-gray-600 hover:text-gray-900 text-sm">Kurslar</Link></li>
+                <li><Link href="/courses" className="text-gray-600 hover:text-gray-900 text-sm">Loyihalar</Link></li>
+                <li><Link href="/courses" className="text-gray-600 hover:text-gray-900 text-sm">Kod manbalar</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-4">Qoidalar</h3>
+              <ul className="space-y-2">
+                <li><Link href="/about" className="text-gray-600 hover:text-gray-900 text-sm">Foydalanish shartlari</Link></li>
+                <li><Link href="/about" className="text-gray-600 hover:text-gray-900 text-sm">Maxfiylik siyosati</Link></li>
+                <li><Link href="/about" className="text-gray-600 hover:text-gray-900 text-sm">Ko'p beriladigan savollar</Link></li>
+                <li><Link href="/about" className="text-gray-600 hover:text-gray-900 text-sm">Bog'lanish</Link></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-4">Biz bilan</h3>
+              <ul className="space-y-2">
+                <li><a href="#" className="text-gray-600 hover:text-gray-900 text-sm">Telegram</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-gray-900 text-sm">GitHub</a></li>
+                <li><a href="#" className="text-gray-600 hover:text-gray-900 text-sm">YouTube</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="border-t border-gray-200 pt-8">
+            <div className="text-center text-gray-600 text-sm">
+              © 2026 Bit Soft Academy. Barcha huquqlar himoyalangan.
             </div>
           </div>
         </div>

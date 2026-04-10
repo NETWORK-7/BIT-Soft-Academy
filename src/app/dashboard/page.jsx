@@ -52,58 +52,57 @@ export default function Dashboard() {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900 py-8 px-6 md:py-12 md:px-10">
-      <div className="max-w-7xl mx-auto">
+    <div className="min-h-screen bg-white py-8 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto">
         {/* Greeting */}
-        <div className="mb-10">
-          <h1 className="text-4xl md:text-5xl font-black text-gray-900">
-            {t(language, "dashboard.welcomeBack")},{" "}
-            {(user?.name && user.name.split(" ")[0]) || "Coder"}! 👋
+        <div className="mb-8">
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+            Qaytib kelib bo'ldingiz, {(user?.name && user.name.split(" ")[0]) || "Dasturchi"}!
           </h1>
-          <p className="text-xl text-gray-600 mt-3">
-            You're on a <span className="font-bold text-orange-600">{userStats.currentStreak}-{t(language, "dashboard.streakText")}</span>. {t(language, "dashboard.keepWorking")}
+          <p className="text-gray-600">
+            Siz <span className="font-semibold text-gray-900">{userStats.currentStrust} kunlik</span> seriyadasiz. Davom eting!
           </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-shadow duration-300">
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm uppercase tracking-wide">{t(language, "dashboard.totalPoints")}</p>
-                <p className="text-4xl font-black text-purple-600 mt-2">{userStats.points.toLocaleString()}</p>
+                <p className="text-gray-500 text-sm">Jami ballar</p>
+                <p className="text-2xl font-bold text-gray-900 mt-1">{userStats.points.toLocaleString()}</p>
               </div>
-              <Trophy className="h-12 w-12 text-purple-600 opacity-30" />
+              <Trophy className="h-8 w-8 text-gray-400" />
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-shadow duration-300">
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm uppercase tracking-wide">{t(language, "dashboard.coursesCompleted")}</p>
-                <p className="text-4xl font-black text-cyan-600 mt-2">{userStats.coursesCompleted}</p>
+                <p className="text-gray-500 text-sm">Tugatilgan kurslar</p>
+                <p className="text-2xl font-bold text-gray-900 mt-1">{userStats.coursesCompleted}</p>
               </div>
-              <BookOpen className="h-12 w-12 text-cyan-600 opacity-30" />
+              <BookOpen className="h-8 w-8 text-gray-400" />
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-shadow duration-300">
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm uppercase tracking-wide">{t(language, "dashboard.currentStreak")}</p>
-                <p className="text-4xl font-black text-orange-600 mt-2 flex items-center gap-2">
-                  {userStats.currentStreak} <Flame className="h-8 w-8" />
+                <p className="text-gray-500 text-sm">Joriy seriya</p>
+                <p className="text-2xl font-bold text-gray-900 mt-1 flex items-center gap-2">
+                  {userStats.currentStreak} <Flame className="h-6 w-6" />
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-6 hover:shadow-xl transition-shadow duration-300">
+          <div className="bg-white border border-gray-200 rounded-lg p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-gray-500 text-sm uppercase tracking-wide">{t(language, "dashboard.globalRank")}</p>
-                <p className="text-4xl font-black text-pink-600 mt-2">#{userStats.rank}</p>
+                <p className="text-gray-500 text-sm">Global reyting</p>
+                <p className="text-2xl font-bold text-gray-900 mt-1">#{userStats.rank}</p>
               </div>
-              <TrendingUp className="h-12 w-12 text-pink-600 opacity-30" />
+              <TrendingUp className="h-8 w-8 text-gray-400" />
             </div>
           </div>
         </div>
@@ -111,20 +110,20 @@ export default function Dashboard() {
         <div className="grid lg:grid-cols-3 gap-8">
        
           <div className="lg:col-span-2">
-            <h2 className="text-2xl font-bold mb-6 flex items-center gap-3">
-              <Target className="h-7 w-7 text-purple-600" /> {t(language, "dashboard.coursesInProgress")}
+            <h2 className="text-xl font-bold mb-6 flex items-center gap-2">
+              <Target className="h-5 w-5 text-gray-600" /> Davom etayotgan kurslar
             </h2>
             <div className="space-y-6">
               {inProgressCourses.map((course) => (
                 <Link key={course.title} href={`/dashboard/courses/${course.courseId}`}>
-                  <div className="bg-white rounded-2xl shadow-md border border-gray-200 p-6 hover:shadow-lg hover:border-purple-300 transition-all duration-300 cursor-pointer">
+                  <div className="bg-white border border-gray-200 rounded-lg p-6 hover:shadow-md transition cursor-pointer">
                     <div className="flex justify-between items-start mb-4">
                       <h3 className="text-xl font-semibold text-gray-900">{course.title}</h3>
                       <span className="text-sm text-gray-500">{course.lessonsLeft} {t(language, "dashboard.lessonsLeft")}</span>
                     </div>
-                    <div className="w-full bg-gray-200 rounded-full h-4 overflow-hidden">
+                    <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
                       <div
-                        className="h-full bg-linear-to-r from-brand-from to-brand-to rounded-full transition-all duration-700 ease-out"
+                        className="h-full bg-gray-900 rounded-full transition-all duration-700 ease-out"
                         style={{ width: `${course.progress}%` }}
                       />
                     </div>

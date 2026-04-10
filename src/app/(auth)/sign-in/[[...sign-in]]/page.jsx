@@ -28,30 +28,24 @@ export default function Page() {
   };
 
   return (
-    <div className="min-h-screen bg-black flex items-center justify-center relative overflow-hidden px-4">
-   
-      <div className="absolute inset-0 bg-linear-to-br from-purple-900/20 via-black to-cyan-900/20" />
-      <div className="absolute inset-0 bg-[radial-linear(ellipse_at_top,var(--tw-linear-stops))] from-purple-800/30 via-transparent to-transparent" />
-      <div className="absolute inset-0 bg-[radial-linear(ellipse_at_bottom,var(--tw-linear-stops))] from-cyan-700/30 via-transparent to-transparent" />
-      <div className="absolute -top-40 -left-40 w-96 h-96 bg-purple-600 rounded-full mix-blend-multiply blur-3xl opacity-30 animate-blob" />
-      <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-cyan-500 rounded-full mix-blend-multiply blur-3xl opacity-30 animate-blob animation-delay-2000" />
+    <div className="min-h-screen bg-white flex items-center justify-center px-4">
 
       <div className="relative z-10 w-full max-w-md">
         <div className="text-center mb-10">
-          <h1 className="text-5xl md:text-6xl font-black bg-linear-to-r from-purple-400 via-pink-400 to-cyan-400 bg-clip-text text-transparent">
-            {t(language, "auth.joinCodeMaster")}
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+            Kirish
           </h1>
-          <p className="text-gray-400 mt-4 text-lg">{t(language, "auth.startLearningFree")}</p>
+          <p className="text-gray-600 mb-8">Hisobingizga kirish</p>
         </div>
 
-        <div className="glass p-8 rounded-3xl shadow-2xl">
+        <div className="bg-white border border-gray-200 p-8 rounded-lg">
           <form className="space-y-6" onSubmit={handleSubmit}>
             <input
               type="email"
               placeholder="Email"
               value={email}
               onChange={e => setEmail(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-white text-gray-900 border border-gray-300 focus:outline-none focus:border-cyan-500"
               required
             />
             <input
@@ -59,18 +53,18 @@ export default function Page() {
               placeholder="Password"
               value={password}
               onChange={e => setPassword(e.target.value)}
-              className="w-full px-4 py-3 rounded-lg bg-gray-900 text-white border border-gray-700 focus:outline-none"
+              className="w-full px-4 py-3 rounded-lg bg-white text-gray-900 border border-gray-300 focus:outline-none focus:border-cyan-500"
               required
             />
             {error && <div className="text-red-500 text-sm">{error}</div>}
-            <button type="submit" className="w-full bg-purple-600 hover:bg-purple-700 text-white font-bold py-3 rounded-lg transition">Sign In</button>
+            <button type="submit" className="w-full bg-gray-900 hover:bg-gray-800 text-white font-medium py-3 rounded-lg transition">Sign In</button>
           </form>
         </div>
 
-        <p className="text-center mt-6 text-gray-500">
-          {t(language, "auth.dontHaveAccount")}{" "}
-          <a href="/sign-up" className="text-purple-400 hover:text-purple-300 font-medium">
-            {t(language, "auth.signUpHere")}
+        <p className="text-center mt-6 text-gray-600">
+          Hisobingiz yo'qmi? {" "}
+          <a href="/sign-up" className="text-gray-900 hover:text-gray-700 font-medium">
+            Ro'yxatdan o'tish
           </a>
         </p>
       </div>
