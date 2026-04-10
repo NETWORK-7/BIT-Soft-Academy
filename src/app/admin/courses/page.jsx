@@ -77,12 +77,23 @@ const AdminCourses = () => {
     setLoading(true);
     try {
       const res = await fetch(`/api/courses/${id}`, { method: "DELETE" });
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
       const data = await res.json();
+      console.log("Course delete response:", data);
+      
       if (data.success) {
         setCourses(courses.filter((c) => c._id !== id));
+        alert("Course deleted successfully!");
+      } else {
+        alert(`Failed to delete course: ${data.error || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Error deleting course:", error);
+      alert(`Error deleting course: ${error.message}`);
     }
     setLoading(false);
   };

@@ -130,12 +130,23 @@ const AdminLessons = () => {
     setLoading(true);
     try {
       const res = await fetch(`/api/lessons?lessonId=${lessonId}`, { method: "DELETE" });
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
       const data = await res.json();
+      console.log("Lesson delete response:", data);
+      
       if (data.success) {
         setLessons(lessons.filter(l => l._id !== lessonId));
+        alert("Lesson deleted successfully!");
+      } else {
+        alert(`Failed to delete lesson: ${data.error || "Unknown error"}`);
       }
     } catch (error) {
       console.error("Error deleting lesson:", error);
+      alert(`Error deleting lesson: ${error.message}`);
     }
     setLoading(false);
   };
