@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { Layers, PlusCircle, Video, Edit2, Trash2, Search, Clock, Play } from "lucide-react";
 
-const Admin2Lessons = () => {
+const AdminLessons = () => {
   const [courses, setCourses] = useState([]);
   const [lessons, setLessons] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState("");
@@ -29,24 +29,52 @@ const Admin2Lessons = () => {
 
   const fetchCourses = async () => {
     try {
+      console.log("Fetching courses for lessons...");
       const res = await fetch("/api/courses");
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
       const data = await res.json();
+      console.log("Courses for lessons response:", data);
+      
       if (data.courses) {
-        setCourses(data.courses);
+        const validCourses = data.courses.filter((c) => c._id && c.title);
+        setCourses(validCourses);
+        console.log(`Loaded ${validCourses.length} courses for lessons`);
       }
     } catch (error) {
       console.error("Error fetching courses:", error);
+      alert("Failed to fetch courses. Please check console for details.");
     }
   };
 
   const fetchLessons = async () => {
+    if (!selectedCourse) return;
+    
     setLoading(true);
     try {
+      console.log("Fetching lessons for course:", selectedCourse);
       const res = await fetch(`/api/lessons?courseId=${selectedCourse}`);
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
       const data = await res.json();
-      setLessons(data.lessons || []);
+      console.log("Lessons response:", data);
+      
+      if (data.lessons) {
+        setLessons(data.lessons);
+        console.log(`Loaded ${data.lessons.length} lessons`);
+      } else {
+        setLessons([]);
+      }
     } catch (error) {
       console.error("Error fetching lessons:", error);
+      alert("Failed to fetch lessons. Please check console for details.");
+      setLessons([]);
     }
     setLoading(false);
   };
@@ -54,25 +82,31 @@ const Admin2Lessons = () => {
   const handleAddLesson = async (e) => {
     e.preventDefault();
     setLoading(true);
+    
     const lessonData = {
       courseId: selectedCourse,
-      title,
-      content,
-      videoUrl,
+      title: title.trim(),
+      content: content.trim(),
+      videoUrl: videoUrl.trim(),
       duration: parseInt(duration) || 0,
       sortOrder: parseInt(sortOrder) || lessons.length + 1
     };
 
+    console.log("Creating lesson:", lessonData);
+
     try {
       const res = await fetch("/api/lessons", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(lessonData),
       });
       
       const data = await res.json();
+      console.log("Lesson creation response:", data);
       
-      if (data.success) {
+      if (res.ok && data.success) {
         await fetchLessons(); // Refresh lessons list
         setTitle("");
         setContent("");
@@ -81,7 +115,7 @@ const Admin2Lessons = () => {
         setSortOrder("");
         alert("Lesson created successfully!");
       } else {
-        alert(`Failed to create lesson: ${data.error || "Unknown error"}`);
+        throw new Error(data.error || "Failed to create lesson");
       }
     } catch (error) {
       console.error("Error creating lesson:", error);
@@ -93,24 +127,30 @@ const Admin2Lessons = () => {
   const handleUpdateLesson = async (e) => {
     e.preventDefault();
     setLoading(true);
+    
     const lessonData = {
-      title,
-      content,
-      videoUrl,
+      title: title.trim(),
+      content: content.trim(),
+      videoUrl: videoUrl.trim(),
       duration: parseInt(duration) || 0,
       sortOrder: parseInt(sortOrder) || 0
     };
 
+    console.log("Updating lesson:", editingLesson._id, lessonData);
+
     try {
       const res = await fetch(`/api/lessons?lessonId=${editingLesson._id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(lessonData),
       });
       
       const data = await res.json();
+      console.log("Lesson update response:", data);
       
-      if (data.success) {
+      if (res.ok && data.success) {
         await fetchLessons(); // Refresh lessons list
         setEditingLesson(null);
         setTitle("");
@@ -120,7 +160,7 @@ const Admin2Lessons = () => {
         setSortOrder("");
         alert("Lesson updated successfully!");
       } else {
-        alert(`Failed to update lesson: ${data.error || "Unknown error"}`);
+        throw new Error(data.error || "Failed to update lesson");
       }
     } catch (error) {
       console.error("Error updating lesson:", error);
@@ -133,15 +173,24 @@ const Admin2Lessons = () => {
     if (!confirm("Are you sure you want to delete this lesson?")) return;
     
     setLoading(true);
+    console.log("Deleting lesson:", lessonId);
+    
     try {
-      const res = await fetch(`/api/lessons?lessonId=${lessonId}`, { method: "DELETE" });
-      const data = await res.json();
+      const res = await fetch(`/api/lessons?lessonId=${lessonId}`, { 
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
       
-      if (data.success) {
+      const data = await res.json();
+      console.log("Lesson delete response:", data);
+      
+      if (res.ok && data.success) {
         await fetchLessons(); // Refresh lessons list
         alert("Lesson deleted successfully!");
       } else {
-        alert(`Failed to delete lesson: ${data.error || "Unknown error"}`);
+        throw new Error(data.error || "Failed to delete lesson");
       }
     } catch (error) {
       console.error("Error deleting lesson:", error);
@@ -151,12 +200,13 @@ const Admin2Lessons = () => {
   };
 
   const handleEditLesson = (lesson) => {
+    console.log("Editing lesson:", lesson);
     setEditingLesson(lesson);
-    setTitle(lesson.title);
-    setContent(lesson.content);
+    setTitle(lesson.title || "");
+    setContent(lesson.content || "");
     setVideoUrl(lesson.videoUrl || "");
-    setDuration(lesson.duration || "");
-    setSortOrder(lesson.sortOrder || "");
+    setDuration(lesson.duration?.toString() || "");
+    setSortOrder(lesson.sortOrder?.toString() || "");
   };
 
   const filteredLessons = lessons.filter(lesson =>
@@ -186,7 +236,7 @@ const Admin2Lessons = () => {
             <select
               value={selectedCourse}
               onChange={(e) => setSelectedCourse(e.target.value)}
-              className="border p-3 rounded-lg text-lg w-full max-w-md"
+              className="border p-3 rounded-lg text-lg w-full max-w-md focus:ring-2 focus:ring-purple-500 focus:border-transparent"
             >
               <option value="">-- Select a course --</option>
               {courses.map((course) => (
@@ -209,21 +259,21 @@ const Admin2Lessons = () => {
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
                     required
-                    className="border p-3 rounded-lg text-lg"
+                    className="border p-3 rounded-lg text-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   />
                   <input
                     type="number"
                     placeholder="Sort Order"
                     value={sortOrder}
                     onChange={(e) => setSortOrder(e.target.value)}
-                    className="border p-3 rounded-lg text-lg"
+                    className="border p-3 rounded-lg text-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   />
                   <textarea
                     placeholder="Lesson Content"
                     value={content}
                     onChange={(e) => setContent(e.target.value)}
                     required
-                    className="border p-3 rounded-lg text-lg md:col-span-2"
+                    className="border p-3 rounded-lg text-lg md:col-span-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                     rows={4}
                   />
                   <input
@@ -231,18 +281,22 @@ const Admin2Lessons = () => {
                     placeholder="YouTube Video URL"
                     value={videoUrl}
                     onChange={(e) => setVideoUrl(e.target.value)}
-                    className="border p-3 rounded-lg text-lg md:col-span-2"
+                    className="border p-3 rounded-lg text-lg md:col-span-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   />
                   <input
                     type="number"
                     placeholder="Duration (minutes)"
                     value={duration}
                     onChange={(e) => setDuration(e.target.value)}
-                    className="border p-3 rounded-lg text-lg"
+                    className="border p-3 rounded-lg text-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
                   />
                 </div>
                 <div className="flex gap-3 mt-4">
-                  <button type="submit" className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition disabled:opacity-50" disabled={loading}>
+                  <button 
+                    type="submit" 
+                    className="bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition disabled:opacity-50" 
+                    disabled={loading}
+                  >
                     {loading ? (editingLesson ? "Updating..." : "Adding...") : (editingLesson ? "Update Lesson" : "Add Lesson")}
                   </button>
                   {editingLesson && (
@@ -406,4 +460,4 @@ const Admin2Lessons = () => {
   );
 };
 
-export default Admin2Lessons;
+export default AdminLessons;

@@ -3,21 +3,21 @@ import { BookOpenText, User, Layers } from "lucide-react";
 
 const adminCards = [
   {
-    href: "/admin2/courses",
+    href: "/bitsoft/admin/courses",
     label: "Manage Courses",
     icon: BookOpenText,
     color: "bg-blue-100 text-blue-700",
     hover: "hover:bg-blue-200",
   },
   {
-    href: "/admin2/users",
+    href: "/bitsoft/admin/users",
     label: "View Users",
     icon: User,
     color: "bg-green-100 text-green-700",
     hover: "hover:bg-green-200",
   },
   {
-    href: "/admin2/lessons",
+    href: "/bitsoft/admin/lessons",
     label: "Manage Lessons",
     icon: Layers,
     color: "bg-purple-100 text-purple-700",

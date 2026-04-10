@@ -60,11 +60,26 @@ export async function checkDatabaseHealth() {
 // Course operations with admin auth
 export async function createCourse(courseData) {
   try {
-    // Use local database for admin operations
-    const { createCourse: createLocalCourse } = await import("@/lib/local-db.js");
-    return await createLocalCourse(courseData);
+    console.log("Creating course in Firebase:", courseData);
+    const coursesRef = ref(db, 'courses');
+    const newCourseRef = push(coursesRef);
+    await set(newCourseRef, {
+      ...courseData,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+    
+    const createdCourse = {
+      _id: newCourseRef.key,
+      ...courseData,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    
+    console.log("Course created successfully in Firebase:", createdCourse);
+    return createdCourse;
   } catch (error) {
-    console.error("Error creating course:", error);
+    console.error("Error creating course in Firebase:", error);
     throw error;
   }
 }
@@ -96,22 +111,37 @@ export async function getCourseById(courseId) {
 
 export async function updateCourse(courseId, updateData) {
   try {
-    // Use local database for admin operations
-    const { updateCourse: updateLocalCourse } = await import("@/lib/local-db.js");
-    return await updateLocalCourse(courseId, updateData);
+    console.log("Updating course in Firebase:", courseId, updateData);
+    const courseRef = ref(db, `courses/${courseId}`);
+    await update(courseRef, {
+      ...updateData,
+      updatedAt: new Date().toISOString()
+    });
+    
+    const updatedCourse = {
+      _id: courseId,
+      ...updateData,
+      updatedAt: new Date().toISOString()
+    };
+    
+    console.log("Course updated successfully in Firebase:", updatedCourse);
+    return true;
   } catch (error) {
-    console.error("Error updating course:", error);
+    console.error("Error updating course in Firebase:", error);
     throw error;
   }
 }
 
 export async function deleteCourse(courseId) {
   try {
-    // Use local database for admin operations
-    const { deleteCourse: deleteLocalCourse } = await import("@/lib/local-db.js");
-    return await deleteLocalCourse(courseId);
+    console.log("Deleting course from Firebase:", courseId);
+    const courseRef = ref(db, `courses/${courseId}`);
+    await remove(courseRef);
+    
+    console.log("Course deleted successfully from Firebase:", courseId);
+    return true;
   } catch (error) {
-    console.error("Error deleting course:", error);
+    console.error("Error deleting course from Firebase:", error);
     throw error;
   }
 }

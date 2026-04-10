@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { BookOpenText, Trash2, Video, Plus, Edit2 } from "lucide-react";
 
-const Admin2Courses = () => {
+const AdminCourses = () => {
   const [courses, setCourses] = useState([]);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -19,41 +19,58 @@ const Admin2Courses = () => {
 
   const fetchCourses = async () => {
     try {
+      console.log("Fetching courses...");
       const res = await fetch("/api/courses");
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
       const data = await res.json();
+      console.log("Courses response:", data);
+      
       if (data.courses) {
-        setCourses(data.courses.filter((c) => c._id));
+        const validCourses = data.courses.filter((c) => c._id && c.title);
+        setCourses(validCourses);
+        console.log(`Loaded ${validCourses.length} courses`);
       }
     } catch (error) {
       console.error("Error fetching courses:", error);
+      alert("Failed to fetch courses. Please check console for details.");
     }
   };
 
   const handleAddCourse = async (e) => {
     e.preventDefault();
     setLoading(true);
+    
     const courseData = {
-      title,
-      description,
-      videoUrl,
-      instructor,
-      duration,
+      title: title.trim(),
+      description: description.trim(),
+      videoUrl: videoUrl.trim(),
+      instructor: instructor.trim(),
+      duration: duration.trim(),
       points: parseInt(points) || 0,
       tags: ["Frontend"],
       rating: 4.5,
       image: `https://cdn-icons-png.flaticon.com/512/919/919${Math.floor(Math.random() * 900 + 100)}.png`
     };
 
+    console.log("Creating course:", courseData);
+
     try {
       const res = await fetch("/api/courses", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(courseData),
       });
       
       const data = await res.json();
+      console.log("Course creation response:", data);
       
-      if (data.success) {
+      if (res.ok && data.success) {
         await fetchCourses(); // Refresh courses list
         setTitle("");
         setDescription("");
@@ -63,7 +80,7 @@ const Admin2Courses = () => {
         setPoints("");
         alert("Course created successfully!");
       } else {
-        alert(`Failed to create course: ${data.error || "Unknown error"}`);
+        throw new Error(data.error || "Failed to create course");
       }
     } catch (error) {
       console.error("Error creating course:", error);
@@ -76,15 +93,24 @@ const Admin2Courses = () => {
     if (!confirm("Are you sure you want to delete this course?")) return;
     
     setLoading(true);
+    console.log("Deleting course:", id);
+    
     try {
-      const res = await fetch(`/api/courses/${id}`, { method: "DELETE" });
-      const data = await res.json();
+      const res = await fetch(`/api/courses/${id}`, { 
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        }
+      });
       
-      if (data.success) {
+      const data = await res.json();
+      console.log("Course delete response:", data);
+      
+      if (res.ok && data.success) {
         await fetchCourses(); // Refresh courses list
         alert("Course deleted successfully!");
       } else {
-        alert(`Failed to delete course: ${data.error || "Unknown error"}`);
+        throw new Error(data.error || "Failed to delete course");
       }
     } catch (error) {
       console.error("Error deleting course:", error);
@@ -94,13 +120,14 @@ const Admin2Courses = () => {
   };
 
   const handleEditCourse = (course) => {
+    console.log("Editing course:", course);
     setEditingCourse(course);
-    setTitle(course.title);
-    setDescription(course.description);
+    setTitle(course.title || "");
+    setDescription(course.description || "");
     setVideoUrl(course.videoUrl || "");
     setInstructor(course.instructor || "");
     setDuration(course.duration || "");
-    setPoints(course.points || "");
+    setPoints(course.points?.toString() || "");
   };
 
   const handleUpdateCourse = async (e) => {
@@ -108,24 +135,29 @@ const Admin2Courses = () => {
     setLoading(true);
     
     const courseData = {
-      title,
-      description,
-      videoUrl,
-      instructor,
-      duration,
+      title: title.trim(),
+      description: description.trim(),
+      videoUrl: videoUrl.trim(),
+      instructor: instructor.trim(),
+      duration: duration.trim(),
       points: parseInt(points) || 0,
     };
+
+    console.log("Updating course:", editingCourse._id, courseData);
 
     try {
       const res = await fetch(`/api/courses/${editingCourse._id}`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(courseData),
       });
       
       const data = await res.json();
+      console.log("Course update response:", data);
       
-      if (data.success) {
+      if (res.ok && data.success) {
         await fetchCourses(); // Refresh courses list
         setEditingCourse(null);
         setTitle("");
@@ -136,7 +168,7 @@ const Admin2Courses = () => {
         setPoints("");
         alert("Course updated successfully!");
       } else {
-        alert(`Failed to update course: ${data.error || "Unknown error"}`);
+        throw new Error(data.error || "Failed to update course");
       }
     } catch (error) {
       console.error("Error updating course:", error);
@@ -162,21 +194,21 @@ const Admin2Courses = () => {
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
-                className="border p-3 rounded-lg text-lg"
+                className="border p-3 rounded-lg text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               <input
                 type="text"
                 placeholder="Instructor Name"
                 value={instructor}
                 onChange={(e) => setInstructor(e.target.value)}
-                className="border p-3 rounded-lg text-lg"
+                className="border p-3 rounded-lg text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               <textarea
                 placeholder="Course Description"
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
                 required
-                className="border p-3 rounded-lg text-lg md:col-span-2"
+                className="border p-3 rounded-lg text-lg md:col-span-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 rows={3}
               />
               <input
@@ -184,26 +216,30 @@ const Admin2Courses = () => {
                 placeholder="YouTube Video URL"
                 value={videoUrl}
                 onChange={(e) => setVideoUrl(e.target.value)}
-                className="border p-3 rounded-lg text-lg md:col-span-2"
+                className="border p-3 rounded-lg text-lg md:col-span-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               <input
                 type="text"
                 placeholder="Duration (e.g., 8 hours)"
                 value={duration}
                 onChange={(e) => setDuration(e.target.value)}
-                className="border p-3 rounded-lg text-lg"
+                className="border p-3 rounded-lg text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
               <input
                 type="number"
                 placeholder="Points"
                 value={points}
                 onChange={(e) => setPoints(e.target.value)}
-                className="border p-3 rounded-lg text-lg"
+                className="border p-3 rounded-lg text-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               />
             </div>
             
             <div className="flex gap-3 mt-4">
-              <button type="submit" className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50" disabled={loading}>
+              <button 
+                type="submit" 
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition disabled:opacity-50" 
+                disabled={loading}
+              >
                 {loading ? (editingCourse ? "Updating..." : "Adding...") : (editingCourse ? "Update Course" : "Add Course")}
               </button>
               {editingCourse && (
@@ -303,4 +339,4 @@ const Admin2Courses = () => {
   );
 };
 
-export default Admin2Courses;
+export default AdminCourses;

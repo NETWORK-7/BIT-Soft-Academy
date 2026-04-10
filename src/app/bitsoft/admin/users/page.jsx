@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { User, Search, Mail, Calendar, Award, BookOpenText } from "lucide-react";
 
-const Admin2Users = () => {
+const AdminUsers = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
@@ -14,13 +14,23 @@ const Admin2Users = () => {
   const fetchUsers = async () => {
     setLoading(true);
     try {
+      console.log("Fetching users...");
       const res = await fetch("/api/users");
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
       const data = await res.json();
+      console.log("Users response:", data);
+      
       if (data.users) {
         setUsers(data.users);
+        console.log(`Loaded ${data.users.length} users`);
       }
     } catch (error) {
       console.error("Error fetching users:", error);
+      alert("Failed to fetch users. Please check console for details.");
     }
     setLoading(false);
   };
@@ -163,4 +173,4 @@ const Admin2Users = () => {
   );
 };
 
-export default Admin2Users;
+export default AdminUsers;
