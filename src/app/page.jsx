@@ -26,21 +26,21 @@ export default function LandingPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-cyan-100/50 via-transparent to-blue-100/50"></div>
         <div className="absolute inset-0 opacity-25">
           <img 
-            src="/hero-bg-1.jpg" 
+            src="https://images.unsplash.com/photo-1557804506-669a67965ba0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1974&q=80" 
             alt="Background 1" 
             className="w-full h-full object-cover animate-pulse"
           />
         </div>
         <div className="absolute inset-0 opacity-20">
           <img 
-            src="/hero-bg-2.jpg" 
+            src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1920&q=80" 
             alt="Background 2" 
             className="w-full h-full object-cover mix-blend-multiply"
           />
         </div>
         <div className="absolute inset-0 opacity-15">
           <img 
-            src="/hero-bg-3.jpg" 
+            src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
             alt="Background 3" 
             className="w-full h-full object-cover mix-blend-screen"
           />
