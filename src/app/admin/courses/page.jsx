@@ -38,20 +38,35 @@ const AdminCourses = () => {
       image: `https://cdn-icons-png.flaticon.com/512/919/919${Math.floor(Math.random() * 900 + 100)}.png`
     };
 
-    const res = await fetch("/api/courses", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(courseData),
-    });
-    const data = await res.json();
-    if (data.success) {
-      setCourses([...courses, data.course]);
-      setTitle("");
-      setDescription("");
-      setVideoUrl("");
-      setInstructor("");
-      setDuration("");
-      setPoints("");
+    try {
+      const res = await fetch("/api/courses", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(courseData),
+      });
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
+      const data = await res.json();
+      console.log("Course creation response:", data);
+      
+      if (data.success) {
+        setCourses([...courses, data.course]);
+        setTitle("");
+        setDescription("");
+        setVideoUrl("");
+        setInstructor("");
+        setDuration("");
+        setPoints("");
+        alert("Course created successfully!");
+      } else {
+        alert(`Failed to create course: ${data.error || "Unknown error"}`);
+      }
+    } catch (error) {
+      console.error("Error creating course:", error);
+      alert(`Error creating course: ${error.message}`);
     }
     setLoading(false);
   };

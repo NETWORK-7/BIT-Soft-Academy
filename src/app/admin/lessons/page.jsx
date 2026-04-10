@@ -48,19 +48,34 @@ const AdminLessons = () => {
       sortOrder: parseInt(sortOrder) || lessons.length + 1
     };
 
-    const res = await fetch("/api/lessons", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(lessonData),
-    });
-    const data = await res.json();
-    if (data.success) {
-      setLessons([...lessons, data.lesson]);
-      setTitle("");
-      setContent("");
-      setVideoUrl("");
-      setDuration("");
-      setSortOrder("");
+    try {
+      const res = await fetch("/api/lessons", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(lessonData),
+      });
+      
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      
+      const data = await res.json();
+      console.log("Lesson creation response:", data);
+      
+      if (data.success) {
+        setLessons([...lessons, data.lesson]);
+        setTitle("");
+        setContent("");
+        setVideoUrl("");
+        setDuration("");
+        setSortOrder("");
+        alert("Lesson created successfully!");
+      } else {
+        alert(`Failed to create lesson: ${data.error || "Unknown error"}`);
+      }
+    } catch (error) {
+      console.error("Error creating lesson:", error);
+      alert(`Error creating lesson: ${error.message}`);
     }
     setLoading(false);
   };
