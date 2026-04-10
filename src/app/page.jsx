@@ -72,9 +72,12 @@ export default function LandingPage() {
             <div className="relative">
               <div className="relative z-10">
                 <img 
-                  src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                  src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80" 
                   alt="Professional Development" 
                   className="rounded-2xl shadow-2xl w-full h-auto"
+                  onError={(e) => {
+                    e.target.src = 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1471&q=80';
+                  }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent rounded-2xl"></div>
               </div>
@@ -111,6 +114,9 @@ export default function LandingPage() {
                     src={course.image} 
                     alt={course.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    onError={(e) => {
+                      e.target.src = 'https://images.unsplash.com/photo-1461749280684-dcc714de5c24?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
                   <div className="absolute top-4 right-4">
@@ -137,47 +143,76 @@ export default function LandingPage() {
       </section>
 
       {/* Projects Preview Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-900">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex justify-between items-center mb-12">
-            <div>
-              <h2 className="text-3xl font-bold text-white mb-2">Yangi Loyihalar</h2>
-              <p className="text-cyan-100">Real dunyo loyihalar bilan tajriba oling</p>
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-900 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-cyan-900"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000"></div>
+        
+        <div className="relative z-10 max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center space-x-2 bg-cyan-500/20 backdrop-blur-sm border border-cyan-400/30 rounded-full px-6 py-3 mb-6">
+              <Code className="h-5 w-5 text-cyan-300" />
+              <span className="text-cyan-100 font-semibold text-lg">Real loyihalar</span>
             </div>
-            <Link href="/courses" className="text-cyan-400 hover:text-cyan-300 font-semibold flex items-center gap-2">
-              Barchasi <ArrowRight className="h-4 w-4" />
+            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
+              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Professional</span> <br />Loyihalar
+            </h2>
+            <p className="text-cyan-100 text-xl max-w-3xl mx-auto mb-12">
+              Noldan real dunyo loyihalarini yarating va o'zing portfelingizni shakllantiring
+            </p>
+            <Link href="/courses" className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg shadow-cyan-500/25">
+              Barcha loyihalarni ko'rish <ArrowRight className="h-5 w-5" />
             </Link>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              { title: "MERN Stack - Telegram clone", tech: "Next.js, Tailwind, Prisma", status: "production build", image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { title: "Next.js - X clone", tech: "Next.js, Tailwind, Prisma", status: "production build", image: "https://images.unsplash.com/photo-1522252234503-e356532cafd5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { title: "Next.js - Drive clone", tech: "Next.js, Tailwind, Prisma", status: "production build", image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { title: "Nuxt.js - Jira clone", tech: "Next.js, Tailwind, Prisma", status: "production build", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { title: "Node.js - Telegram bot", tech: "Next.js, Tailwind, Prisma", status: "production build", image: "https://images.unsplash.com/photo-1515879218367-8466d946aaa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-              { title: "React Native - Netflix clone", tech: "Next.js, Tailwind, Prisma", status: "production build", image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" }
+            [
+              { title: "MERN Stack - Telegram clone", tech: "MongoDB, Express, React, Node.js", status: "Production Ready", image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
+              { title: "Next.js - X Clone", tech: "Next.js, Tailwind, TypeScript", status: "Production Ready", image: "https://images.unsplash.com/photo-1522252234503-e356532cafd5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
+              { title: "Next.js - Drive Clone", tech: "Next.js, Prisma, TypeScript", status: "Production Ready", image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
+              { title: "Nuxt.js - Jira Clone", tech: "Nuxt.js, Vue.js, Tailwind", status: "Production Ready", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
+              { title: "Node.js - Telegram Bot", tech: "Node.js, Express, Telegram API", status: "Production Ready", image: "https://images.unsplash.com/photo-1515879218367-8466d946aaa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
+              { title: "React Native - Netflix", tech: "React Native, Firebase, Redux", status: "Production Ready", image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" }
             ].map((project, index) => (
-              <div key={index} className="group bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden hover:border-cyan-500/50 transition-all duration-300">
-                <div className="relative h-40 overflow-hidden">
+              <div key={index} className="group bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-3xl overflow-hidden hover:bg-slate-800/70 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500">
+                <div className="relative h-48 overflow-hidden">
                   <img 
                     src={project.image} 
                     alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    onError={(e) => {
+                      e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                    }}
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent"></div>
                   <div className="absolute top-4 right-4">
-                    <span className="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-semibold">{project.status}</span>
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                      <span className="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-semibold">{project.status}</span>
+                    </div>
+                  </div>
+                  <div className="absolute bottom-4 left-4">
+                    <div className="bg-slate-900/80 backdrop-blur-sm rounded-lg px-3 py-2">
+                      <Code className="h-4 w-4 text-cyan-400 mb-1" />
+                      <p className="text-white text-xs font-medium">{project.tech}</p>
+                    </div>
                   </div>
                 </div>
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">{project.title}</h3>
-                  <div className="text-cyan-100 text-sm mb-4">
-                    {project.tech}
+                <div className="p-8">
+                  <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-cyan-400 transition-colors">{project.title}</h3>
+                  <p className="text-slate-300 text-sm mb-6 leading-relaxed">
+                    Zamonaviy texnologiyalar yordamida to'liq darajadagi loyihani yarating. 
+                    Boshlang'ichdan tugaguncha to'liq qo'llab-namiz.
+                  </p>
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <Users className="h-5 w-5 text-slate-400" />
+                      <span className="text-slate-400 text-sm">250+ o'quvchilar</span>
+                    </div>
+                    <button className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg shadow-cyan-500/25 flex items-center gap-2">
+                      <span>Proyektni ko'rish</span> <ArrowRight className="h-4 w-4" />
+                    </button>
                   </div>
-                  <button className="text-cyan-400 hover:text-cyan-300 font-semibold text-sm flex items-center gap-1">
-                    Batafsil ko'rish <ArrowRight className="h-4 w-4" />
-                  </button>
                 </div>
               </div>
             ))}
@@ -185,28 +220,72 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Newsletter Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-cyan-50 to-blue-50">
-        <div className="max-w-4xl mx-auto text-center">
-          <div className="bg-white rounded-3xl shadow-2xl p-12 border border-cyan-100">
-            <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6">
-              <Star className="h-8 w-8 text-white" />
-            </div>
+      {/* Stats Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              Yangiliklardan xabardor bo'ling
+              Bizning <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">yutuqlarimiz</span>
             </h2>
-            <p className="text-slate-600 mb-8 max-w-2xl mx-auto">
-              Yangi kurslar, bepul loyihalar va IT sohasidagi so'nggi yangiliklarni pochtangizga qabul qiling.
+            <p className="text-slate-600 text-lg max-w-3xl mx-auto">
+              Minglab o'quvchilar ishonchilariga qo'shildi va o'z kar'erasiga boshladilar
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input 
-                type="email" 
-                placeholder="Email manzilingiz" 
-                className="flex-1 px-4 py-3 border border-slate-300 rounded-lg focus:outline-none focus:border-cyan-500 focus:ring-2 focus:ring-cyan-500/20"
-              />
-              <button className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg shadow-cyan-500/25">
-                Obuna bo'lish
-              </button>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-cyan-500/25">
+                <BookOpenText className="h-10 w-10 text-white" />
+              </div>
+              <div className="text-5xl font-bold text-slate-900 mb-2">{stats.courses}+</div>
+              <div className="text-slate-600">Professional Kurslar</div>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-blue-500/25">
+                <Users className="h-10 w-10 text-white" />
+              </div>
+              <div className="text-5xl font-bold text-slate-900 mb-2">{stats.users}+</div>
+              <div className="text-slate-600">Faol O'quvchilar</div>
+            </div>
+            
+            <div className="text-center">
+              <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg shadow-purple-500/25">
+                <Award className="h-10 w-10 text-white" />
+              </div>
+              <div className="text-5xl font-bold text-slate-900 mb-2">95%</div>
+              <div className="text-slate-600">Muvaffaqiyat</div>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+      {/* Newsletter Section */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 to-cyan-50">
+        <div className="max-w-4xl mx-auto text-center">
+          <div className="bg-white rounded-3xl shadow-2xl p-12 border border-cyan-100 relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-32 h-32 bg-cyan-500/10 rounded-full blur-3xl"></div>
+            <div className="relative z-10">
+              <div className="w-20 h-20 bg-gradient-to-r from-cyan-500 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-8 shadow-lg shadow-cyan-500/25">
+                <Star className="h-10 w-10 text-white" />
+              </div>
+              <h2 className="text-4xl font-bold text-slate-900 mb-6">
+                Yangiliklardan <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">xabardor</span> bo'ling
+              </h2>
+              <p className="text-slate-600 text-lg mb-8 max-w-3xl mx-auto">
+                Yangi kurslar, bepul loyihalar va IT sohasidagi so'nggi yangiliklarni pochtangizga qabul qiling.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+                <input 
+                  type="email" 
+                  placeholder="Email manzilingiz" 
+                  className="flex-1 px-6 py-4 border border-slate-300 rounded-xl focus:outline-none focus:border-cyan-500 focus:ring-4 focus:ring-cyan-500/20 text-lg"
+                />
+                <button className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl font-bold hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg shadow-cyan-500/25 flex items-center gap-3">
+                  <Zap className="h-5 w-5" />
+                  <span>Obuna bo'lish</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
