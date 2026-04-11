@@ -17,7 +17,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     setIsLoaded(true);
-    // Add timeout to prevent infinite loading
+    
     const timeoutId = setTimeout(() => {
       console.log("Auth check timeout, redirecting to sign-in");
       router.push("/sign-in");

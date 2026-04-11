@@ -27,6 +27,7 @@ export async function middleware(request) {
       if (!adminAuth || adminAuth !== 'true') {
         const url = request.nextUrl.clone();
         url.pathname = '/admin/sign-in';
+        console.log("Redirecting to admin sign-in from:", pathname);
         return NextResponse.redirect(url);
       }
     }

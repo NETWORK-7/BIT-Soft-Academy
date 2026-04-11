@@ -13,9 +13,9 @@ export async function POST(req) {
       
       // Set admin session cookie
       cookieStore.set("adminAuth", "true", {
-        httpOnly: true,
+        httpOnly: false, // Make accessible to client-side and middleware
         secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        sameSite: "lax", // Changed to lax for better compatibility
         maxAge: 24 * 60 * 60, // 24 hours
         path: "/",
       });
