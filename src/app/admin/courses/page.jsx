@@ -19,20 +19,19 @@ const AdminCourses = () => {
 
   const fetchCourses = async () => {
     try {
-      console.log("Fetching courses...");
-      const res = await fetch("/api/courses");
+      console.log("Fetching courses with optimized API...");
+      const res = await fetch("/api/courses-optimized");
       
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
       
       const data = await res.json();
-      console.log("Courses response:", data);
+      console.log("Optimized courses response:", data);
       
       if (data.courses) {
-        const validCourses = data.courses.filter((c) => c._id && c.title);
-        setCourses(validCourses);
-        console.log(`Loaded ${validCourses.length} courses`);
+        setCourses(data.courses);
+        console.log(`Loaded ${data.courses.length} courses (cached: ${data.cached})`);
       }
     } catch (error) {
       console.error("Error fetching courses:", error);

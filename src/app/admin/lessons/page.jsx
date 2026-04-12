@@ -55,33 +55,24 @@ const AdminLessons = () => {
     
     setLoading(true);
     try {
-      console.log("Fetching lessons for course:", selectedCourse);
-      const res = await fetch(`/api/lessons?courseId=${selectedCourse}`);
+      console.log("Fetching lessons for course with optimized API:", selectedCourse);
+      const res = await fetch(`/api/lessons-optimized?courseId=${selectedCourse}`);
       
       if (!res.ok) {
         throw new Error(`HTTP error! status: ${res.status}`);
       }
       
       const data = await res.json();
-      console.log("Lessons response:", data);
+      console.log("Optimized lessons response:", data);
       
       if (data.success === false) {
         // API returned an error
         console.error("API error:", data.error);
-        if (data.firebaseError) {
-          console.error("Firebase error:", data.firebaseError);
-        }
-        if (data.localError) {
-          console.error("Local error:", data.localError);
-        }
         setLessons([]);
         alert(`Failed to load lessons: ${data.error || 'Unknown error'}. Check console for details.`);
       } else if (data.lessons) {
         setLessons(data.lessons);
-        console.log(`Loaded ${data.lessons.length} lessons`);
-        if (data.source) {
-          console.log(`Data source: ${data.source}`);
-        }
+        console.log(`Loaded ${data.lessons.length} lessons (cached: ${data.cached})`);
       } else {
         setLessons([]);
         console.log("No lessons found for this course");
