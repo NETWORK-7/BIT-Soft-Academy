@@ -10,7 +10,7 @@ const matchRoute = (patterns, path) =>
   });
 
 const isAdminRoute = (path) => matchRoute(["/admin", "/admin/"], path) || path.startsWith("/admin/");
-const isAdminLoginRoute = (path) => path === "/admin/login";
+const isAdminLoginRoute = (path) => path === "/admin/sign-in";
 
 const isDashboardRoute = (path) => path.startsWith("/dashboard");
 const isAuthPage = (path) => path.startsWith("/sign-in") || path.startsWith("/sign-up");
@@ -25,7 +25,7 @@ export async function middleware(req) {
   if (isAdminRoute(pathname)) {
     const adminAuth = req.cookies.get("adminAuth")?.value;
     if (!adminAuth) {
-      return NextResponse.redirect(new URL("/admin/login", req.url));
+      return NextResponse.redirect(new URL("/admin/sign-in", req.url));
     }
   }
 
