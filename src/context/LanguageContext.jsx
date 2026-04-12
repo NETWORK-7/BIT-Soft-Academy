@@ -5,7 +5,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 const LanguageContext = createContext();
 
 export function LanguageProvider({ children }) {
-  const [language, setLanguage] = useState("en");
+  const [language, setLanguage] = useState("uz");
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -17,11 +17,11 @@ export function LanguageProvider({ children }) {
           const lang = data.language || "en";
           setLanguage(lang);
         } else {
-          setLanguage("en");
+          setLanguage("uz");
         }
       } catch (error) {
         console.error("Failed to fetch language:", error);
-        setLanguage("en");
+        setLanguage("uz");
       } finally {
         setLoading(false);
       }

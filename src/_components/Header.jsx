@@ -31,11 +31,15 @@ export default function Header() {
     <header className="sticky top-0 z-50 border-b border-border/80 bg-card/90 backdrop-blur-xl shadow-sm supports-[backdrop-filter]:bg-card/75">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-3">
         <Link href="/" className="flex items-center gap-3 group min-w-0">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-linear-to-br from-brand-from to-brand-to rounded-2xl flex items-center justify-center text-primary-foreground shadow-lg shadow-brand-glow/40 ring-1 ring-white/20 group-hover:scale-[1.03] transition-transform duration-300 shrink-0">
-            <span className="text-xl sm:text-2xl font-black">BA</span>
+          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-white rounded-xl flex items-center justify-center shadow-md group-hover:scale-105 transition-transform duration-300 shrink-0 border border-gray-200">
+            <img 
+              src="/bitsoft.jpg" 
+              alt="BitSoft Logo"
+              className="w-6 h-6 sm:w-8 sm:h-8 object-contain"
+            />
           </div>
-          <h1 className="text-lg sm:text-2xl lg:text-3xl font-black bg-linear-to-r from-brand-from to-brand-to bg-clip-text text-transparent truncate tracking-tight">
-            Bit Soft IT Academy
+          <h1 className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent truncate tracking-tight">
+            BitSoft Akademiyasi
           </h1>
         </Link>
         <nav className="hidden lg:flex items-center gap-10">
