@@ -73,71 +73,82 @@ export default function CoursesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-white">
-      <div className="py-12 px-4 bg-gray-50">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                Kurslar
-              </h1>
-              <p className="text-gray-600">
-                Zamonaviy dasturlash kurslari
-              </p>
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 text-white">
+        <div className="absolute inset-0 bg-black opacity-10"></div>
+        <div className="relative max-w-7xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
+          <div className="text-center">
+            <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100">
+              Kurslar
+            </h1>
+            <p className="text-xl text-blue-100 max-w-2xl mx-auto">
+              Zamonaviy dasturlash kurslari bilan kelajak kasbingizni quring
+            </p>
+          </div>
+        </div>
+        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-slate-50 to-transparent"></div>
+      </div>
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        {/* Search and Filter Section */}
+        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 mb-8">
+          <div className="flex flex-col md:flex-row gap-4">
+            <div className="relative flex-1">
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <input
+                type="text"
+                placeholder="Kurslarni qidirish..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="w-full pl-12 pr-4 py-4 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+              />
             </div>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="px-6 py-4 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all bg-white"
+            >
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat === "All" ? "Barcha kurslar" : cat}
+                </option>
+              ))}
+            </select>
+            <select
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+              className="px-6 py-4 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all bg-white"
+            >
+              <option value="popular">Mashhur</option>
+              <option value="rating">Reyting</option>
+              <option value="newest">Yangi</option>
+            </select>
             {isSignedIn && (
               <Link
                 href="/dashboard"
-                className="bg-gray-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition"
+                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-4 rounded-xl font-medium hover:from-blue-700 hover:to-purple-700 transition-all shadow-md hover:shadow-lg flex items-center justify-center"
               >
                 Dashboardga o'tish
               </Link>
             )}
           </div>
         </div>
-      </div>
-      <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="flex flex-col md:flex-row gap-4 mb-8">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Kurslarni qidirish..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"
-            />
-          </div>
-          <select
-            value={selectedCategory}
-            onChange={(e) => setSelectedCategory(e.target.value)}
-            className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"
-          >
-            {categories.map((cat) => (
-              <option key={cat} value={cat}>
-                {cat === "All" ? "Barcha kurslar" : cat}
-              </option>
-            ))}
-          </select>
-          <select
-            value={sortBy}
-            onChange={(e) => setSortBy(e.target.value)}
-            className="px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"
-          >
-            <option value="popular">Mashhur</option>
-            <option value="rating">Reyting</option>
-            <option value="newest">Yangi</option>
-          </select>
-        </div>
         {loading && (
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div key={i} className="bg-white border border-gray-200 rounded-lg p-6">
+                <div key={i} className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                   <div className="animate-pulse">
-                    <div className="h-32 bg-gray-200 rounded-lg mb-4"></div>
-                    <div className="h-6 bg-gray-200 rounded mb-2"></div>
-                    <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                    <div className="h-48 bg-gradient-to-br from-gray-200 to-gray-300"></div>
+                    <div className="p-6">
+                      <div className="h-6 bg-gray-200 rounded-lg mb-3"></div>
+                      <div className="h-4 bg-gray-200 rounded w-3/4 mb-4"></div>
+                      <div className="flex gap-4">
+                        <div className="h-4 bg-gray-200 rounded w-16"></div>
+                        <div className="h-4 bg-gray-200 rounded w-16"></div>
+                        <div className="h-4 bg-gray-200 rounded w-16"></div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -145,9 +156,10 @@ export default function CoursesPage() {
           </div>
         )}
         {error && (
-          <div className="max-w-7xl mx-auto px-4 text-center py-20">
-            <div className="bg-white border border-gray-200 rounded-lg p-8 text-center">
-              <h2 className="text-xl font-bold text-gray-900 mb-4">
+          <div className="max-w-7xl mx-auto text-center py-20">
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-12 text-center max-w-md mx-auto">
+              <div className="text-6xl mb-4">⚠️</div>
+              <h2 className="text-2xl font-bold text-gray-900 mb-4">
                 Xatolik yuz berdi
               </h2>
               <p className="text-gray-600">{error}</p>
@@ -155,47 +167,39 @@ export default function CoursesPage() {
           </div>
         )}
         {!loading && !error && (
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {sortedCourses.map((course) => (
-                <div key={course._id} className="bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-md transition">
+                <div key={course._id} className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
                   <Link href={`/courses/${course._id}`} className="block">
-                    <div className="relative h-32 bg-gray-100">
+                    <div className="relative h-48 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
                       {course.image ? (
                         <img
                           src={course.image}
                           alt={course.title}
-                          className="w-full h-full object-cover"
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                           onError={(e) => {
                             e.target.style.display = 'none';
                           }}
                         />
                       ) : (
-                        <div className="w-full h-full flex items-center justify-center">
-                          <div className="text-3xl text-gray-400">
-                            📚
+                        <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50">
+                          <div className="text-6xl opacity-50">
+                            �
                           </div>
                         </div>
                       )}
                     </div>
                     <div className="p-6">
-                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
-                        <div>
-                          <h1 className="text-2xl font-bold text-gray-900 mb-2">
-                            Kurslar
-                          </h1>
-                          <p className="text-gray-600">
-                            Zamonaviy dasturlash kurslari
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex-1">
+                          <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors">
+                            {course.title}
+                          </h3>
+                          <p className="text-gray-600 text-sm line-clamp-2 leading-relaxed">
+                            {course.description}
                           </p>
                         </div>
-                        {isSignedIn && (
-                          <Link
-                            href="/dashboard"
-                            className="bg-gray-900 text-white px-6 py-3 rounded-lg font-medium hover:bg-gray-800 transition"
-                          >
-                            Dashboardga o'tish
-                          </Link>
-                        )}
                       </div>
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex-1">
@@ -206,20 +210,20 @@ export default function CoursesPage() {
                             {course.description}
                           </p>
                         </div>
-                        <div className="ml-4">
-                          {course.enrolled ? (
-                            <span className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-green-50 text-green-700">
-                              ✓ Ro'yxatdan o'tilgan
-                            </span>
-                          ) : (
-                            <button className="bg-gray-900 text-white px-3 py-1 rounded text-sm font-medium hover:bg-gray-800 transition">
-                              Ro'yxatdan o'tish
-                            </button>
-                          )}
-                        </div>
+                      <div className="mt-4 flex gap-2">
+                        {course.enrolled ? (
+                          <span className="flex-1 inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium bg-green-50 text-green-700 border border-green-200">
+                            ✓ Ro'yxatdan o'tilgan
+                          </span>
+                        ) : (
+                          <button className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-blue-700 hover:to-purple-700 transition-all shadow-sm hover:shadow-md">
+                            Ro'yxatdan o'tish
+                          </button>
+                        )}
                       </div>
-                      <div className="flex items-center justify-between text-sm text-gray-500">
-                        <div className="flex items-center gap-4">
+                      </div>
+                      <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                        <div className="flex items-center gap-4 text-sm text-gray-500">
                           <span className="flex items-center gap-1">
                             <Clock className="w-4 h-4" />
                             {course.duration}
@@ -228,10 +232,10 @@ export default function CoursesPage() {
                             <BookOpen className="w-4 h-4" />
                             {getLessonCount(course.lessons)} dars
                           </span>
-                          <span className="flex items-center gap-1">
-                            <Star className="w-4 h-4" />
-                            {course.rating}
-                          </span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Star className="w-4 h-4 text-yellow-400 fill-current" />
+                          <span className="text-sm font-medium text-gray-700">{course.rating}</span>
                         </div>
                       </div>
                     </div>
@@ -243,18 +247,18 @@ export default function CoursesPage() {
         )}
 
         {!loading && !error && filteredCourses.length === 0 && (
-          <div className="text-center py-20 bg-white rounded-2xl">
+          <div className="text-center py-20 bg-white rounded-2xl shadow-sm border border-gray-100">
             <div className="text-6xl mb-4">🔍</div>
-            <h3 className="text-2xl font-semibold text-gray-700 mb-4">No courses found</h3>
-            <p className="text-gray-500 mt-2">Try adjusting your search or filter criteria</p>
+            <h3 className="text-2xl font-semibold text-gray-700 mb-4">Kurslar topilmadi</h3>
+            <p className="text-gray-500 mt-2">Qidirish yoki filtr mezonlarini o'zgartirib ko'ring</p>
             <button
               onClick={() => {
                 setSearchTerm("");
                 setSelectedCategory("All");
               }}
-              className="mt-4 px-6 py-2 bg-purple-600 text-white rounded-lg font-semibold hover:bg-purple-700 transition"
+              className="mt-4 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all shadow-sm hover:shadow-md"
             >
-              Clear Filters
+              Filtrlarni tozalash
             </button>
           </div>
         )}
