@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { cookies } from "next/headers";
 
 export async function middleware(request) {
   const { pathname } = request.nextUrl;

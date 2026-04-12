@@ -14,7 +14,7 @@ export default function AdminLogout() {
       await fetch("/api/admin/logout", {
         method: "POST",
       });
-      router.push("/admin/login");
+      router.push("/admin/sign-in");
     } catch (error) {
       console.error("Logout error:", error);
       setLoading(false);

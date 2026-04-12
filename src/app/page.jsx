@@ -179,7 +179,7 @@ export default function LandingPage() {
                       <span className="text-slate-400 text-sm">250+ o'quvchilar</span>
                     </div>
                     <button className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg shadow-cyan-500/25 flex items-center gap-2">
-                      <span>Proyektni ko'rish</span> <ArrowRight className="h-4 w-4" />
+                     {/*<span>Proyektni ko'rish</span>*/} <ArrowRight className="h-4 w-4" /> 
                     </button>
                   </div>
                 </div>
