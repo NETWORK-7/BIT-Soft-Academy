@@ -311,20 +311,21 @@ export default function LessonPage({ params }) {
     <div className="min-h-screen bg-gray-50">
     
       <div className="bg-white border-b border-gray-200 sticky top-0 z-40 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 py-3 sm:py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <Link
             href={`/courses/${course._id}`}
-            className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 font-semibold"
+            className="inline-flex items-center gap-2 text-purple-600 hover:text-purple-700 font-semibold text-sm sm:text-base"
           >
-            <ArrowLeft className="h-5 w-5" />
-            Back to {course.title}
+            <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+            <span className="truncate max-w-[200px] sm:max-w-none">Back to {course.title}</span>
           </Link>
-          <div className="flex items-center gap-4">
-            <div className="text-sm text-gray-600">
+          <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto justify-between sm:justify-end">
+            <div className="text-xs sm:text-sm text-gray-600">
               Lesson {currentLessonIndex + 1} of {allLessons.length}
             </div>
-            <div className="text-sm font-semibold text-purple-600">
-              ⭐ {totalPoints} points
+            <div className="text-xs sm:text-sm font-semibold text-purple-600 flex items-center gap-1">
+              <span className="hidden sm:inline">{'\u2b50'}</span>
+              <span>{totalPoints} points</span>
             </div>
           </div>
         </div>
@@ -340,8 +341,8 @@ export default function LessonPage({ params }) {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-6 sm:py-12">
+        <div className="grid grid-cols-1 xl:grid-cols-4 gap-6 lg:gap-8">
       
           <div className="lg:col-span-3">
            

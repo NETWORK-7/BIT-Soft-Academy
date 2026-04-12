@@ -1,6 +1,7 @@
 import Header from '@/_components/Header';
 import { LanguageProvider } from '@/context/LanguageContext';
 import './globals.css';
+import '../styles/animations.css';
 import { Toaster } from '@/components/ui/sonner';
 
 export const metadata = {

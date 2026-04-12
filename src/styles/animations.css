@@ -1,0 +1,58 @@
+/* Accordion Animations */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design Improvements */
+@media (max-width: 640px) {
+  .accordion-title {
+    font-size: 0.875rem !important;
+  }
+  
+  .accordion-description {
+    font-size: 0.75rem !important;
+  }
+  
+  .lesson-card {
+    padding: 0.75rem !important;
+  }
+  
+  .lesson-title {
+    font-size: 0.875rem !important;
+  }
+  
+  .category-icon {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 1024px) {
+  .accordion-title {
+    font-size: 1rem !important;
+  }
+  
+  .accordion-description {
+    font-size: 0.875rem !important;
+  }
+}
+
+/* Cross-browser compatibility */
+@supports (-webkit-appearance: none) {
+  .accordion-content {
+    -webkit-transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  }
+}
+
+@supports (-moz-appearance: none) {
+  .accordion-content {
+    -moz-transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+  }
+}
