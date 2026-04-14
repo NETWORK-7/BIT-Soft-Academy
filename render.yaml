@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: bit-soft-academy
+    env: node
+    plan: free
+    buildCommand: npm run build
+    startCommand: npm start
+    repo: https://github.com/NETWORK-7/BIT-Soft-Academy.git
+    branch: main
+    cron: 
+      - url: /api/keep-alive
+        schedule: "*/10 * * * *"
+        method: GET
