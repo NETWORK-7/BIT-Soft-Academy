@@ -6,14 +6,36 @@ import Link from "next/link";
 
 export default function LandingPage() {
   const [stats, setStats] = useState({ courses: 0, users: 0 });
+  const [courses, setCourses] = useState([]);
 
-  const projects = [
-    { title: "MERN Stack - Telegram clone", tech: "MongoDB, Express, React, Node.js", status: "Production Ready", image: "https://images.unsplash.com/photo-1611224923853-80b023f02d71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-    { title: "Next.js - X Clone", tech: "Next.js, Tailwind, TypeScript", status: "Production Ready", image: "https://images.unsplash.com/photo-1522252234503-e356532cafd5?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-    { title: "Next.js - Drive Clone", tech: "Next.js, Prisma, TypeScript", status: "Production Ready", image: "https://images.unsplash.com/photo-1542831371-29b0f74f9713?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-    { title: "Nuxt.js - Jira Clone", tech: "Nuxt.js, Vue.js, Tailwind", status: "Production Ready", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-    { title: "Node.js - Telegram Bot", tech: "Node.js, Express, Telegram API", status: "Production Ready", image: "https://images.unsplash.com/photo-1515879218367-8466d946aaa4?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" },
-    { title: "React Native - Netflix", tech: "React Native, Firebase, Redux", status: "Production Ready", image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" }
+  const bitSoftProjects = [
+    {
+      title: "Bit-Soft CRM",
+      description: "Mijozlarni boshqarish tizimi. Mijozlar ma'lumotlari, sotuvlar, shartnomalar va moliyaviy operatsiyalarni boshqarish uchun to'liq yechim.",
+      tech: "React, Node.js, MongoDB, Express, JWT, TailwindCSS",
+      features: ["Mijozlar bazasi", "Sotuvlar tracking", "Shartnomalar", "Hisobotlar", "Foydalanuvchi rollari"],
+      image: "https://images.unsplash.com/photo-1556656793-08538906a9f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      color: "from-blue-600 to-cyan-600",
+      icon: "📊"
+    },
+    {
+      title: "BitSoft Online Academy",
+      description: "Onlayn ta'lim platformasi. Kurslar, videodarslar, testlar, sertifikatlar va o'quvchilarni boshqarish tizimi.",
+      tech: "Next.js, TypeScript, Prisma, PostgreSQL, Stripe, AWS",
+      features: ["Kurslar boshqaruvi", "Videodarslar", "Testlar", "Sertifikatlar", "To'lov tizimi"],
+      image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      color: "from-purple-600 to-pink-600",
+      icon: "🎓"
+    },
+    {
+      title: "Bit-Soft Student App",
+      description: "Mobil ilova talabalar uchun. Kurslarga kirish, uyga vazifalar, testlar, chat va progress tracking.",
+      tech: "React Native, Firebase, Redux, Expo, Node.js",
+      features: ["Mobil kurslar", "Uyga vazifalar", "Testlar", "Chat", "Progress tracking"],
+      image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+      color: "from-green-600 to-teal-600",
+      icon: "📱"
+    }
   ];
 
   useEffect(() => {
@@ -25,6 +47,7 @@ export default function LandingPage() {
         courses: (coursesData.courses || []).length,
         users: (usersData.users || []).length
       });
+      setCourses(coursesData.courses || []);
     });
   }, []);
 
@@ -108,7 +131,59 @@ export default function LandingPage() {
             </Link>
           </div>
           
-          <div className="text-center mt-16">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {courses.slice(0, 4).map((course, index) => (
+              <div key={course._id || index} className="group bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
+                <Link href={`/courses/${course._id}`} className="block">
+                  <div className="relative h-32 bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+                    {course.image ? (
+                      <img
+                        src={course.image}
+                        alt={course.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        onError={(e) => {
+                          e.target.src = 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                        }}
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-50 to-purple-50">
+                        <BookOpenText className="h-12 w-12 text-blue-400 opacity-50" />
+                      </div>
+                    )}
+                    <div className="absolute top-2 right-2">
+                      <div className="flex items-center gap-1 bg-white/90 backdrop-blur-sm rounded-full px-2 py-1">
+                        <Star className="w-3 h-3 text-yellow-400 fill-current" />
+                        <span className="text-xs font-medium text-gray-700">{course.rating || 4.8}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors line-clamp-1">
+                      {course.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm line-clamp-2 mb-3">
+                      {course.description}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2 text-xs text-gray-500">
+                        <Clock className="w-3 h-3" />
+                        <span>{course.duration}</span>
+                      </div>
+                      <div className="flex gap-1">
+                        {course.tags?.slice(0, 2).map((tag, tagIndex) => (
+                          <span key={tagIndex} className="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-full">
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            ))}
+          </div>
+          
+          <div className="text-center mt-12">
             <Link href="/courses" className="inline-flex items-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg shadow-cyan-500/25">
               <BookOpenText className="h-5 w-5" />
               <span>Barcha kurslarni ko'rish</span>
@@ -118,73 +193,126 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Projects Preview Section */}
-      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-900 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-cyan-900"></div>
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-500/10 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000"></div>
+      {/* Bit-Soft Real Projects Section */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50/50 to-purple-50/50"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-400/20 to-purple-400/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-r from-purple-400/20 to-pink-400/20 rounded-full mix-blend-multiply filter blur-3xl animate-pulse animation-delay-2000"></div>
         
-        <div className="relative z-10 max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center space-x-2 bg-cyan-500/20 backdrop-blur-sm border border-cyan-400/30 rounded-full px-6 py-3 mb-6">
-              <Code className="h-5 w-5 text-cyan-300" />
-              <span className="text-cyan-100 font-semibold text-lg">Real loyihalar</span>
+        <div className="relative z-10 max-w-7xl mx-auto">
+          <div className="text-center mb-20">
+            <div className="inline-flex items-center space-x-3 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-full px-8 py-4 mb-8 shadow-lg">
+              <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                <Code className="h-5 w-5 text-white" />
+              </div>
+              <span className="text-gray-800 font-bold text-lg">Bit-Soft Real Projects</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">Professional</span> Loyihalar
+            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Bizning</span> Real Loyihalarimiz
             </h2>
-            <p className="text-cyan-100 text-xl max-w-3xl mx-auto mb-12">
-              Noldan real dunyo loyihalarini yarating va o'zing portfelingizni shakllantiring
+            <p className="text-gray-600 text-xl max-w-4xl mx-auto mb-12 leading-relaxed">
+              Bit-Soft kompaniyasining real ishlayotgan loyihalari bilan tanishing. 
+              Har bir loyiha - bu bizning tajribamiz va mahoratimizning namunasi.
             </p>
-            <Link href="/courses" className="inline-flex items-center gap-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg shadow-cyan-500/25">
-              Barcha loyihalarni ko'rish <ArrowRight className="h-5 w-5" />
-            </Link>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.map((project, index) => (
-              <div key={index} className="group bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-3xl overflow-hidden hover:bg-slate-800/70 hover:border-cyan-500/50 hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-500">
-                <div className="relative h-48 overflow-hidden">
-                  <img 
-                    src={project.image} 
-                    alt={project.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                    onError={(e) => {
-                      e.target.src = 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/50 to-transparent"></div>
-                  <div className="absolute top-4 right-4">
-                    <div className="flex items-center gap-2">
-                      <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                      <span className="bg-green-500 text-white text-xs px-3 py-1 rounded-full font-semibold">{project.status}</span>
+          <div className="space-y-12">
+            {bitSoftProjects.map((project, index) => (
+              <div key={index} className="group">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                  <div className={`order-2 lg:order-${index % 2 === 0 ? '1' : '2'}`}>
+                    <div className="relative">
+                      <div className="absolute inset-0 bg-gradient-to-r ${project.color} rounded-3xl transform rotate-3 scale-105 opacity-20"></div>
+                      <div className="relative bg-white rounded-3xl shadow-2xl overflow-hidden border border-gray-100">
+                        <div className="relative h-80 overflow-hidden">
+                          <img 
+                            src={project.image} 
+                            alt={project.title}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                            onError={(e) => {
+                              e.target.src = 'https://images.unsplash.com/photo-1556656793-08538906a9f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80';
+                            }}
+                          />
+                          <div className={`absolute inset-0 bg-gradient-to-t ${project.color} to-transparent opacity-30`}></div>
+                          <div className="absolute top-6 left-6">
+                            <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-6 py-3 shadow-lg">
+                              <div className="flex items-center gap-3">
+                                <span className="text-3xl">{project.icon}</span>
+                                <span className="font-bold text-gray-800 text-lg">{project.title}</span>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="absolute bottom-6 right-6">
+                            <div className="bg-white/90 backdrop-blur-sm rounded-xl px-4 py-2 shadow-lg">
+                              <div className="flex items-center gap-2">
+                                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                                <span className="text-sm font-semibold text-gray-700">Production Ready</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="absolute bottom-4 left-4">
-                    <div className="bg-slate-900/80 backdrop-blur-sm rounded-lg px-3 py-2">
-                      <Code className="h-4 w-4 text-cyan-400 mb-1" />
-                      <p className="text-white text-xs font-medium">{project.tech}</p>
+                  
+                  <div className={`order-1 lg:order-${index % 2 === 0 ? '2' : '1'} space-y-6`}>
+                    <div>
+                      <h3 className={`text-4xl font-bold bg-gradient-to-r ${project.color} bg-clip-text text-transparent mb-4`}>
+                        {project.title}
+                      </h3>
+                      <p className="text-gray-600 text-lg leading-relaxed mb-8">
+                        {project.description}
+                      </p>
                     </div>
-                  </div>
-                </div>
-                <div className="p-8">
-                  <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-cyan-400 transition-colors">{project.title}</h3>
-                  <p className="text-slate-300 text-sm mb-6 leading-relaxed">
-                    Zamonaviy texnologiyalar yordamida to'liq darajadagi loyihani yarating. 
-                    Boshlang'ichdan tugaguncha to'liq qo'llab-namiz.
-                  </p>
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <Users className="h-5 w-5 text-slate-400" />
-                      <span className="text-slate-400 text-sm">250+ o'quvchilar</span>
+                    
+                    <div className="space-y-4">
+                      <h4 className="text-lg font-semibold text-gray-800">Asosiy xususiyatlar:</h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {project.features.map((feature, featureIndex) => (
+                          <div key={featureIndex} className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
+                            <CheckCircle className={`h-5 w-5 bg-gradient-to-r ${project.color} bg-clip-text text-transparent`} />
+                            <span className="text-gray-700 font-medium">{feature}</span>
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                    <button className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 shadow-lg shadow-cyan-500/25 flex items-center gap-2">
-                     {/*<span>Proyektni ko'rish</span>*/} <ArrowRight className="h-4 w-4" /> 
-                    </button>
+                    
+                    <div className="space-y-4">
+                      <h4 className="text-lg font-semibold text-gray-800">Texnologiyalar:</h4>
+                      <div className="flex flex-wrap gap-2">
+                        {project.tech.split(', ').map((tech, techIndex) => (
+                          <span key={techIndex} className={`bg-gradient-to-r ${project.color} text-white px-4 py-2 rounded-full text-sm font-medium shadow-lg`}>
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    <div className="pt-6">
+                      <button className={`bg-gradient-to-r ${project.color} text-white px-8 py-4 rounded-2xl font-bold hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 flex items-center gap-3`}>
+                        <span>Loyihani ko'rish</span>
+                        <ArrowRight className="h-5 w-5" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
             ))}
+          </div>
+          
+          <div className="text-center mt-20">
+            <div className="bg-white/80 backdrop-blur-sm border border-gray-200 rounded-3xl p-12 shadow-xl">
+              <h3 className="text-3xl font-bold text-gray-900 mb-4">Boshqa loyihalarimiz ham bor</h3>
+              <p className="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
+                Bizning portfelimizda yana 15+ dan ortiq muvaffaqiyatli loyihalar mavjud. 
+                Batafsil ma'lumot uchun biz bilan bog'laning.
+              </p>
+              <Link href="/courses" className="inline-flex items-center gap-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg shadow-blue-500/25">
+                <Code className="h-5 w-5" />
+                <span>Barcha loyihalar</span>
+                <ArrowRight className="h-5 w-5" />
+              </Link>
+            </div>
           </div>
         </div>
       </section>
