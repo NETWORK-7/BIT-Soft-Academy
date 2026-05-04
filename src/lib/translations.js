@@ -346,7 +346,7 @@ export const translations = {
       globalRank: "Рейтинги ҷаҳонӣ",
       coursesInProgress: "Курсҳои дар ҷараён",
       lessonsLeft: "дарс мондааст",
-      percentComplete "% анҷом дода шуд",
+      percentComplete: "% анҷом дода шуд",
       recentActivity: "Фаъолияти охирин",
       continueLearnin: "Омӯзишро идома диҳед",
       exploreCourses: "Курсҳои зиёдро омӯзед ва маҳоратҳои худро такмил диҳед",
