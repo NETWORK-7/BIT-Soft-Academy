@@ -3,35 +3,55 @@
 import React, { useEffect, useState } from "react";
 import { BookOpenText, Users, TrendingUp, Code, Zap, Award, ArrowRight, Play, Star, CheckCircle, Clock } from "lucide-react";
 import Link from "next/link";
+import { useLanguageContext } from "@/context/LanguageContext";
 
 export default function LandingPage() {
+  const { language } = useLanguageContext();
   const [stats, setStats] = useState({ courses: 0, users: 0 });
   const [courses, setCourses] = useState([]);
 
-  const bitSoftProjects = [
+  const getBitSoftProjects = (language) => [
     {
-      title: "Bit-Soft CRM",
-      description: "Mijozlarni boshqarish tizimi. Mijozlar ma'lumotlari, sotuvlar, shartnomalar va moliyaviy operatsiyalarni boshqarish uchun to'liq yechim.",
+      title: language === 'tg' ? 'Bit-Soft CRM' : language === 'ru' ? 'Bit-Soft CRM' : language === 'uz' ? 'Bit-Soft CRM' : 'Bit-Soft CRM',
+      description: language === 'tg' ? 'Система идоракунии мизоҷон. Маълумоти мизоҷон, фурӯш, шартномаҳо ва амалиётҳои молиявиро идора кардан барои ҳалли пурра.' : 
+                 language === 'ru' ? 'Система управления клиентами. Управление данными клиентов, продажами, договорами и финансовыми операциями для полного решения.' :
+                 language === 'uz' ? 'Mijozlarni boshqarish tizimi. Mijozlar ma\'lumotlari, sotuvlar, shartnomalar va moliyaviy operatsiyalarni boshqarish uchun to\'liq yechim.' :
+                 'Customer management system. Manage customer data, sales, contracts and financial operations for complete solution.',
       tech: "React, Node.js, MongoDB, Express, JWT, TailwindCSS",
-      features: ["Mijozlar bazasi", "Sotuvlar tracking", "Shartnomalar", "Hisobotlar", "Foydalanuvchi rollari"],
+      features: language === 'tg' ? ['Базаи мизоҷон', 'Фурӯши пайгарбар', 'Шартномаҳо', 'Ҳисоботҳо', 'Нақшҳои корбар'] :
+              language === 'ru' ? ['База клиентов', 'Отслеживание продаж', 'Договоры', 'Отчеты', 'Роли пользователей'] :
+              language === 'uz' ? ['Mijozlar bazasi', 'Sotuvlar tracking', 'Shartnomalar', 'Hisobotlar', 'Foydalanuvchi rollari'] :
+              ['Customer Database', 'Sales Tracking', 'Contracts', 'Reports', 'User Roles'],
       image: "https://images.unsplash.com/photo-1556656793-08538906a9f8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       color: "from-blue-600 to-cyan-600",
       icon: "📊"
     },
     {
-      title: "BitSoft Online Academy",
-      description: "Onlayn ta'lim platformasi. Kurslar, videodarslar, testlar, sertifikatlar va o'quvchilarni boshqarish tizimi.",
+      title: language === 'tg' ? 'BitSoft Online Academy' : language === 'ru' ? 'BitSoft Online Academy' : language === 'uz' ? 'BitSoft Online Academy' : 'BitSoft Online Academy',
+      description: language === 'tg' ? 'Платформаи таълими онлайн. Курсҳо, видео-дарсҳо, тестҳо, сертификатҳо ва системаи идоракунии донишҷӯён.' :
+                 language === 'ru' ? 'Образовательная онлайн-платформа. Курсы, видеоуроки, тесты, сертификаты и система управления студентами.' :
+                 language === 'uz' ? 'Onlayn ta\'lim platformasi. Kurslar, videodarslar, testlar, sertifikatlar va o\'quvchilarni boshqarish tizimi.' :
+                 'Online learning platform. Courses, video lessons, tests, certificates and student management system.',
       tech: "Next.js, TypeScript, Prisma, PostgreSQL, Stripe, AWS",
-      features: ["Kurslar boshqaruvi", "Videodarslar", "Testlar", "Sertifikatlar", "To'lov tizimi"],
+      features: language === 'tg' ? ['Идораи курсҳо', 'Видео-дарсҳо', 'Тестҳо', 'Сертификатҳо', 'Системаи пардохт'] :
+              language === 'ru' ? ['Управление курсами', 'Видеоуроки', 'Тесты', 'Сертификаты', 'Платежная система'] :
+              language === 'uz' ? ['Kurslar boshqaruvi', 'Videodarslar', 'Testlar', 'Sertifikatlar', 'To\'lov tizimi'] :
+              ['Course Management', 'Video Lessons', 'Tests', 'Certificates', 'Payment System'],
       image: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       color: "from-purple-600 to-pink-600",
       icon: "🎓"
     },
     {
-      title: "Bit-Soft Student App",
-      description: "Mobil ilova talabalar uchun. Kurslarga kirish, uyga vazifalar, testlar, chat va progress tracking.",
+      title: language === 'tg' ? 'Bit-Soft Student App' : language === 'ru' ? 'Bit-Soft Student App' : language === 'uz' ? 'Bit-Soft Student App' : 'Bit-Soft Student App',
+      description: language === 'tg' ? 'Барномаи мобилӣ барои донишҷӯён. Дар ба курсҳо, вазифаҳои хонагӣ, тестҳо, чат ва пайгарбари пешрафт.' :
+                 language === 'ru' ? 'Мобильное приложение для студентов. Доступ к курсам, домашние задания, тесты, чат и отслеживание прогресса.' :
+                 language === 'uz' ? 'Mobil ilova talabalar uchun. Kurslarga kirish, uyga vazifalar, testlar, chat va progress tracking.' :
+                 'Mobile app for students. Access to courses, homework, tests, chat and progress tracking.',
       tech: "React Native, Firebase, Redux, Expo, Node.js",
-      features: ["Mobil kurslar", "Uyga vazifalar", "Testlar", "Chat", "Progress tracking"],
+      features: language === 'tg' ? ['Курсҳои мобилӣ', 'Вазифаҳои хонагӣ', 'Тестҳо', 'Чат', 'Пайгарбари пешрафт'] :
+              language === 'ru' ? ['Мобильные курсы', 'Домашние задания', 'Тесты', 'Чат', 'Отслеживание прогресса'] :
+              language === 'uz' ? ['Mobil kurslar', 'Uyga vazifalar', 'Testlar', 'Chat', 'Progress tracking'] :
+              ['Mobile Courses', 'Homework', 'Tests', 'Chat', 'Progress Tracking'],
       image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
       color: "from-green-600 to-teal-600",
       icon: "📱"
@@ -207,17 +227,27 @@ export default function LandingPage() {
               </div>
               <span className="text-gray-800 font-bold text-lg">Bit-Soft Real Projects</span>
             </div>
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-              <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Bizning</span> Real Loyihalarimiz
-            </h2>
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
+              {language === 'tg' ? (
+                <><span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Касби ояндаатонро</span> созед</>
+              ) : language === 'ru' ? (
+                <><span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Постройте свою будущую</span> карьеру</>
+              ) : language === 'uz' ? (
+                <><span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Kelajak kasbingizni</span> quring</>
+              ) : (
+                <><span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Build your future</span> career</>
+              )}
+            </h1>
             <p className="text-gray-600 text-xl max-w-4xl mx-auto mb-12 leading-relaxed">
-              Bit-Soft kompaniyasining real ishlayotgan loyihalari bilan tanishing. 
-              Har bir loyiha - bu bizning tajribamiz va mahoratimizning namunasi.
+              {language === 'tg' ? 'Bit-Soft IT Academy - касбҳои муосири барномасозиро омӯзед ва бо лоиҳаҳои ҳақиқӣ таҷрибаатонро афзун кунед. Мо бо шумо якҷоя карера сохторем.' :
+               language === 'ru' ? 'Bit-Soft IT Academy - изучайте современные профессии программирования и получайте опыт с реальными проектами. Мы построим карьеру вместе с вами.' :
+               language === 'uz' ? 'Bit-Soft IT Academy - zamonaviy dasturlash kasblarini o\'rganing va real loyihalar bilan tajribangizni oshiring. Biz siz bilan birga karyera quramiz.' :
+               'Bit-Soft IT Academy - learn modern programming professions and gain experience with real projects. We will build a career together with you.'}
             </p>
           </div>
           
           <div className="space-y-12">
-            {bitSoftProjects.map((project, index) => (
+            {getBitSoftProjects(language).map((project, index) => (
               <div key={index} className="group">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                   <div className={`order-2 lg:order-${index % 2 === 0 ? '1' : '2'}`}>
@@ -266,7 +296,12 @@ export default function LandingPage() {
                     </div>
                     
                     <div className="space-y-4">
-                      <h4 className="text-lg font-semibold text-gray-800">Asosiy xususiyatlar:</h4>
+                      <h4 className="text-lg font-semibold text-gray-800">
+                      {language === 'tg' ? 'Хусусиятҳои асосӣ:' : 
+                       language === 'ru' ? 'Основные возможности:' : 
+                       language === 'uz' ? 'Asosiy xususiyatlar:' : 
+                       'Key Features:'}
+                    </h4>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {project.features.map((feature, featureIndex) => (
                           <div key={featureIndex} className="flex items-center gap-3 bg-gray-50 rounded-xl px-4 py-3">
@@ -319,11 +354,17 @@ export default function LandingPage() {
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">
-              Bizning <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">yutuqlarimiz</span>
+            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
+              {language === 'tg' ? <><span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Лоиҳаҳои ҳақиқии</span> мо</> :
+               language === 'ru' ? <><span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Наши реальные</span> проекты</> :
+               language === 'uz' ? <><span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Bizning</span> Real Loyihalarimiz</> :
+               <><span className="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">Our Real</span> Projects</>}
             </h2>
-            <p className="text-slate-600 text-lg max-w-3xl mx-auto">
-              Minglab o'quvchilar ishonchilariga qo'shildi va o'z kar'erasiga boshladilar
+            <p className="text-gray-600 text-xl max-w-4xl mx-auto mb-12 leading-relaxed">
+              {language === 'tg' ? 'Бо лоиҳаҳои ҳақиқии коркардаи ширкати Bit-Soft шино шавед. Ҳар як лоиҳа - ин намунаи таҷриба ва маҳорати мо.' :
+               language === 'ru' ? 'Познакомьтесь с реальными работающими проектами компании Bit-Soft. Каждый проект - это пример нашего опыта и мастерства.' :
+               language === 'uz' ? 'Bit-Soft kompaniyasining real ishlayotgan loyihalari bilan tanishing. Har bir loyiha - bu bizning tajribamiz va mahoratimizning namunasi.' :
+               'Get to know the real working projects of Bit-Soft company. Each project is an example of our experience and expertise.'}
             </p>
           </div>
           
@@ -333,7 +374,12 @@ export default function LandingPage() {
                 <BookOpenText className="h-10 w-10 text-white" />
               </div>
               <div className="text-5xl font-bold text-slate-900 mb-2">{stats.courses}+</div>
-              <div className="text-slate-600">Professional Kurslar</div>
+              <div className="text-slate-600">
+                {language === 'tg' ? 'Курсҳои касбӣ' : 
+                 language === 'ru' ? 'Профессиональные курсы' : 
+                 language === 'uz' ? 'Professional Kurslar' : 
+                 'Professional Courses'}
+              </div>
             </div>
             
             <div className="text-center">
@@ -341,7 +387,12 @@ export default function LandingPage() {
                 <Users className="h-10 w-10 text-white" />
               </div>
               <div className="text-5xl font-bold text-slate-900 mb-2">{stats.users}+</div>
-              <div className="text-slate-600">Faol O'quvchilar</div>
+              <div className="text-slate-600">
+                {language === 'tg' ? 'Донишҷӯёни фаъол' : 
+                 language === 'ru' ? 'Активные студенты' : 
+                 language === 'uz' ? 'Faol O\'quvchilar' : 
+                 'Active Students'}
+              </div>
             </div>
             
             <div className="text-center">
@@ -349,7 +400,12 @@ export default function LandingPage() {
                 <Award className="h-10 w-10 text-white" />
               </div>
               <div className="text-5xl font-bold text-slate-900 mb-2">95%</div>
-              <div className="text-slate-600">Muvaffaqiyat</div>
+              <div className="text-slate-600">
+                {language === 'tg' ? 'Муваффақият' : 
+                 language === 'ru' ? 'Успех' : 
+                 language === 'uz' ? 'Muvaffaqiyat' : 
+                 'Success Rate'}
+              </div>
             </div>
           </div>
         </div>

@@ -3,8 +3,10 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { Calendar, User, ArrowRight, Search } from "lucide-react";
+import { useLanguageContext } from "@/context/LanguageContext";
 
 export default function BlogPage() {
+  const { language } = useLanguageContext();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
@@ -112,8 +114,18 @@ export default function BlogPage() {
     <div className="min-h-screen bg-background">
       <div className="bg-linear-to-r from-brand-from to-brand-to text-primary-foreground py-16 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-4">Tech Blog & Insights</h1>
-          <p className="text-xl opacity-90">Learn from industry experts and stay updated with the latest in web development</p>
+          <h1 className="text-5xl font-bold mb-4">
+            {language === 'tg' ? 'Блоги техникӣ ва олинҳо' : 
+             language === 'ru' ? 'Технический блог и инсайты' : 
+             language === 'uz' ? 'Texnika Blogi & Insightlar' : 
+             'Tech Blog & Insights'}
+          </h1>
+          <p className="text-xl opacity-90">
+            {language === 'tg' ? 'Аз мутахассисони соҳа ва навсозиҳоро дар рушди веб-ҳофарӣ омӯзед' : 
+             language === 'ru' ? 'Учитесь у отраслевых экспертов и оставайтесь в курсе последних событий в веб-разработке' : 
+             language === 'uz' ? 'Sanoat mutaxassislaridan o\'rganing va veb-sohada eng so\'ngi yangiliklar bilan tanishing' : 
+             'Learn from industry experts and stay updated with the latest in web development'}
+          </p>
         </div>
       </div>
 
@@ -124,7 +136,10 @@ export default function BlogPage() {
             <Search className="absolute left-4 top-3.5 h-5 w-5 text-gray-400" />
             <input
               type="text"
-              placeholder="Search blog posts..."
+              placeholder={language === 'tg' ? 'Ҷустуҷӯи блогҳо...' : 
+                           language === 'ru' ? 'Поиск постов блога...' : 
+                           language === 'uz' ? 'Blog postlarini qidirish...' : 
+                           'Search blog posts...'}
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full pl-12 pr-4 py-3 rounded-lg border border-border bg-card focus:outline-none focus:ring-2 focus:ring-primary"
@@ -202,16 +217,30 @@ export default function BlogPage() {
      
       <div className="bg-linear-to-r from-brand-from to-brand-to text-primary-foreground py-16 px-4 mt-20">
         <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl font-bold mb-4">Subscribe to Our Newsletter</h2>
-          <p className="text-lg opacity-90 mb-8">Get the latest articles and tips delivered to your inbox</p>
+          <h2 className="text-2xl font-bold mb-6">
+            {language === 'tg' ? 'Мақолаҳои охирин' : 
+             language === 'ru' ? 'Последние посты' : 
+             language === 'uz' ? 'So\'nggi maqolalar' : 
+             'Recent Posts'}
+          </h2>
+          <p className="text-lg opacity-90 mb-8">{language === 'tg' ? 'Охирин мақолаҳои техникӣ ва олиниҳоро бинед' : 
+             language === 'ru' ? 'Последние технические посты и инсайты' : 
+             language === 'uz' ? 'So\'nggi texnik maqolalar va tahlillarni ko\'ring' : 
+             'Get the latest articles and tips delivered to your inbox'}</p>
           <form className="flex gap-4" onSubmit={(e) => e.preventDefault()}>
             <input
               type="email"
-              placeholder="Enter your email"
+              placeholder={language === 'tg' ? 'Почтаи электронии худро ворид кунед' : 
+                           language === 'ru' ? 'Введите ваш email' : 
+                           language === 'uz' ? 'Emailingizni kiriting' : 
+                           'Enter your email'}
               className="flex-1 px-6 py-3 rounded-lg text-gray-900 focus:outline-none"
             />
             <button className="bg-primary-foreground text-primary px-8 py-3 rounded-lg font-semibold hover:bg-primary-foreground/90 transition">
-              Subscribe
+              {language === 'tg' ? 'Обуна шудан' : 
+               language === 'ru' ? 'Подписаться' : 
+               language === 'uz' ? 'Obuna bo\'lish' : 
+               'Subscribe'}
             </button>
           </form>
         </div>

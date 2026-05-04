@@ -40,7 +40,7 @@ export default function Header() {
             />
           </div>
           <h1 className="text-lg sm:text-xl lg:text-2xl font-bold bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent truncate tracking-tight">
-            BitSoft Akademiyasi
+            BitSoft
           </h1>
         </Link>
         <nav className="hidden lg:flex items-center gap-10">
