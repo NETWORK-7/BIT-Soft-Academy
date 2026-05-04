@@ -199,7 +199,12 @@ export default function BlogPage() {
                     </div>
                     <p className="text-xs text-gray-500 mt-2">{post.readTime}</p>
                     <div className="mt-4 flex items-center gap-2 text-primary font-semibold group">
-                      <span>Read More</span>
+                      <span>
+                        {language === 'tg' ? 'Бештар хонед' : 
+                         language === 'ru' ? 'Читать далее' : 
+                         language === 'uz' ? 'Ko\'proq o\'qish' : 
+                         'Read More'}
+                      </span>
                       <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition" />
                     </div>
                   </div>
@@ -209,7 +214,12 @@ export default function BlogPage() {
           </div>
         ) : (
           <div className="text-center py-12">
-            <p className="text-xl text-gray-600">No blog posts found matching your criteria.</p>
+            <p className="text-xl text-gray-600">
+              {language === 'tg' ? 'Мақолаҳои блог мувофиқи шартҳои шумо ёфт нашуд' : 
+               language === 'ru' ? 'Посты блога, соответствующие вашим критериям, не найдены' : 
+               language === 'uz' ? 'Mezonlaringizga mos blog postlari topilmadi' : 
+               'No blog posts found matching your criteria.'}
+            </p>
           </div>
         )}
       </div>
