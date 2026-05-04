@@ -12,6 +12,7 @@ const languages = [
   { code: "en", name: "English", flag: "🇺🇸" },
   { code: "ru", name: "Русский", flag: "🇷🇺" },
   { code: "uz", name: "O'zbekcha", flag: "🇺🇿" },
+  { code: "tg", name: "Тоҷикӣ", flag: "🇹🇯" },
 ];
 
 export default function Header() {

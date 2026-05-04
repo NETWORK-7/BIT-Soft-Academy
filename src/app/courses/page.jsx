@@ -19,6 +19,7 @@ export default function CoursesPage() {
   const [isSignedIn, setIsSignedIn] = React.useState(false);
   const [isLoaded, setIsLoaded] = React.useState(false);
   const [animateCards, setAnimateCards] = React.useState(false);
+  const [enrolledCourses, setEnrolledCourses] = React.useState([]);
 
   useEffect(() => {
     setIsLoaded(true);
@@ -26,6 +27,12 @@ export default function CoursesPage() {
       .then((r) => r.json())
       .then((data) => setIsSignedIn(!!data.user))
       .catch(() => setIsSignedIn(false));
+    
+    // Load enrolled courses from localStorage
+    const savedEnrollments = localStorage.getItem('enrolledCourses');
+    if (savedEnrollments) {
+      setEnrolledCourses(JSON.parse(savedEnrollments));
+    }
     
     // Trigger card animations after component mounts
     setTimeout(() => setAnimateCards(true), 100);
@@ -76,6 +83,16 @@ export default function CoursesPage() {
     return 24;
   };
 
+  const handleEnroll = (courseId) => {
+    const updatedEnrollments = [...enrolledCourses, courseId];
+    setEnrolledCourses(updatedEnrollments);
+    localStorage.setItem('enrolledCourses', JSON.stringify(updatedEnrollments));
+  };
+
+  const isEnrolled = (courseId) => {
+    return enrolledCourses.includes(courseId);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-purple-50 relative overflow-hidden">
       {/* Animated Background Elements */}
@@ -95,10 +112,13 @@ export default function CoursesPage() {
               <span className="text-white font-semibold">Premium Courses</span>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100 animate-fade-in-up">
-              Kurslar
+              {language === 'tg' ? 'Курсҳо' : language === 'ru' ? 'Курсы' : language === 'uz' ? 'Kurslar' : 'Courses'}
             </h1>
             <p className="text-xl text-blue-100 max-w-2xl mx-auto mb-8 animate-fade-in-up animation-delay-200">
-              Zamonaviy dasturlash kurslari bilan kelajak kasbingizni quring
+              {language === 'tg' ? 'Курсҳои муосири барномасозӣ бо касби ояндаатонро сохторед' : 
+               language === 'ru' ? 'Современные курсы программирования помогут построить вашу будущую карьеру' :
+               language === 'uz' ? 'Zamonaviy dasturlash kurslari bilan kelajak kasbingizni quring' :
+               'Build your future career with modern programming courses'}
             </p>
             <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up animation-delay-400">
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
@@ -126,7 +146,7 @@ export default function CoursesPage() {
               <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-blue-400 w-5 h-5" />
               <input
                 type="text"
-                placeholder="Kurslarni qidirish..."
+                placeholder={language === 'tg' ? 'Ҷустуҷӯи курсҳо...' : language === 'ru' ? 'Поиск курсов...' : language === 'uz' ? 'Kurslarni qidirish...' : 'Search courses...'}
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 className="w-full pl-12 pr-4 py-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all duration-300 hover:bg-white"
@@ -139,7 +159,7 @@ export default function CoursesPage() {
             >
               {categories.map((cat) => (
                 <option key={cat} value={cat}>
-                  {cat === "All" ? "Barcha kurslar" : cat}
+                  {cat === "All" ? (language === 'tg' ? 'Ҳамаи курсҳо' : language === 'ru' ? 'Все курсы' : language === 'uz' ? 'Barcha kurslar' : 'All Courses') : cat}
                 </option>
               ))}
             </select>
@@ -148,16 +168,16 @@ export default function CoursesPage() {
               onChange={(e) => setSortBy(e.target.value)}
               className="px-6 py-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all duration-300 hover:bg-white"
             >
-              <option value="popular">Mashhur</option>
-              <option value="rating">Reyting</option>
-              <option value="newest">Yangi</option>
+              <option value="popular">{language === 'tg' ? 'Машҳур' : language === 'ru' ? 'Популярные' : language === 'uz' ? 'Mashhur' : 'Popular'}</option>
+              <option value="rating">{language === 'tg' ? 'Рейтинг' : language === 'ru' ? 'Рейтинг' : language === 'uz' ? 'Reyting' : 'Rating'}</option>
+              <option value="newest">{language === 'tg' ? 'Нав' : language === 'ru' ? 'Новые' : language === 'uz' ? 'Yangi' : 'Newest'}</option>
             </select>
             {isSignedIn && (
               <Link
                 href="/dashboard"
                 className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-4 rounded-xl font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 flex items-center justify-center"
               >
-                Dashboardga o'tish
+                {language === 'tg' ? 'Ба панели идоракунӣ' : language === 'ru' ? 'В панель управления' : language === 'uz' ? 'Dashboardga o\'tish' : 'Go to Dashboard'}
               </Link>
             )}
           </div>
@@ -251,13 +271,16 @@ export default function CoursesPage() {
                       </div>
                       
                       <div className="mt-4 flex gap-2">
-                        {course.enrolled ? (
+                        {isEnrolled(course._id) ? (
                           <span className="flex-1 inline-flex items-center justify-center px-4 py-2 rounded-lg text-sm font-medium bg-green-50 text-green-700 border border-green-200">
-                            ✓ Ro'yxatdan o'tilgan
+                            ✓ {language === 'tg' ? 'Сабти ном шудааст' : language === 'ru' ? 'Зарегистрирован' : language === 'uz' ? 'Ro\'yxatdan o\'tilgan' : 'Enrolled'}
                           </span>
                         ) : (
-                          <button className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105">
-                            Ro'yxatdan o'tish
+                          <button 
+                            onClick={() => handleEnroll(course._id)}
+                            className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+                          >
+                            {language === 'tg' ? 'Сабти ном' : language === 'ru' ? 'Записаться' : language === 'uz' ? 'Ro\'yxatdan o\'tish' : 'Enroll'}
                           </button>
                         )}
                       </div>
@@ -289,8 +312,12 @@ export default function CoursesPage() {
         {!loading && !error && filteredCourses.length === 0 && (
           <div className="text-center py-20 bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-100 animate-fade-in-up">
             <div className="text-6xl mb-4 animate-bounce">🔍</div>
-            <h3 className="text-2xl font-semibold text-gray-700 mb-4">Kurslar topilmadi</h3>
-            <p className="text-gray-500 mt-2">Qidirish yoki filtr mezonlarini o'zgartirib ko'ring</p>
+            <h3 className="text-2xl font-semibold text-gray-700 mb-4">
+              {language === 'tg' ? 'Курсҳо ёфт нашуд' : language === 'ru' ? 'Курсы не найдены' : language === 'uz' ? 'Kurslar topilmadi' : 'No courses found'}
+            </h3>
+            <p className="text-gray-500 mt-2">
+              {language === 'tg' ? 'Ҷустуҷӯ ё филтрро тағйир диҳед' : language === 'ru' ? 'Попробуйте изменить поиск или фильтры' : language === 'uz' ? 'Qidirish yoki filtr mezonlarini o\'zgartirib ko\'ring' : 'Try adjusting your search or filter criteria'}
+            </p>
             <button
               onClick={() => {
                 setSearchTerm("");
@@ -298,7 +325,7 @@ export default function CoursesPage() {
               }}
               className="mt-4 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
-              Filtrlarni tozalash
+              {language === 'tg' ? 'Филтрро тоза кунед' : language === 'ru' ? 'Очистить фильтры' : language === 'uz' ? 'Filtrlarni tozalash' : 'Clear Filters'}
             </button>
           </div>
         )}
