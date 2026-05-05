@@ -109,7 +109,12 @@ export default function CoursesPage() {
           <div className="text-center">
             <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-6 py-3 mb-6">
               <Sparkles className="h-5 w-5 text-yellow-300" />
-              <span className="text-white font-semibold">Premium Courses</span>
+              <span className="text-white font-semibold">
+                {language === 'tg' ? 'Курсҳои премиум' : 
+                 language === 'ru' ? 'Премиум курсы' : 
+                 language === 'uz' ? 'Premium Kurslar' : 
+                 'Premium Courses'}
+              </span>
             </div>
             <h1 className="text-4xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-white to-blue-100 animate-fade-in-up">
               {language === 'tg' ? 'Курсҳо' : language === 'ru' ? 'Курсы' : language === 'uz' ? 'Kurslar' : 'Courses'}
@@ -123,15 +128,30 @@ export default function CoursesPage() {
             <div className="flex flex-wrap justify-center gap-4 animate-fade-in-up animation-delay-400">
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
                 <TrendingUp className="h-4 w-4 text-green-300" />
-                <span className="text-sm">500+ Students</span>
+                <span className="text-sm">
+                  {language === 'tg' ? '500+ Донишҷӯён' : 
+                   language === 'ru' ? '500+ Студентов' : 
+                   language === 'uz' ? '500+ O\'quvchilar' : 
+                   '500+ Students'}
+                </span>
               </div>
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
                 <Award className="h-4 w-4 text-yellow-300" />
-                <span className="text-sm">Expert Instructors</span>
+                <span className="text-sm">
+                  {language === 'tg' ? 'Мутахассисон' : 
+                   language === 'ru' ? 'Эксперты-преподаватели' : 
+                   language === 'uz' ? 'Mutaxassislar' : 
+                   'Expert Instructors'}
+                </span>
               </div>
               <div className="flex items-center gap-2 bg-white/10 backdrop-blur-sm rounded-full px-4 py-2">
                 <Zap className="h-4 w-4 text-purple-300" />
-                <span className="text-sm">Hands-on Projects</span>
+                <span className="text-sm">
+                  {language === 'tg' ? 'Лоиҳаҳои амалӣ' : 
+                   language === 'ru' ? 'Практические проекты' : 
+                   language === 'uz' ? 'Amaliy loyihalar' : 
+                   'Hands-on Projects'}
+                </span>
               </div>
             </div>
           </div>
@@ -312,12 +332,8 @@ export default function CoursesPage() {
         {!loading && !error && filteredCourses.length === 0 && (
           <div className="text-center py-20 bg-white/80 backdrop-blur-xl rounded-2xl shadow-xl border border-gray-100 animate-fade-in-up">
             <div className="text-6xl mb-4 animate-bounce">🔍</div>
-            <h3 className="text-2xl font-semibold text-gray-700 mb-4">
-              {language === 'tg' ? 'Курсҳо ёфт нашуд' : language === 'ru' ? 'Курсы не найдены' : language === 'uz' ? 'Kurslar topilmadi' : 'No courses found'}
-            </h3>
-            <p className="text-gray-500 mt-2">
-              {language === 'tg' ? 'Ҷустуҷӯ ё филтрро тағйир диҳед' : language === 'ru' ? 'Попробуйте изменить поиск или фильтры' : language === 'uz' ? 'Qidirish yoki filtr mezonlarini o\'zgartirib ko\'ring' : 'Try adjusting your search or filter criteria'}
-            </p>
+            <h3 className="text-2xl font-semibold text-gray-700 mb-4">Kurslar topilmadi</h3>
+            <p className="text-gray-500 mt-2">Qidirish yoki filtr mezonlarini o'zgartirib ko'ring</p>
             <button
               onClick={() => {
                 setSearchTerm("");
@@ -325,7 +341,7 @@ export default function CoursesPage() {
               }}
               className="mt-4 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
             >
-              {language === 'tg' ? 'Филтрро тоза кунед' : language === 'ru' ? 'Очистить фильтры' : language === 'uz' ? 'Filtrlarni tozalash' : 'Clear Filters'}
+              Filtrlarni tozalash
             </button>
           </div>
         )}
