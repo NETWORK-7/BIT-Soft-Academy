@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { BookOpenText, Users, TrendingUp, Code, Zap, Award, ArrowRight, Play, Star, CheckCircle, Clock } from "lucide-react";
 import Link from "next/link";
 import { useLanguageContext } from "@/context/LanguageContext";
+import CommentSection from "@/components/CommentSection";
 
 export default function LandingPage() {
   const { language } = useLanguageContext();
@@ -468,6 +469,10 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+      
+      {/* Comments Section */}
+      <CommentSection />
+      
       <footer className="border-t border-slate-800 py-16 px-4 sm:px-6 lg:px-8 bg-slate-900">
         <div className="max-w-6xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">

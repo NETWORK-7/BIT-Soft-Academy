@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { BookOpenText, User, Layers, Shield } from "lucide-react";
+import { BookOpenText, User, Layers, Shield, MessageCircle } from "lucide-react";
 
 const adminCards = [
   {
@@ -24,6 +24,13 @@ const adminCards = [
     icon: Layers,
     color: "bg-purple-100 text-purple-700",
     hover: "hover:bg-purple-200",
+  },
+  {
+    href: "/admin/comments",
+    label: "Manage Comments",
+    icon: MessageCircle,
+    color: "bg-orange-100 text-orange-700",
+    hover: "hover:bg-orange-200",
   },
 ];
 

@@ -402,3 +402,93 @@ export async function updateProgress(progressId, updateData) {
     throw error;
   }
 }
+
+// Comment operations
+export async function createComment(commentData) {
+  try {
+    console.log("Creating comment in Firebase...");
+    const commentsRef = ref(db, 'comments');
+    const newCommentRef = push(commentsRef);
+    const commentWithId = {
+      ...commentData,
+      _id: newCommentRef.key,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    await set(newCommentRef, commentWithId);
+    const createdComment = { _id: newCommentRef.key, ...commentWithId };
+    
+    console.log("Comment created successfully in Firebase:", createdComment);
+    return createdComment;
+  } catch (error) {
+    console.error("Error creating comment in Firebase:", error);
+    throw error;
+  }
+}
+
+export async function getAllComments() {
+  try {
+    const commentsRef = ref(db, 'comments');
+    const snapshot = await get(commentsRef);
+    const comments = snapshotToObject(snapshot);
+    
+    // Sort by createdAt descending (newest first)
+    const result = comments ? comments.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)) : [];
+    
+    console.log(`Fetched ${result.length} comments from Firebase`);
+    return result;
+  } catch (error) {
+    console.error("Error getting comments:", error);
+    throw error;
+  }
+}
+
+export async function getCommentById(commentId) {
+  try {
+    const commentRef = ref(db, `comments/${commentId}`);
+    const snapshot = await get(commentRef);
+    const comment = snapshot.val();
+    if (!comment) return null;
+    return { _id: commentId, ...comment };
+  } catch (error) {
+    console.error("Error getting comment:", error);
+    throw error;
+  }
+}
+
+export async function updateComment(commentId, updateData) {
+  try {
+    console.log("Updating comment in Firebase:", commentId, updateData);
+    const commentRef = ref(db, `comments/${commentId}`);
+    await update(commentRef, {
+      ...updateData,
+      updatedAt: new Date().toISOString()
+    });
+    
+    const updatedComment = {
+      _id: commentId,
+      ...updateData,
+      updatedAt: new Date().toISOString()
+    };
+    
+    console.log("Comment updated successfully in Firebase:", updatedComment);
+    return true;
+  } catch (error) {
+    console.error("Error updating comment in Firebase:", error);
+    throw error;
+  }
+}
+
+export async function deleteComment(commentId) {
+  try {
+    console.log("Deleting comment from Firebase:", commentId);
+    const commentRef = ref(db, `comments/${commentId}`);
+    await remove(commentRef);
+    
+    console.log("Comment deleted successfully from Firebase:", commentId);
+    return true;
+  } catch (error) {
+    console.error("Error deleting comment from Firebase:", error);
+    throw error;
+  }
+}
