@@ -88,19 +88,37 @@ export default function LandingPage() {
             <div className="text-center lg:text-left">
               <div className="inline-flex items-center space-x-2 bg-cyan-500/20 backdrop-blur-sm border border-cyan-400/30 rounded-full px-4 py-2 mb-8">
                 <Zap className="h-5 w-5 text-cyan-300" />
-                <span className="text-cyan-100 text-sm font-medium">Har hafta yangi kurslar qo'shiladi</span>
+                <span className="text-cyan-100 text-sm font-medium">
+                  {language === 'tg' ? 'Ҳар ҳафта курсҳои нав илова мешавад' : 
+                   language === 'ru' ? 'Каждую неделю добавляются новые курсы' : 
+                   language === 'uz' ? 'Har hafta yangi kurslar qo\'shiladi' : 
+                   'New courses added weekly'}
+                </span>
               </div>
               
               <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
-                Kelajak kasbini
-                <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent"> zamonaviy usulda</span>
+                {language === 'tg' ? 'Касби ояндаатонро' : 
+                 language === 'ru' ? 'Вашу будущую профессию' : 
+                 language === 'uz' ? 'Kelajak kasbini' : 
+                 'Your future career'}
+                <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                  {language === 'tg' ? ' бо усули муосир' : 
+                   language === 'ru' ? ' современным способом' : 
+                   language === 'uz' ? ' zamonaviy usulda' : 
+                   ' the modern way'}
+                </span>
                 <br />
-                o'rganing
+                {language === 'tg' ? 'омӯзед' : 
+                 language === 'ru' ? 'изучайте' : 
+                 language === 'uz' ? 'o\'rganing' : 
+                 'learn'}
               </h1>
               
               <p className="text-xl text-cyan-100 mb-8 max-w-2xl">
-                Dasturlashni quruq nazariya bilan emas, real amaliyot va real loyihalar orqali o'rganing. 
-                Premium kurslar, ochiq kodlar va komyuniti bir joyda.
+                {language === 'tg' ? 'Барномасозиро наққи назария бо амалиёт ва лоиҳаҳои ҳақиқӣ омӯзед. Курсҳои премиум, кодҳои кушод ва ҷамоат дар як ҷой.' : 
+                 language === 'ru' ? 'Изучайте программирование не просто теорией, а реальной практикой и реальными проектами. Премиум курсы, открытый код и сообщество в одном месте.' : 
+                 language === 'uz' ? 'Dasturlashni quruq nazariya bilan emas, real amaliyot va real loyihalar orqali o\'rganing. Premium kurslar, ochiq kodlar va komyuniti bir joyda.' : 
+                 'Learn programming not just with dry theory, but with real practice and real projects. Premium courses, open source code and community in one place.'}
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12">
@@ -109,14 +127,24 @@ export default function LandingPage() {
                   className="bg-gradient-to-r from-cyan-500 to-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all duration-300 flex items-center justify-center space-x-2 shadow-lg shadow-cyan-500/25"
                 >
                   <BookOpenText className="h-5 w-5" />
-                  <span>Kurslarni boshlash</span>
+                  <span>
+                    {language === 'tg' ? 'Оғози курсҳо' : 
+                     language === 'ru' ? 'Начать курсы' : 
+                     language === 'uz' ? 'Kurslarni boshlash' : 
+                     'Start Courses'}
+                  </span>
                 </Link>
                 <Link 
                   href="/courses" 
                   className="bg-white/10 backdrop-blur-sm border border-white/20 text-white px-8 py-4 rounded-xl font-semibold hover:bg-white/20 transition-all duration-300 flex items-center justify-center space-x-2"
                 >
                   <Code className="h-5 w-5" />
-                  <span>Loyihalar</span>
+                  <span>
+                    {language === 'tg' ? 'Лоиҳаҳо' : 
+                     language === 'ru' ? 'Проекты' : 
+                     language === 'uz' ? 'Loyihalar' : 
+                     'Projects'}
+                  </span>
                 </Link>
               </div>
             </div>

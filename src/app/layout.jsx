@@ -7,6 +7,11 @@ import { Toaster } from '@/components/ui/sonner';
 export const metadata = {
   title: 'Bit-Soft IT academy - Learn to Code',
   description: 'Best coding platform for beginners',
+  icons: {
+    icon: '/bitsoft.jpg',
+    shortcut: '/bitsoft.jpg',
+    apple: '/bitsoft.jpg',
+  },
 };
 
 export default function RootLayout({ children }) {
