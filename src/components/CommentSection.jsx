@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Star, Send, MessageCircle, User, ThumbsUp, Loader2 } from "lucide-react";
+import { Star, Send, MessageCircle, User, Loader2 } from "lucide-react";
 import { useLanguageContext } from "@/context/LanguageContext";
 
 export default function CommentSection() {
@@ -11,7 +11,6 @@ export default function CommentSection() {
   const [submitting, setSubmitting] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
-    email: "",
     text: "",
     rating: 5,
   });
@@ -24,7 +23,6 @@ export default function CommentSection() {
       subtitle: "Read reviews from our community of learners",
       writeReview: "Write a Review",
       yourName: "Your Name",
-      yourEmail: "Your Email (optional)",
       yourReview: "Share your experience...",
       rating: "Rating",
       submit: "Submit Review",
@@ -33,14 +31,12 @@ export default function CommentSection() {
       error: "Something went wrong. Please try again.",
       noReviews: "No reviews yet. Be the first to share your experience!",
       anonymous: "Anonymous",
-      verified: "Verified Student",
     },
     uz: {
       title: "O'quvchilarimiz nima deydi",
       subtitle: "O'quvchilarimizning fikrlarini o'qing",
       writeReview: "Fikr yozing",
       yourName: "Ismingiz",
-      yourEmail: "Email (ixtiyoriy)",
       yourReview: "Tajribangizni baham ko'ring...",
       rating: "Baholash",
       submit: "Fikr yuborish",
@@ -49,14 +45,12 @@ export default function CommentSection() {
       error: "Xatolik yuz berdi. Iltimos, qayta urinib ko'ring.",
       noReviews: "Hozircha fikrlar yo'q. Birinchi bo'lib tajribangizni ulashing!",
       anonymous: "Anonim",
-      verified: "Tasdiqlangan o'quvchi",
     },
     ru: {
       title: "Что говорят наши студенты",
       subtitle: "Читайте отзывы нашего сообщества учеников",
       writeReview: "Написать отзыв",
       yourName: "Ваше имя",
-      yourEmail: "Email (необязательно)",
       yourReview: "Поделитесь своим опытом...",
       rating: "Оценка",
       submit: "Отправить отзыв",
@@ -65,14 +59,12 @@ export default function CommentSection() {
       error: "Что-то пошло не так. Пожалуйста, попробуйте снова.",
       noReviews: "Пока нет отзывов. Будьте первым, кто поделится опытом!",
       anonymous: "Аноним",
-      verified: "Подтвержденный студент",
     },
     tg: {
       title: "Донишҷӯёни мо чӣ мегӯянд",
       subtitle: "Фикрҳои ҷамъияти донишҷӯёни моро мутолиа кунед",
       writeReview: "Фикр нависед",
       yourName: "Номи шумо",
-      yourEmail: "Email (ихтирорӣ)",
       yourReview: "Таҷрибаи худро мубодила кунед...",
       rating: "Баҳогузорӣ",
       submit: "Фикр фиристодан",
@@ -81,7 +73,6 @@ export default function CommentSection() {
       error: "Хатогӣ рӯй дод. Лутфан, дубора кӯшиш кунед.",
       noReviews: "Ҳоло фикрҳо нест. Якумин касе таҷрибаи худро мубодила кунед!",
       anonymous: "Номаълум",
-      verified: "Донишҷӯи тасдиқшуда",
     },
   };
 
@@ -129,7 +120,7 @@ export default function CommentSection() {
 
       if (data.success) {
         setSubmitMessage({ type: "success", text: t.thankYou });
-        setFormData({ name: "", email: "", text: "", rating: 5 });
+        setFormData({ name: "", text: "", rating: 5 });
         // Refresh comments list
         fetchComments();
       } else {
@@ -222,12 +213,6 @@ export default function CommentSection() {
                           <h4 className="font-semibold text-gray-900">
                             {comment.name || t.anonymous}
                           </h4>
-                          {comment.email && (
-                            <span className="text-xs bg-green-100 text-green-700 px-2 py-1 rounded-full flex items-center gap-1">
-                              <ThumbsUp className="w-3 h-3" />
-                              {t.verified}
-                            </span>
-                          )}
                           <span className="text-gray-400 text-sm ml-auto">
                             {formatDate(comment.createdAt)}
                           </span>
@@ -270,21 +255,6 @@ export default function CommentSection() {
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
                     placeholder={t.yourName}
                     required
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    {t.yourEmail}
-                  </label>
-                  <input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) =>
-                      setFormData({ ...formData, email: e.target.value })
-                    }
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all outline-none"
-                    placeholder="email@example.com"
                   />
                 </div>
 
