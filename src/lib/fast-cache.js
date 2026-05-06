@@ -1,9 +1,8 @@
-// High-performance cache for admin operations
 class FastCache {
   constructor() {
     this.cache = new Map();
     this.timestamps = new Map();
-    this.defaultTTL = 2 * 60 * 1000; // 2 minutes for admin operations
+    this.defaultTTL = 2 * 60 * 1000;
   }
 
   set(key, data, ttl = this.defaultTTL) {
