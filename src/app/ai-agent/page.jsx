@@ -293,38 +293,38 @@ export default function AIAgentPage() {
 
           {/* Chat Area */}
           <div className="lg:col-span-3 flex flex-col h-full">
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 flex-1 flex flex-col min-h-0">
+            <div className="bg-gradient-to-br from-purple-500/10 to-pink-500/10 backdrop-blur-2xl rounded-3xl border border-purple-400/20 shadow-2xl shadow-purple-500/10 flex-1 flex flex-col min-h-0">
               {/* Messages */}
-              <div ref={messagesEndRef} className="flex-1 overflow-y-auto p-6 space-y-4 scroll-smooth">
+              <div ref={messagesEndRef} className="flex-1 overflow-y-auto p-8 space-y-6 scroll-smooth">
                 {messages.map((message, index) => (
                   <div
                     key={index}
                     className={`flex gap-3 ${message.role === "user" ? "justify-end" : "justify-start"}`}
                   >
                     {message.role === "assistant" && (
-                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-                        <Bot className="w-4 h-4 text-white" />
+                      <div className="w-10 h-10 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-full flex items-center justify-center shrink-0 shadow-lg shadow-purple-500/30 transform hover:scale-110 transition-transform duration-300">
+                        <Bot className="w-5 h-5 text-white" />
                       </div>
                     )}
                     <div
-                      className={`max-w-[70%] rounded-2xl p-4 ${
+                      className={`max-w-[75%] rounded-3xl p-5 shadow-xl ${
                         message.role === "user"
-                          ? "bg-blue-600 text-white"
-                          : "bg-white/20 text-white backdrop-blur-sm"
+                          ? "bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-blue-500/30"
+                          : "bg-gradient-to-br from-purple-500/20 to-pink-500/20 text-white backdrop-blur-xl border border-purple-400/20 shadow-purple-500/20"
                       }`}
                     >
-                      <p className="text-sm leading-relaxed whitespace-pre-wrap">
+                      <p className="text-sm leading-relaxed whitespace-pre-wrap font-medium">
                         {message.content}
                       </p>
-                      <p className={`text-xs mt-2 ${
-                        message.role === "user" ? "text-blue-100" : "text-white/60"
+                      <p className={`text-xs mt-3 ${
+                        message.role === "user" ? "text-blue-100" : "text-purple-200"
                       }`}>
                         {formatTimestamp(message.timestamp)}
                       </p>
                     </div>
                     {message.role === "user" && (
-                      <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center flex-shrink-0">
-                        <User className="w-4 h-4 text-white" />
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/30 transform hover:scale-110 transition-transform duration-300">
+                        <User className="w-5 h-5 text-white" />
                       </div>
                     )}
                   </div>
@@ -332,13 +332,13 @@ export default function AIAgentPage() {
                 
                 {isTyping && (
                   <div className="flex gap-3 justify-start">
-                    <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
-                      <Bot className="w-4 h-4 text-white" />
+                    <div className="w-10 h-10 bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-full flex items-center justify-center shrink-0 shadow-lg shadow-purple-500/30">
+                      <Bot className="w-5 h-5 text-white" />
                     </div>
-                    <div className="bg-white/20 text-white backdrop-blur-sm rounded-2xl p-4">
-                      <div className="flex items-center gap-2">
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                        <span className="text-sm">{t.typing}</span>
+                    <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 text-white backdrop-blur-xl rounded-3xl p-5 border border-purple-400/20 shadow-xl shadow-purple-500/20">
+                      <div className="flex items-center gap-3">
+                        <Loader2 className="w-5 h-5 animate-spin text-purple-300" />
+                        <span className="text-sm font-medium">{t.typing}</span>
                       </div>
                     </div>
                   </div>
@@ -348,21 +348,21 @@ export default function AIAgentPage() {
               </div>
 
               {/* Input */}
-              <div className="p-6 border-t border-white/20">
-                <form onSubmit={handleSubmit} className="flex gap-3">
+              <div className="p-6 border-t border-purple-400/20 bg-gradient-to-r from-purple-500/10 to-pink-500/10">
+                <form onSubmit={handleSubmit} className="flex gap-4">
                   <input
                     ref={inputRef}
                     type="text"
                     value={inputMessage}
                     onChange={(e) => setInputMessage(e.target.value)}
-                    placeholder={t.placeholder}
-                    className="flex-1 px-4 py-3 bg-white/10 border border-white/20 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-blue-400 focus:bg-white/20 transition-all"
+                    placeholder={t.inputPlaceholder}
+                    className="flex-1 px-5 py-4 bg-gradient-to-r from-white/20 to-white/10 border border-purple-400/30 rounded-2xl text-white placeholder-purple-200 focus:outline-none focus:ring-4 focus:ring-purple-500/50 focus:border-purple-400 backdrop-blur-sm transition-all duration-300 font-medium"
                     disabled={isLoading}
                   />
                   <button
                     type="submit"
                     disabled={isLoading || !inputMessage.trim()}
-                    className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                    className="px-8 py-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 disabled:from-purple-700 disabled:to-pink-700 disabled:opacity-60 text-white rounded-2xl transition-all duration-300 flex items-center gap-3 shadow-lg shadow-purple-500/30 hover:shadow-xl hover:scale-105 transform font-medium"
                   >
                     {isLoading ? (
                       <Loader2 className="w-5 h-5 animate-spin" />
