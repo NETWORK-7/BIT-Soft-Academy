@@ -51,6 +51,8 @@
     "embla-carousel-react": "^8.6.0",
     "firebase": "^12.11.0",
     "framer-motion": "^12.23.26",
+    "groq-sdk": "^0.8.0",
+    "gsap": "^3.12.7",
     "input-otp": "^1.4.2",
     "jose": "^6.2.2",
     "lucide-react": "^0.561.0",

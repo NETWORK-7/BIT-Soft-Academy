@@ -1,24 +1,36 @@
 // Groq API utility for Bit-Soft AI Agent
-import Groq from "groq-sdk";
 
-const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
+const GROQ_API_KEY = process.env.GROQ_API_KEY || "";
+const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
 export async function chatWithGroq(messages, language = 'en') {
   try {
     const systemPrompt = getSystemPrompt(language);
     
-    const completion = await groq.chat.completions.create({
-      messages: [
-        { role: "system", content: systemPrompt },
-        ...messages
-      ],
-      model: "llama-3.3-70b-versatile",
-      temperature: 0.7,
-      max_tokens: 1024,
-      stream: false,
+    const response = await fetch(GROQ_API_URL, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${GROQ_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: "llama3-70b-8192",
+        messages: [
+          { role: "system", content: systemPrompt },
+          ...messages
+        ],
+        temperature: 0.7,
+        max_tokens: 1024,
+        stream: false,
+      }),
     });
 
-    return completion.choices[0].message.content;
+    if (!response.ok) {
+      throw new Error(`Groq API error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data.choices[0].message.content;
   } catch (error) {
     console.error("Groq API Error:", error);
     throw error;
