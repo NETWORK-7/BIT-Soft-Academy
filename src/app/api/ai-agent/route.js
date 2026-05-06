@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const OPENROUTER_API_URL = "https://openrouter.ai/api/v1/chat/completions";
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const GROQ_API_URL = "https://api.groq.com/openai/v1/chat/completions";
 
 function getSystemPrompt(language) {
   const prompts = {
@@ -47,9 +47,9 @@ Always be friendly, professional, and helpful. Speak in English. If the question
 
 export async function POST(request) {
   try {
-    if (!OPENROUTER_API_KEY) {
+    if (!GROQ_API_KEY) {
       return NextResponse.json(
-        { error: "OpenRouter API key not configured" },
+        { error: "Groq API key not configured" },
         { status: 500 }
       );
     }
@@ -66,16 +66,14 @@ export async function POST(request) {
 
     const systemPrompt = getSystemPrompt(language);
 
-    const response = await fetch(OPENROUTER_API_URL, {
+    const response = await fetch(GROQ_API_URL, {
       method: "POST",
       headers: {
-        "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+        "Authorization": `Bearer ${GROQ_API_KEY}`,
         "Content-Type": "application/json",
-        "HTTP-Referer": "https://bitsoft-academy.com",
-        "X-Title": "Bit-Soft AI Agent",
       },
       body: JSON.stringify({
-        model: "meta-llama/llama-3.1-70b-instruct",
+        model: "llama-3.3-70b-versatile",
         messages: [
           { role: "system", content: systemPrompt },
           { role: "user", content: message }
@@ -88,9 +86,9 @@ export async function POST(request) {
 
     if (!response.ok) {
       const errorData = await response.json().catch(() => ({}));
-      console.error("OpenRouter API Error:", response.status, errorData);
+      console.error("Groq API Error:", response.status, errorData);
       return NextResponse.json(
-        { error: `OpenRouter API error: ${response.status}` },
+        { error: `Groq API error: ${response.status}` },
         { status: response.status }
       );
     }
