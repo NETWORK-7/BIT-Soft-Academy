@@ -14,7 +14,6 @@ import {
   Brain
 } from "lucide-react";
 import { useLanguageContext } from "@/context/LanguageContext";
-import { generateAIResponse } from "@/lib/groq";
 
 export default function AIAgentPage() {
   const { language } = useLanguageContext();
@@ -122,11 +121,26 @@ export default function AIAgentPage() {
     setIsTyping(true);
 
     try {
-      const response = await generateAIResponse(message, language);
-      
+      const response = await fetch("/api/ai-agent", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: message.trim(),
+          language: language
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to get AI response");
+      }
+
       const aiMessage = {
         role: "assistant",
-        content: response,
+        content: data.reply,
         timestamp: new Date().toISOString()
       };
 
