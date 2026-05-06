@@ -11,18 +11,40 @@ import {
   BookOpen, 
   MessageCircle,
   Sparkles,
-  Brain
+  Brain,
+  ExternalLink
 } from "lucide-react";
 import { useLanguageContext } from "@/context/LanguageContext";
+import { useRouter } from "next/navigation";
 
 export default function AIAgentPage() {
   const { language } = useLanguageContext();
+  const router = useRouter();
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [userEnrolled, setUserEnrolled] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
+
+  // Check if user is enrolled in any course
+  useEffect(() => {
+    checkUserEnrollment();
+  }, []);
+
+  const checkUserEnrollment = async () => {
+    try {
+      // Check if user has any enrolled courses
+      const response = await fetch('/api/user/courses');
+      if (response.ok) {
+        const data = await response.json();
+        setUserEnrolled(data.courses && data.courses.length > 0);
+      }
+    } catch (error) {
+      console.error('Error checking enrollment:', error);
+    }
+  };
 
   const translations = {
     en: {
@@ -130,7 +152,8 @@ export default function AIAgentPage() {
         },
         body: JSON.stringify({
           message: message.trim(),
-          language: language
+          language: language,
+          userEnrolled: userEnrolled
         }),
       });
 
@@ -140,13 +163,24 @@ export default function AIAgentPage() {
         throw new Error(data.error || "Failed to get AI response");
       }
 
-      const aiMessage = {
-        role: "assistant",
-        content: data.reply,
-        timestamp: new Date().toISOString()
-      };
-
-      setMessages(prev => [...prev, aiMessage]);
+      // Check if AI response contains course recommendation
+      if (data.courseRecommendation) {
+        const courseMessage = {
+          role: "assistant",
+          content: data.reply,
+          timestamp: new Date().toISOString(),
+          courseLink: data.courseLink,
+          actionRequired: true
+        };
+        setMessages(prev => [...prev, courseMessage]);
+      } else {
+        const aiMessage = {
+          role: "assistant",
+          content: data.reply,
+          timestamp: new Date().toISOString()
+        };
+        setMessages(prev => [...prev, aiMessage]);
+      }
     } catch (error) {
       console.error("AI Error:", error);
       const errorMessage = {
@@ -163,6 +197,10 @@ export default function AIAgentPage() {
       setIsTyping(false);
       inputRef.current?.focus();
     }
+  };
+
+  const handleCourseRedirect = (courseLink) => {
+    router.push(courseLink);
   };
 
   const handleSubmit = (e) => {
@@ -321,6 +359,20 @@ export default function AIAgentPage() {
                       }`}>
                         {formatTimestamp(message.timestamp)}
                       </p>
+                      {message.actionRequired && message.courseLink && (
+                        <div className="mt-4 flex gap-3">
+                          <button
+                            onClick={() => handleCourseRedirect(message.courseLink)}
+                            className="px-4 py-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white rounded-xl transition-all duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-105 transform text-sm font-medium"
+                          >
+                            <ExternalLink className="w-4 h-4" />
+                            {language === 'uz' ? "Kursga o\'tish" : 
+                             language === 'ru' ? "Перейти к курсу" : 
+                             language === 'tg' ? "Гузариш ба курс" : 
+                             "Go to Course"}
+                          </button>
+                        </div>
+                      )}
                     </div>
                     {message.role === "user" && (
                       <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center shrink-0 shadow-lg shadow-blue-500/30 transform hover:scale-110 transition-transform duration-300">

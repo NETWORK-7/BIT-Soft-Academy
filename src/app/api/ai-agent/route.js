@@ -55,7 +55,7 @@ export async function POST(request) {
     }
 
     const body = await request.json();
-    const { message, language = 'en' } = body;
+    const { message, language = 'en', userEnrolled = false } = body;
 
     if (!message) {
       return NextResponse.json(
@@ -94,11 +94,38 @@ export async function POST(request) {
     }
 
     const data = await response.json();
-    const reply = data.choices[0].message.content;
+    let reply = data.choices[0].message.content;
+    let courseRecommendation = false;
+    let courseLink = null;
+
+    // Check if user is not enrolled and message asks about courses
+    if (!userEnrolled && (
+      message.toLowerCase().includes('kurs') || 
+      message.toLowerCase().includes('course') || 
+      message.toLowerCase().includes('dars') ||
+      message.toLowerCase().includes('o\'qish') ||
+      message.toLowerCase().includes('learning')
+    )) {
+      courseRecommendation = true;
+      courseLink = '/courses';
+      
+      // Add course recommendation to the response
+      const courseText = language === 'uz' ? 
+        "\n\n🎓 Siz hali hech qanday kurslarga yozilmagansiz! Bit-Soft kurslarimiz siz uchun mo'ljud:" :
+        language === 'ru' ?
+        "\n\n🎓 Вы еще не записаны ни на какие курсы! Курсы Bit-Soft доступны для вас:" :
+        language === 'tg' ?
+        "\n\n🎓 Шумо то дар ягон курс сабт нашудаед! Курсҳои Bit-Soft барои шумо дастрасанд:" :
+        "\n\n🎓 You haven't enrolled in any courses yet! Bit-Soft courses are available for you:";
+      
+      reply += courseText;
+    }
 
     return NextResponse.json({
       success: true,
-      reply: reply
+      reply: reply,
+      courseRecommendation: courseRecommendation,
+      courseLink: courseLink
     });
 
   } catch (error) {
