@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Globe } from "lucide-react";
+import { Menu, X, Globe, Bot } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLanguageContext } from "@/context/LanguageContext";
 import { t } from "@/lib/translations";
@@ -61,6 +61,13 @@ export default function Header() {
             className="text-lg font-medium text-muted-foreground hover:text-primary transition-colors"
           >
             {t(language, "nav.blog")}
+          </Link>
+          <Link
+            href="/ai-agent"
+            className="text-lg font-medium text-muted-foreground hover:text-primary transition-colors flex items-center gap-2"
+          >
+            <Bot className="h-5 w-5" />
+            {language === 'uz' ? 'AI Agent' : language === 'ru' ? 'AI Агент' : language === 'tg' ? 'AI Агент' : 'AI Agent'}
           </Link>
           <Link
             href="/dashboard"
@@ -138,6 +145,14 @@ export default function Header() {
               onClick={() => setMobileMenuOpen(false)}
             >
               {t(language, "nav.blog")}
+            </Link>
+            <Link
+              href="/ai-agent"
+              className="text-lg font-medium text-muted-foreground hover:text-primary transition flex items-center gap-2"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              <Bot className="h-5 w-5" />
+              {language === 'uz' ? 'AI Agent' : language === 'ru' ? 'AI Агент' : language === 'tg' ? 'AI Агент' : 'AI Agent'}
             </Link>
             <Link
               href="/dashboard"
