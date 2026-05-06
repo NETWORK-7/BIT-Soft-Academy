@@ -318,9 +318,27 @@ export default function CourseDetailsPage({ params }) {
                 
                 <div className="space-y-3">
                   {[
-                    { id: 'oddiy', name: 'Oddiy (5)', icon: Sparkles, color: 'green', description: 'Boshlangich darajadagi darslar' },
-                    { id: 'ortacha', name: 'Ortacha (5)', icon: TrendingUp, color: 'blue', description: 'Orta darajadagi darslar' },
-                    { id: 'oliy', name: 'Oliy (5)', icon: Award, color: 'purple', description: 'Yuqori darajadagi darslar' }
+                    { 
+                      id: 'oddiy', 
+                      name: language === 'uz' ? 'Oddiy (5)' : language === 'ru' ? 'Простой (5)' : language === 'tg' ? 'Оддӣ (5)' : 'Basic (5)', 
+                      icon: Sparkles, 
+                      color: 'green', 
+                      description: language === 'uz' ? 'Boshlangich darajadagi darslar' : language === 'ru' ? 'Уроки начального уровня' : language === 'tg' ? 'Дарсҳои сатҳи ибтидоӣ' : 'Beginner level lessons' 
+                    },
+                    { 
+                      id: 'ortacha', 
+                      name: language === 'uz' ? 'Ortacha (5)' : language === 'ru' ? 'Средний (5)' : language === 'tg' ? 'Миёна (5)' : 'Intermediate (5)', 
+                      icon: TrendingUp, 
+                      color: 'blue', 
+                      description: language === 'uz' ? 'Orta darajadagi darslar' : language === 'ru' ? 'Уроки среднего уровня' : language === 'tg' ? 'Дарсҳои сатҳи миёна' : 'Intermediate level lessons' 
+                    },
+                    { 
+                      id: 'oliy', 
+                      name: language === 'uz' ? 'Oliy (5)' : language === 'ru' ? 'Продвинутый (5)' : language === 'tg' ? 'Олии (5)' : 'Advanced (5)', 
+                      icon: Award, 
+                      color: 'purple', 
+                      description: language === 'uz' ? 'Yuqori darajadagi darslar' : language === 'ru' ? 'Уроки продвинутого уровня' : language === 'tg' ? 'Дарсҳои сатҳи олии' : 'Advanced level lessons' 
+                    }
                   ].map((category) => {
                     const Icon = category.icon;
                     const categoryLessons = lessons.filter(lesson => lesson.level === category.id);

@@ -101,12 +101,27 @@ export default function BlogPage() {
     }
   ];
 
-  const categories = ["All", "JavaScript", "React", "Node.js", "MongoDB", "TypeScript", "Security", "CSS", "Next.js"];
+  const categories = [
+    language === 'uz' ? 'Hammasi' : language === 'ru' ? 'Все' : language === 'tg' ? 'Ҳама' : 'All',
+    language === 'uz' ? 'JavaScript' : language === 'ru' ? 'JavaScript' : language === 'tg' ? 'JavaScript' : 'JavaScript',
+    language === 'uz' ? 'React' : language === 'ru' ? 'React' : language === 'tg' ? 'React' : 'React',
+    language === 'uz' ? 'Node.js' : language === 'ru' ? 'Node.js' : language === 'tg' ? 'Node.js' : 'Node.js',
+    language === 'uz' ? 'MongoDB' : language === 'ru' ? 'MongoDB' : language === 'tg' ? 'MongoDB' : 'MongoDB',
+    language === 'uz' ? 'TypeScript' : language === 'ru' ? 'TypeScript' : language === 'tg' ? 'TypeScript' : 'TypeScript',
+    language === 'uz' ? 'Xavfsizlik' : language === 'ru' ? 'Безопасность' : language === 'tg' ? 'Амният' : 'Security',
+    language === 'uz' ? 'CSS' : language === 'ru' ? 'CSS' : language === 'tg' ? 'CSS' : 'CSS',
+    language === 'uz' ? 'Next.js' : language === 'ru' ? 'Next.js' : language === 'tg' ? 'Next.js' : 'Next.js'
+  ];
 
   const filteredPosts = blogPosts.filter((post) => {
     const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                          post.excerpt.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategory === "All" || post.category === selectedCategory;
+    
+    // Get the original category name for matching
+    const originalCategories = ["All", "JavaScript", "React", "Node.js", "MongoDB", "TypeScript", "Security", "CSS", "Next.js"];
+    const selectedOriginalCategory = originalCategories[categories.indexOf(selectedCategory)];
+    
+    const matchesCategory = selectedOriginalCategory === "All" || post.category === selectedOriginalCategory;
     return matchesSearch && matchesCategory;
   });
 

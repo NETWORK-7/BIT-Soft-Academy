@@ -1,8 +1,10 @@
 "use client";
 
 import { Users, Target, Lightbulb, Award, Github, Linkedin, Mail } from "lucide-react";
+import { useLanguageContext } from "@/context/LanguageContext";
 
 export default function AboutPage() {
+  const { language } = useLanguageContext();
   const team = [
     {
       id: 1,
@@ -41,23 +43,23 @@ export default function AboutPage() {
   const values = [
     {
       icon: Target,
-      title: "Quality Learning",
-      description: "We provide industry-standard, up-to-date content taught by experienced professionals"
+      title: language === 'uz' ? 'Sifatli Ta\'lim' : language === 'ru' ? 'Качественное обучение' : language === 'tg' ? 'Та\'лими сифатдор' : 'Quality Learning',
+      description: language === 'uz' ? 'Tajribali mutaxassislar tomonidan o\'qitilgan, sanoat standartidagi, zamonaviy kontent taqdim etamiz' : language === 'ru' ? 'Мы предоставляем контент отраслевых стандартов, актуальный, преподаваемый опытными профессионалами' : language === 'tg' ? 'Мо контенти стандарти санатро, нав ва аз тарафи касбониёни таълим медихем' : 'We provide industry-standard, up-to-date content taught by experienced professionals'
     },
     {
       icon: Lightbulb,
-      title: "Innovation",
-      description: "Always staying ahead of the curve with the latest technologies and best practices"
+      title: language === 'uz' ? 'Innovatsiya' : language === 'ru' ? 'Инновации' : language === 'tg' ? 'Инноватсия' : 'Innovation',
+      description: language === 'uz' ? 'Har doim eng so\'nggi texnologiyalar va eng yaxshi amaliyotlar bilan oldinda bo\'lish' : language === 'ru' ? 'Всегда оставаться впереди кривой с последними технологиями и лучшими практиками' : language === 'tg' ? 'Ҳамеша бо технологияхои нав ва амалиётхои беҳтарин пеш аз хат' : 'Always staying ahead of the curve with latest technologies and best practices'
     },
     {
       icon: Users,
-      title: "Community",
-      description: "Building a supportive community where learners can collaborate and grow together"
+      title: language === 'uz' ? 'Jamiyat' : language === 'ru' ? 'Сообщество' : language === 'tg' ? 'Ҷамъият' : 'Community',
+      description: language === 'uz' ? 'O\'quvchilar birgalikda hamkorlik qilishi va o\'sishi mumkin bo\'lgan qo\'llab-quvvatlovchi jamiyat qurish' : language === 'ru' ? 'Создание поддерживающего сообщества, где учащиеся могут сотрудничать и расти вместе' : language === 'tg' ? 'Сохтани ҷамъияти дастгир, ки дар он донишҷӯён метавонанд ҳамкорӣ кунанд ва якҷоя мепароянд' : 'Building a supportive community where learners can collaborate and grow together'
     },
     {
       icon: Award,
-      title: "Excellence",
-      description: "Committed to delivering exceptional educational experiences and outcomes"
+      title: language === 'uz' ? 'A\'lo' : language === 'ru' ? 'Превосходство' : language === 'tg' ? 'Беҳтарин' : 'Excellence',
+      description: language === 'uz' ? 'Ajoyib ta\'lim tajribalari va natijalarni taqdim etishga sodiqligimiz' : language === 'ru' ? 'Приверженность предоставлению исключительных образовательных опытов и результатов' : language === 'tg' ? 'Таълимоти махсус ва натиҷахоро пешкаш кардан ба вакфияти мо' : 'Committed to delivering exceptional educational experiences and outcomes'
     }
   ];
 
@@ -66,9 +68,11 @@ export default function AboutPage() {
      
       <div className="bg-linear-to-r from-brand-from to-brand-to text-primary-foreground py-20 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6">About Bit-Soft IT Academy</h1>
+          <h1 className="text-5xl md:text-6xl font-bold mb-6">
+            {language === 'uz' ? 'Bit-Soft IT Akademiyasi haqida' : language === 'ru' ? 'О Bit-Soft IT Академии' : language === 'tg' ? 'Дар бораи Bit-Soft IT Академия' : 'About Bit-Soft IT Academy'}
+          </h1>
           <p className="text-xl md:text-2xl opacity-90 max-w-3xl mx-auto">
-            Empowering the next generation of developers through quality education, hands-on learning, and industry expertise
+            {language === 'uz' ? 'Sifatli ta\'lim, amaliy o\'qitish va sanoat tajribasi orqali kelajak dasturchilarini qo\'llab-quvvatlash' : language === 'ru' ? 'Расширение возможностей следующего поколения разработчиков через качественное образование, практическое обучение и отраслевую экспертизу' : language === 'tg' ? 'Дар бораи дасткардаани насли ояндаи барномасозон тавассути таълими сифатдор, таълими амалӣ ва таҷрибаи саноат' : 'Empowering the next generation of developers through quality education, hands-on learning, and industry expertise'}
           </p>
         </div>
       </div>
@@ -77,12 +81,14 @@ export default function AboutPage() {
       <div className="max-w-6xl mx-auto px-4 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
           <div>
-            <h2 className="text-4xl font-bold text-gray-900 mb-6">Our Mission</h2>
+            <h2 className="text-4xl font-bold text-gray-900 mb-6">
+              {language === 'uz' ? 'Bizning Missiyamiz' : language === 'ru' ? 'Наша миссия' : language === 'tg' ? 'Миссияи мо' : 'Our Mission'}
+            </h2>
             <p className="text-lg text-gray-600 leading-relaxed mb-4">
-              At Bit-Soft IT Academy, our mission is to democratize access to quality tech education and help aspiring developers master modern web development skills.
+              {language === 'uz' ? 'Bit-Soft IT Akademiyasida bizning missiya - sifatli texnik ta\'limga kirishni demokratik qilish va istiqbolli dasturchilarga zamonaviy veb rivojlanish ko\'nikmalarini o\'zlashtirishga yordam berish.' : language === 'ru' ? 'В Bit-Soft IT Академии наша миссия - демократизировать доступ к качественному техническому образованию и помочь начинающим разработчикам освоить современные навыки веб-разработки.' : language === 'tg' ? 'Дар Bit-Soft IT Академия, миссияи мо - дастраси кардани дастрас ба таълими техникии сифатдор ва кумак кардани барномасозони ташаббускор ба монда кардани малакаҳои нави веб-разработкӣ.' : 'At Bit-Soft IT Academy, our mission is to democratize access to quality tech education and help aspiring developers master modern web development skills.'}
             </p>
             <p className="text-lg text-gray-600 leading-relaxed mb-4">
-              We believe that everyone has the potential to become a great developer. Our comprehensive courses combine theoretical knowledge with practical, real-world projects to ensure our students are job-ready upon completion.
+              {language === 'uz' ? 'Биз ҳар кимса катта дастурчи бўлиши мумкинлигига ишонамиз. Бизнинг қамраб олган курсларимиз назарий билимни амалий, ҳақиқий дунё лойихалари билан бирлаштиради ва талабаларимиз тугатганида ишга тайёр бўлишини таъминлайди.' : language === 'ru' ? 'Мы верим, что у каждого есть потенциал стать отличным разработчиком. Наши комплексные курсы сочетают теоретические знания с практическими, реальными проектами, чтобы наши студенты были готовы к работе по завершении.' : language === 'tg' ? 'Мо бовар дорем, ки ҳар як касе имконияти дорад, ки барномасози беҳтарин гардад. Курсҳои комлексии мо дониши назариро бо амалии, лоиҳаҳои ҳақиқии ҷаҳонӣ муттаҳид мекунанд ва ин тариқа донишҷӯёни мо баъди анҷом коргиро тайёр мегардад.' : 'We believe that everyone has the potential to become a great developer. Our comprehensive courses combine theoretical knowledge with practical, real-world projects to ensure our students are job-ready upon completion.'}
             </p>
             <p className="text-lg text-gray-600 leading-relaxed">
               Since our founding, we've helped thousands of students transition into tech careers and advance their professional growth.
