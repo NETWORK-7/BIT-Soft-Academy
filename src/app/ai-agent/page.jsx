@@ -87,7 +87,7 @@ export default function AIAgentPage() {
 
   useEffect(() => {
     scrollToBottom();
-  }, [messages]);
+  }, [messages, isTyping]);
 
   useEffect(() => {
     // Add welcome message on mount
@@ -103,7 +103,9 @@ export default function AIAgentPage() {
   }, []);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    setTimeout(() => {
+      messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
   };
 
   const handleSendMessage = async (message) => {
@@ -181,21 +183,27 @@ export default function AIAgentPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-900 via-purple-800 to-pink-700 relative overflow-hidden">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 bg-black/20"></div>
+      <div className="absolute top-0 left-0 w-96 h-96 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+      <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl animate-pulse delay-500"></div>
+      
       {/* Header */}
-      <div className="bg-black/20 backdrop-blur-lg border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center gap-4">
-            <div className="bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl p-3 shadow-lg shadow-blue-500/25">
-              <Bot className="h-8 w-8 text-white" />
+      <div className="relative bg-black/30 backdrop-blur-xl border-b border-white/20 shadow-2xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="flex items-center gap-6">
+            <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-500 rounded-2xl p-4 shadow-2xl shadow-purple-500/30 transform hover:scale-105 transition-transform duration-300">
+              <Bot className="h-10 w-10 text-white" />
             </div>
-            <div>
-              <h1 className="text-3xl font-bold text-white">{t.title}</h1>
-              <p className="text-blue-200">{t.subtitle}</p>
+            <div className="flex-1">
+              <h1 className="text-4xl font-bold text-white bg-gradient-to-r from-pink-200 to-purple-200 bg-clip-text text-transparent">{t.title}</h1>
+              <p className="text-purple-100 text-lg mt-1">{t.subtitle}</p>
             </div>
-            <div className="ml-auto flex items-center gap-2">
-              <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-              <span className="text-green-400 text-sm">Online</span>
+            <div className="ml-auto flex items-center gap-3 bg-green-500/20 backdrop-blur-sm px-4 py-2 rounded-full border border-green-400/30">
+              <div className="w-4 h-4 bg-green-400 rounded-full animate-pulse shadow-lg shadow-green-400/50"></div>
+              <span className="text-green-300 text-sm font-medium">Online</span>
             </div>
           </div>
         </div>
@@ -203,79 +211,91 @@ export default function AIAgentPage() {
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 h-[calc(100vh-200px)]">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 min-h-[calc(100vh-200px)]">
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-6">
             {/* Quick Actions */}
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
-              <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                <Zap className="h-5 w-5 text-yellow-400" />
-                Quick Actions
+            <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-xl rounded-3xl p-6 border border-purple-400/30 shadow-2xl shadow-purple-500/20">
+              <h3 className="text-white font-bold mb-6 flex items-center gap-3">
+                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl p-2">
+                  <Zap className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-lg">Quick Actions</span>
               </h3>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 <button
                   onClick={() => handleQuickAction(t.quickActions.courses)}
-                  className="w-full text-left px-4 py-3 bg-white/10 hover:bg-white/20 rounded-xl text-white transition-colors flex items-center gap-3"
+                  className="w-full text-left px-5 py-4 bg-gradient-to-r from-blue-500/20 to-indigo-500/20 hover:from-blue-500/30 hover:to-indigo-500/30 rounded-2xl text-white transition-all duration-300 flex items-center gap-4 border border-blue-400/20 hover:border-blue-400/40 transform hover:scale-[1.02] hover:shadow-lg"
                 >
-                  <BookOpen className="h-4 w-4 text-blue-400" />
-                  {t.quickActions.courses}
+                  <div className="bg-gradient-to-r from-blue-400 to-indigo-400 rounded-lg p-2">
+                    <BookOpen className="h-4 w-4 text-white" />
+                  </div>
+                  <span className="font-medium">{t.quickActions.courses}</span>
                 </button>
                 <button
                   onClick={() => handleQuickAction(t.quickActions.programming)}
-                  className="w-full text-left px-4 py-3 bg-white/10 hover:bg-white/20 rounded-xl text-white transition-colors flex items-center gap-3"
+                  className="w-full text-left px-5 py-4 bg-gradient-to-r from-green-500/20 to-emerald-500/20 hover:from-green-500/30 hover:to-emerald-500/30 rounded-2xl text-white transition-all duration-300 flex items-center gap-4 border border-green-400/20 hover:border-green-400/40 transform hover:scale-[1.02] hover:shadow-lg"
                 >
-                  <Code className="h-4 w-4 text-green-400" />
-                  {t.quickActions.programming}
+                  <div className="bg-gradient-to-r from-green-400 to-emerald-400 rounded-lg p-2">
+                    <Code className="h-4 w-4 text-white" />
+                  </div>
+                  <span className="font-medium">{t.quickActions.programming}</span>
                 </button>
                 <button
                   onClick={() => handleQuickAction(t.quickActions.career)}
-                  className="w-full text-left px-4 py-3 bg-white/10 hover:bg-white/20 rounded-xl text-white transition-colors flex items-center gap-3"
+                  className="w-full text-left px-5 py-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 hover:from-purple-500/30 hover:to-pink-500/30 rounded-2xl text-white transition-all duration-300 flex items-center gap-4 border border-purple-400/20 hover:border-purple-400/40 transform hover:scale-[1.02] hover:shadow-lg"
                 >
-                  <Brain className="h-4 w-4 text-purple-400" />
-                  {t.quickActions.career}
+                  <div className="bg-gradient-to-r from-purple-400 to-pink-400 rounded-lg p-2">
+                    <Sparkles className="h-4 w-4 text-white" />
+                  </div>
+                  <span className="font-medium">{t.quickActions.career}</span>
                 </button>
                 <button
                   onClick={() => handleQuickAction(t.quickActions.trends)}
-                  className="w-full text-left px-4 py-3 bg-white/10 hover:bg-white/20 rounded-xl text-white transition-colors flex items-center gap-3"
+                  className="w-full text-left px-5 py-4 bg-gradient-to-r from-orange-500/20 to-red-500/20 hover:from-orange-500/30 hover:to-red-500/30 rounded-2xl text-white transition-all duration-300 flex items-center gap-4 border border-orange-400/20 hover:border-orange-400/40 transform hover:scale-[1.02] hover:shadow-lg"
                 >
-                  <Sparkles className="h-4 w-4 text-yellow-400" />
-                  {t.quickActions.trends}
+                  <div className="bg-gradient-to-r from-orange-400 to-red-400 rounded-lg p-2">
+                    <Sparkles className="h-4 w-4 text-white" />
+                  </div>
+                  <span className="font-medium">{t.quickActions.trends}</span>
                 </button>
               </div>
             </div>
 
             {/* AI Features */}
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-6 border border-white/20">
-              <h3 className="text-white font-semibold mb-4 flex items-center gap-2">
-                <MessageCircle className="h-5 w-5 text-blue-400" />
-                AI Capabilities
+            <div className="bg-gradient-to-br from-purple-500/20 to-pink-500/20 backdrop-blur-xl rounded-3xl p-6 border border-purple-400/30 shadow-2xl shadow-purple-500/20">
+              <h3 className="text-white font-bold mb-6 flex items-center gap-3">
+                <div className="bg-gradient-to-r from-yellow-400 to-orange-500 rounded-xl p-2">
+                  <MessageCircle className="h-5 w-5 text-white" />
+                </div>
+                <span className="text-lg">AI Capabilities</span>
               </h3>
-              <ul className="space-y-3 text-white/80 text-sm">
-                <li className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-blue-400 rounded-full mt-1.5 flex-shrink-0"></div>
-                  <span>Programming assistance</span>
+              <ul className="space-y-4 text-white/90">
+                <li className="flex items-start gap-3">
+                  <div className="w-3 h-3 bg-gradient-to-r from-blue-400 to-indigo-400 rounded-full mt-1.5 shrink-0 shadow-lg shadow-blue-400/50"></div>
+                  <span className="font-medium">Programming assistance</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-green-400 rounded-full mt-1.5 flex-shrink-0"></div>
-                  <span>Course information</span>
+                <li className="flex items-start gap-3">
+                  <div className="w-3 h-3 bg-gradient-to-r from-green-400 to-emerald-400 rounded-full mt-1.5 shrink-0 shadow-lg shadow-green-400/50"></div>
+                  <span className="font-medium">Course information</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-purple-400 rounded-full mt-1.5 flex-shrink-0"></div>
-                  <span>Career guidance</span>
+                <li className="flex items-start gap-3">
+                  <div className="w-3 h-3 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mt-1.5 shrink-0 shadow-lg shadow-purple-400/50"></div>
+                  <span className="font-medium">Career guidance</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <div className="w-2 h-2 bg-yellow-400 rounded-full mt-1.5 flex-shrink-0"></div>
-                  <span>Tech trends & news</span>
+                <li className="flex items-start gap-3">
+                  <div className="w-3 h-3 bg-gradient-to-r from-orange-400 to-red-400 rounded-full mt-1.5 shrink-0 shadow-lg shadow-orange-400/50"></div>
+                  <span className="font-medium">Tech trends & news</span>
                 </li>
               </ul>
             </div>
           </div>
 
           {/* Chat Area */}
-          <div className="lg:col-span-3 flex flex-col">
-            <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 flex-1 flex flex-col">
+          <div className="lg:col-span-3 flex flex-col h-full">
+            <div className="bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 flex-1 flex flex-col min-h-0">
               {/* Messages */}
-              <div className="flex-1 overflow-y-auto p-6 space-y-4">
+              <div ref={messagesEndRef} className="flex-1 overflow-y-auto p-6 space-y-4 scroll-smooth">
                 {messages.map((message, index) => (
                   <div
                     key={index}
